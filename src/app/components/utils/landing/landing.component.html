@@ -1,0 +1,44 @@
+<div class="row my-1">
+  <div class="col-md-0 col-lg-8" style="max-height: 500px">
+    <p-galleria
+      [autoPlay]="true"
+      [value]="images"
+      [showItemNavigators]="true"
+      [showThumbnails]="false"
+      [showIndicators]="true"
+      [showIndicatorsOnItem]="true"
+      [responsiveOptions]="responsiveOptions"
+      [containerStyle]="{}"
+    >
+      <ng-template pTemplate="item" let-item>
+        <img
+          [src]="item.itemImageSrc"
+          style="width: 100%; display: block; height: 450px"
+        />
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div class="grid grid-nogutter justify-content-center">
+          <img [src]="item.thumbnailImageSrc" style="display: block" />
+        </div>
+      </ng-template>
+    </p-galleria>
+  </div>
+  <div class="image-container col-4 col-lg-0 d-flex align-items-center">
+    <div class="col-xl-6 col-md-12">
+      <div href="#" class="link">
+        <img src="../../assets/advertise/advertise1.jpg" class="image" />
+      </div>
+      <div href="#" class="link">
+        <img src="../../assets/advertise/advertise25.jpg" class="image" />
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-0">
+      <div href="#" class="link">
+        <img src="../../assets/advertise/advertise3.png" class="image" />
+      </div>
+      <div href="#" class="link">
+        <img src="../../assets/advertise/advertise4.jpg" class="image" />
+      </div>
+    </div>
+  </div>
+</div>

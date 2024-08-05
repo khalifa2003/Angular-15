@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-
 // Primng
 import { MenubarModule } from 'primeng/menubar';
-import { LandingComponent } from './landing/landing.component';
+import { LandingComponent } from './components/utils/landing/landing.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
 
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { NavbarComponent } from './components/utils/navbar/navbar.component';
+import { HomeComponent } from './components/home/home.component';
+
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, LandingComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    LandingComponent,
+    HomeComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

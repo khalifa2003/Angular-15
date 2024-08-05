@@ -53,6 +53,10 @@ export class LandingComponent {
         itemImageSrc: '../../assets/swipper/swipper7.webp',
         thumbnailImageSrc: '../../assets/swipper/swipper7.webp',
       },
+      {
+        itemImageSrc: '../../assets/swipper/swipper8.avif',
+        thumbnailImageSrc: '../../assets/swipper/swipper8.avif',
+      },
     ];
   }
 }
