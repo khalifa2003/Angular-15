@@ -1,14 +1,15 @@
 header {
   font-size: 18px;
-  color: #333;
+  color: #555;
   text-transform: uppercase;
   padding-bottom: 8px;
   font-weight: 700;
   position: relative;
   transition: 0.5s;
+  margin: 0 20px;
 }
 header:hover {
-  color: #333;
+  color: rgb(0, 0, 0)
 }
 header::after,
 header::before {
@@ -32,4 +33,13 @@ header::before {
 header:hover::before {
   transition: 0.5s;
   width: calc(100% - 40px);
+}
+.sec {
+  height: 200px;
+  width: 750px;
+}
+@media only screen and (min-width: 991px) {
+  .sec {
+    width: 50%;
+  }
 }

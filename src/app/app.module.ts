@@ -7,12 +7,13 @@ import { LandingComponent } from './components/utils/landing/landing.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
+import { CardModule } from 'primeng/card';
+import { CarouselModule } from 'primeng/carousel';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/utils/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +28,8 @@ import { HomeComponent } from './components/home/home.component';
     InputTextModule,
     ButtonModule,
     GalleriaModule,
+    CardModule,
+    CarouselModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
