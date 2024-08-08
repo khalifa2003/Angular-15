@@ -6,6 +6,9 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+div {
+  margin: 0;
+}
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -29,26 +32,21 @@ a {
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 ::-webkit-scrollbar {
   width: 15px;
 }
 ::-webkit-scrollbar-track {
-  background-color: #fff;
+  background-color: #2121;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--gray-alt-color);
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--gray-alt-color);
+  background-color: blue;
 }
 
 html,
 body {
   height: 100%;
-}
-.my-container {
-  margin: 0 10px;
 }
 @media only screen and (max-width: 991px) {
   .my-container {

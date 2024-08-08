@@ -1,0 +1,19 @@
+<div
+  class="d-flex justify-content-center align-items-center flex-column py-5"
+  style="min-height: 840px; background-color: #eee"
+>
+  <form action="">
+    <h1>Login</h1>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label htmlFor="email">Email*</label>
+      <input pInputText id="email" />
+    </div>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label>Password*</label>
+      <p-password [toggleMask]="true"></p-password>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <p-button label="Login" [loading]="loading" (click)="load()"></p-button>
+    </div>
+  </form>
+</div>

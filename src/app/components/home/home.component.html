@@ -1,120 +1,394 @@
-<div class="my-container">
-  <app-landing class="row"></app-landing>
-  <div class="row mt-2">
-    <header>Shop by Categories</header>
-    <p-carousel
-      [value]="products"
-      [numVisible]="5"
-      [numScroll]="3"
-      [circular]="true"
-      [responsiveOptions]="responsiveOptions"
-    >
-      <ng-template let-product pTemplate="item">
-        <div class="border-round text-center py-3 px-2">
-          <div class="mb-1">
-            <img
-              src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-                product.image
-              }}"
-              [alt]="product.name"
-              class="w-6 shadow-2"
-            />
+<app-landing class="row" style="margin: 0"></app-landing>
+<div class="row">
+  <header>Shop by Categories</header>
+  <p-carousel
+    [value]="products"
+    [numVisible]="5"
+    [numScroll]="3"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+    style="margin: 0; padding: 0"
+  >
+    <ng-template let-product pTemplate="item">
+      <div class="border-round text-center py-3">
+        <div>
+          <img
+            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+              product.image
+            }}"
+            [alt]="product.name"
+            class="w-6 shadow-2"
+          />
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
+<div class="row">
+  <header>Special Offers</header>
+  <p-carousel
+    [value]="products"
+    [numVisible]="5"
+    [numScroll]="3"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+  >
+    <ng-template let-product pTemplate="item">
+      <div class="border-round text-center py-3">
+        <div>
+          <img
+            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+              product.image
+            }}"
+            [alt]="product.name"
+            class="w-6 shadow-2"
+          />
+        </div>
+        <div>
+          <h4>{{ product.name }}</h4>
+          <h6 class="mb-3">{{ "$" + product.price }}</h6>
+          <div class="car-buttons">
+            <p-button
+              type="button"
+              styleClass="p-button p-button-rounded"
+              icon="pi pi-search"
+            ></p-button>
+            <p-button
+              type="button"
+              styleClass="p-button-success p-button-rounded"
+              icon="pi pi-star-fill"
+            ></p-button>
           </div>
         </div>
-      </ng-template>
-    </p-carousel>
-  </div>
-  <div class="row mt-2">
-    <header>Special Offers</header>
-    <p-carousel
-      [value]="products"
-      [numVisible]="5"
-      [numScroll]="3"
-      [circular]="true"
-      [responsiveOptions]="responsiveOptions"
-    >
-      <ng-template let-product pTemplate="item">
-        <div class="border-round text-center py-3 px-2">
-          <div class="mb-1">
-            <img
-              src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-                product.image
-              }}"
-              [alt]="product.name"
-              class="w-6 shadow-2"
-            />
-          </div>
-          <div>
-            <h4 class="mb-1">{{ product.name }}</h4>
-            <h6 class="mb-3">{{ "$" + product.price }}</h6>
-            <div class="car-buttons">
-              <p-button
-                type="button"
-                styleClass="p-button p-button-rounded mr-2"
-                icon="pi pi-search"
-              ></p-button>
-              <p-button
-                type="button"
-                styleClass="p-button-success p-button-rounded mr-2"
-                icon="pi pi-star-fill"
-              ></p-button>
-            </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
+<div class="row">
+  <header>New Arraive</header>
+  <p-carousel
+    [value]="products"
+    [numVisible]="5"
+    [numScroll]="3"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+  >
+    <ng-template let-product pTemplate="item">
+      <div class="border-round text-center py-3">
+        <div>
+          <img
+            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+              product.image
+            }}"
+            [alt]="product.name"
+            class="w-6 shadow-2"
+          />
+        </div>
+        <div>
+          <h4>{{ product.name }}</h4>
+          <h6 class="mb-3">{{ "$" + product.price }}</h6>
+          <div class="car-buttons">
+            <p-button
+              type="button"
+              styleClass="p-button p-button-rounded"
+              icon="pi pi-search"
+            ></p-button>
+            <p-button
+              type="button"
+              styleClass="p-button-success p-button-rounded"
+              icon="pi pi-star-fill"
+            ></p-button>
           </div>
         </div>
-      </ng-template>
-    </p-carousel>
-  </div>
-  <div class="row mt-2">
-    <header>New Arraive</header>
-    <p-carousel
-      [value]="products"
-      [numVisible]="5"
-      [numScroll]="3"
-      [circular]="true"
-      [responsiveOptions]="responsiveOptions"
-    >
-      <ng-template let-product pTemplate="item">
-        <div class="border-round text-center py-3 px-2">
-          <div class="mb-1">
-            <img
-              src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-                product.image
-              }}"
-              [alt]="product.name"
-              class="w-6 shadow-2"
-            />
-          </div>
-          <div>
-            <h4 class="mb-1">{{ product.name }}</h4>
-            <h6 class="mb-3">{{ "$" + product.price }}</h6>
-            <div class="car-buttons">
-              <p-button
-                type="button"
-                styleClass="p-button p-button-rounded mr-2"
-                icon="pi pi-search"
-              ></p-button>
-              <p-button
-                type="button"
-                styleClass="p-button-success p-button-rounded mr-2"
-                icon="pi pi-star-fill"
-              ></p-button>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </p-carousel>
-  </div>
-  <div class="mt-2 d-flex gap-4">
-    <section class="col-xl-10 col-lg-12">
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
+<div class="row">
+  <div class="col-xl-10 col-lg-12">
+    <div>
       <img src="../../../assets/sec1.1.jpg" class="sec p-1" />
       <img src="../../../assets/sec1.2.jpg" class="sec p-1" />
-    </section>
-    <section class="col-xl-2 col-lg-0">
-      <img src="../../../assets/side/side1.jpg" />
-      <img src="../../../assets/side/side2.jpg" class="mt-1" />
-      <img src="../../../assets/side/side3.jpg" class="mt-1" />
-      <img src="../../../assets/side/side4.jpg" class="mt-1" />
-      <img src="../../../assets/side/side5.jpg" class="mt-1" />
-    </section>
+    </div>
+    <div>
+      <header>Desktop</header>
+      <p-carousel
+        [value]="products"
+        [numVisible]="5"
+        [numScroll]="3"
+        [circular]="true"
+        [responsiveOptions]="responsiveOptions"
+      >
+        <ng-template let-product pTemplate="item">
+          <div class="border-round text-center py-3">
+            <div>
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+                  product.image
+                }}"
+                [alt]="product.name"
+                class="w-6 shadow-2"
+              />
+            </div>
+            <div>
+              <h4>{{ product.name }}</h4>
+              <h6 class="mb-3">{{ "$" + product.price }}</h6>
+              <div class="car-buttons">
+                <p-button
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  icon="pi pi-search"
+                ></p-button>
+                <p-button
+                  type="button"
+                  styleClass="p-button-success p-button-rounded"
+                  icon="pi pi-star-fill"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+    <div>
+      <img src="../../../assets/sec1.1.jpg" class="sec p-1" />
+      <img src="../../../assets/sec1.2.jpg" class="sec p-1" />
+    </div>
+    <div>
+      <header>Notebook</header>
+      <p-carousel
+        [value]="products"
+        [numVisible]="5"
+        [numScroll]="3"
+        [circular]="true"
+        [responsiveOptions]="responsiveOptions"
+      >
+        <ng-template let-product pTemplate="item">
+          <div class="border-round text-center py-3">
+            <div>
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+                  product.image
+                }}"
+                [alt]="product.name"
+                class="w-6 shadow-2"
+              />
+            </div>
+            <div>
+              <h4>{{ product.name }}</h4>
+              <h6 class="mb-3">{{ "$" + product.price }}</h6>
+              <div class="car-buttons">
+                <p-button
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  icon="pi pi-search"
+                ></p-button>
+                <p-button
+                  type="button"
+                  styleClass="p-button-success p-button-rounded"
+                  icon="pi pi-star-fill"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+    <div>
+      <img src="../../../assets/advertise/R.jpg" class="sec p-1" />
+      <img src="../../../assets/advertise/R.jpg" class="sec p-1" />
+    </div>
+    <div>
+      <header>Storage</header>
+      <p-carousel
+        [value]="products"
+        [numVisible]="5"
+        [numScroll]="3"
+        [circular]="true"
+        [responsiveOptions]="responsiveOptions"
+      >
+        <ng-template let-product pTemplate="item">
+          <div class="border-round text-center py-3">
+            <div>
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+                  product.image
+                }}"
+                [alt]="product.name"
+                class="w-6 shadow-2"
+              />
+            </div>
+            <div>
+              <h4>{{ product.name }}</h4>
+              <h6 class="mb-3">{{ "$" + product.price }}</h6>
+              <div class="car-buttons">
+                <p-button
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  icon="pi pi-search"
+                ></p-button>
+                <p-button
+                  type="button"
+                  styleClass="p-button-success p-button-rounded"
+                  icon="pi pi-star-fill"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+    <div>
+      <header>Monitors</header>
+      <p-carousel
+        [value]="products"
+        [numVisible]="5"
+        [numScroll]="3"
+        [circular]="true"
+        [responsiveOptions]="responsiveOptions"
+      >
+        <ng-template let-product pTemplate="item">
+          <div class="border-round text-center py-3">
+            <div>
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+                  product.image
+                }}"
+                [alt]="product.name"
+                class="w-6 shadow-2"
+              />
+            </div>
+            <div>
+              <h4>{{ product.name }}</h4>
+              <h6 class="mb-3">{{ "$" + product.price }}</h6>
+              <div class="car-buttons">
+                <p-button
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  icon="pi pi-search"
+                ></p-button>
+                <p-button
+                  type="button"
+                  styleClass="p-button-success p-button-rounded"
+                  icon="pi pi-star-fill"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+    <div>
+      <header>Accessories</header>
+      <p-carousel
+        [value]="products"
+        [numVisible]="5"
+        [numScroll]="3"
+        [circular]="true"
+        [responsiveOptions]="responsiveOptions"
+      >
+        <ng-template let-product pTemplate="item">
+          <div class="border-round text-center py-3">
+            <div>
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+                  product.image
+                }}"
+                [alt]="product.name"
+                class="w-6 shadow-2"
+              />
+            </div>
+            <div>
+              <h4>{{ product.name }}</h4>
+              <h6 class="mb-3">{{ "$" + product.price }}</h6>
+              <div class="car-buttons">
+                <p-button
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  icon="pi pi-search"
+                ></p-button>
+                <p-button
+                  type="button"
+                  styleClass="p-button-success p-button-rounded"
+                  icon="pi pi-star-fill"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+    <div>
+      <header>Bundle</header>
+      <p-carousel
+        [value]="products"
+        [numVisible]="5"
+        [numScroll]="3"
+        [circular]="true"
+        [responsiveOptions]="responsiveOptions"
+      >
+        <ng-template let-product pTemplate="item">
+          <div class="border-round text-center py-3 px-2">
+            <div>
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+                  product.image
+                }}"
+                [alt]="product.name"
+                class="w-6 shadow-2"
+              />
+            </div>
+            <div>
+              <h4>{{ product.name }}</h4>
+              <h6 class="mb-3">{{ "$" + product.price }}</h6>
+              <div class="car-buttons">
+                <p-button
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  icon="pi pi-search"
+                ></p-button>
+                <p-button
+                  type="button"
+                  styleClass="p-button-success p-button-rounded"
+                  icon="pi pi-star-fill"
+                ></p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
   </div>
+  <div class="col-xl-2 col-lg-12">
+    <header></header>
+    <img src="../../../assets/side/side1.jpg" />
+    <img src="../../../assets/side/side2.jpg" class="mt-1" />
+    <img src="../../../assets/side/side3.jpg" class="mt-1" />
+    <img src="../../../assets/side/side4.jpg" class="mt-1" />
+    <img src="../../../assets/side/side5.jpg" class="mt-1" />
+  </div>
+</div>
+<div class="row">
+  <header>Shop by Brands</header>
+  <p-carousel
+    [value]="products"
+    [numVisible]="5"
+    [numScroll]="3"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+  >
+    <ng-template let-product pTemplate="item">
+      <div class="border-round text-center py-3 px-2">
+        <div>
+          <img
+            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+              product.image
+            }}"
+            [alt]="product.name"
+            class="w-6 shadow-2"
+          />
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
 </div>

@@ -1,0 +1,46 @@
+<div
+  class="d-flex justify-content-center align-items-center flex-column py-5"
+  style="min-height: 840px; background-color: #eee"
+>
+  <form action="">
+    <h1>Register</h1>
+    <h5>Personal Information</h5>
+    <div class="d-flex flex-row gap-1">
+      <div class="d-flex flex-column gap-1 w-50">
+        <label htmlFor="fname">First Name*</label>
+        <input pInputText id="fname" />
+      </div>
+      <div class="d-flex flex-column gap-1 w-50">
+        <label htmlFor="lname">Last Name*</label>
+        <input pInputText id="lname" />
+      </div>
+    </div>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label htmlFor="phone">Phone*</label>
+      <input pInputText id="phone" />
+    </div>
+    <hr />
+    <h5>Sign-in Information</h5>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label htmlFor="email">Email*</label>
+      <input pInputText id="email" />
+    </div>
+    <div class="d-flex flex-row gap-1">
+      <div class="d-flex flex-column gap-1 mt-2">
+        <label>Password*</label>
+        <p-password [toggleMask]="true"></p-password>
+      </div>
+      <div class="d-flex flex-column gap-1 mt-2">
+        <label>Confirm Password*</label>
+        <p-password [toggleMask]="true"></p-password>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <p-button
+        label="Register"
+        [loading]="loading"
+        (click)="load()"
+      ></p-button>
+    </div>
+  </form>
+</div>

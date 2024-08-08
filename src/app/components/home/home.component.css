@@ -2,20 +2,18 @@ header {
   font-size: 18px;
   color: #555;
   text-transform: uppercase;
-  padding-bottom: 8px;
+  padding: 0 0 8px 0;
   font-weight: 700;
   position: relative;
   transition: 0.5s;
-  margin: 0 20px;
 }
 header:hover {
-  color: rgb(0, 0, 0)
+  color: rgb(0, 0, 0);
 }
 header::after,
 header::before {
   transition: 0.5s;
   content: "";
-  margin: 0 10px;
   height: 3px;
   position: absolute;
   bottom: 0;
@@ -42,4 +40,8 @@ header:hover::before {
   .sec {
     width: 50%;
   }
+}
+div {
+  margin: 0;
+  padding: 0;
 }

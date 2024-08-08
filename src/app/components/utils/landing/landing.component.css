@@ -1,6 +1,6 @@
 .image {
   width: 100%;
-  height: 220px;
+  height: 230px;
   cursor: pointer;
   padding: 5px;
 }
@@ -16,8 +16,6 @@
 .link::before {
   content: "";
   position: absolute;
-  width: 98%;
-  height: 98%;
   background-color: rgba(0, 0, 0, 0.1);
   z-index: 14542;
   top: -50%;
@@ -39,4 +37,8 @@
   .link {
     display: none;
   }
+}
+div {
+  margin: 0;
+  padding: 0;
 }
