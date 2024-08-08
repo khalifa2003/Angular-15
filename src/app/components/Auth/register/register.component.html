@@ -1,0 +1,143 @@
+<div
+  class="d-flex justify-content-center align-items-center flex-column py-5"
+  style="min-height: 840px; background-color: #eee"
+>
+  <form [formGroup]="registerForm" (submit)="submit()">
+    <h1>Register</h1>
+    <h5>Personal Information</h5>
+    <div class="d-flex flex-row gap-1">
+      <div class="d-flex flex-column gap-1 w-50">
+        <label htmlFor="fname">First Name*</label>
+        <input
+          pInputText
+          id="fname"
+          formControlName="fname"
+          [ngClass]="{
+            'is-invalid': control['fname'].touched && control['fname'].invalid
+          }"
+        />
+        <div
+          *ngIf="control['fname'].touched && control['fname'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="control['fname'].errors?.['required']">
+            First Name Required
+          </div>
+          <div *ngIf="control['fname'].errors?.['fname']">Incorect Name</div>
+        </div>
+      </div>
+      <div class="d-flex flex-column gap-1 w-50">
+        <label htmlFor="lname">Last Name*</label>
+        <input
+          pInputText
+          id="lname"
+          formControlName="lname"
+          [ngClass]="{
+            'is-invalid': control['lname'].touched && control['lname'].invalid
+          }"
+        />
+        <div
+          *ngIf="control['lname'].touched && control['lname'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="control['lname'].errors?.['required']">
+            Last Name Required
+          </div>
+          <div *ngIf="control['lname'].errors?.['lname']">Incorect Name</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label htmlFor="phone">Phone*</label>
+      <input
+        pInputText
+        id="phone"
+        formControlName="phone"
+        placeholder="(+20)"
+        [ngClass]="{
+          'is-invalid': control['phone'].touched && control['phone'].invalid
+        }"
+      />
+      <div
+        *ngIf="control['phone'].touched && control['phone'].invalid"
+        class="invalid-feedback"
+      >
+        <div *ngIf="control['phone'].errors?.['required']">Phone Required</div>
+        <div *ngIf="control['phone'].errors?.['pattern']">Incorect Number</div>
+      </div>
+    </div>
+    <hr />
+    <h5>Sign-in Information</h5>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label htmlFor="email">Email*</label>
+      <input
+        pInputText
+        id="email"
+        placeholder="test@email.co"
+        formControlName="email"
+        [ngClass]="{
+          'is-invalid': control['email'].touched && control['email'].invalid
+        }"
+      />
+      <div
+        *ngIf="control['email'].touched && control['email'].invalid"
+        class="invalid-feedback"
+      >
+        <div *ngIf="control['email'].errors?.['required']">Email Required</div>
+        <div *ngIf="control['email'].errors?.['email']">Incorect Email</div>
+      </div>
+    </div>
+    <div class="d-flex flex-row gap-1">
+      <div class="d-flex flex-column gap-1 mt-2">
+        <label>Password*</label>
+        <p-password
+          formControlName="password"
+          [toggleMask]="true"
+          placeholder="********"
+          [ngClass]="{
+            'is-invalid':
+              control['password'].touched && control['password'].invalid
+          }"
+        ></p-password>
+        <div
+          *ngIf="control['password'].touched && control['password'].invalid"
+          class="invalid-feedback"
+        >
+          Password Required
+        </div>
+      </div>
+      <div class="d-flex flex-column gap-1 mt-2">
+        <label>Confirm Password*</label>
+        <p-password
+          [toggleMask]="true"
+          formControlName="passwordConfirm"
+          placeholder="********"
+          [ngClass]="{
+            'is-invalid':
+              control['passwordConfirm'].touched &&
+              registerForm.value.password != registerForm.value.passwordConfirm
+          }"
+        ></p-password>
+        <div
+          *ngIf="
+            registerForm.value.password != registerForm.value.passwordConfirm
+          "
+          class="invalid-feedback"
+        >
+          Incorrect Password
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <p-button
+        label="Register"
+        [loading]="loading"
+        type="submit"
+        [disabled]="
+          registerForm.invalid ||
+          registerForm.value.password != registerForm.value.passwordConfirm
+        "
+      ></p-button>
+    </div>
+  </form>
+</div>

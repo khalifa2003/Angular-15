@@ -1,0 +1,53 @@
+<div
+  class="d-flex justify-content-center align-items-center flex-column py-5"
+  style="min-height: 840px; background-color: #eee"
+>
+  <form [formGroup]="loginForm" (submit)="submit()">
+    <h1>Login</h1>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label htmlFor="email">Email*</label>
+      <input
+        pInputText
+        id="email"
+        placeholder="test@email.co"
+        formControlName="email"
+        [ngClass]="{
+          'is-invalid': control['email'].touched && control['email'].invalid
+        }"
+      />
+      <div
+        *ngIf="control['email'].touched && control['email'].invalid"
+        class="invalid-feedback"
+      >
+        <div *ngIf="control['email'].errors?.['required']">Email Required</div>
+        <div *ngIf="control['email'].errors?.['email']">Incorect Email</div>
+      </div>
+    </div>
+    <div class="d-flex flex-column gap-1 mt-2">
+      <label>Password*</label>
+      <p-password
+        formControlName="password"
+        [toggleMask]="true"
+        placeholder="********"
+        [ngClass]="{
+          'is-invalid':
+            control['password'].touched && control['password'].invalid
+        }"
+      ></p-password>
+      <div
+        *ngIf="control['password'].touched && control['password'].invalid"
+        class="invalid-feedback"
+      >
+        Password Required
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <p-button
+        label="Register"
+        [loading]="loading"
+        type="submit"
+        [disabled]="loginForm.invalid"
+      ></p-button>
+    </div>
+  </form>
+</div>
