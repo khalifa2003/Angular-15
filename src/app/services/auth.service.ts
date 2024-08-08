@@ -1,12 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private apiUrl = 'http://localhost:3000/auth';
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
@@ -26,25 +27,30 @@ export class AuthService {
     return !!token;
   }
 
-  login(data: FormData) {
-    return this.http.post<any>(`http://localhost:3000/auth/login`, data).pipe(
+  login(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
       tap((user) => {
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
         this.router.navigate(['/home']);
+      }),
+      catchError((error) => {
+        console.error('Login error', error);
+        return of(null);
       })
     );
   }
 
-  register(data: FormData) {
-    console.log(data);
-
-    return this.http.post(`http://localhost:3000/auth/signup`, data).pipe(
+  register(formData: FormData) {
+    return this.http.post<any>(`${this.apiUrl}/signup`, formData).pipe(
       tap((user) => {
-        console.log(user);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
         this.router.navigate(['/home']);
+      }),
+      catchError((error) => {
+        console.error('Registration error', error);
+        return of(null);
       })
     );
   }
@@ -56,9 +62,7 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return (
-      this.currentUserValue.data?.role[0] == 'admin' ||
-      this.currentUserValue.data?.role[0] == 'manager'
-    );
+    const roles = this.currentUserValue?.data?.role || [];
+    return roles.includes('admin') || roles.includes('manager');
   }
 }

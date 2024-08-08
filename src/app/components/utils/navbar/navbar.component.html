@@ -1,4 +1,7 @@
-<p-menubar [model]="items">
+<p-menubar
+  [model]="items"
+  [ngStyle]="{ position: 'fixed', 'z-index': '5', width: '100%',top:'-5px'}"
+>
   <ng-template pTemplate="start">
     <a routerLink="/home">
       <img src="../../assets/logo.ico" height="40" class="mr-2" />

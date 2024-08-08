@@ -31,10 +31,13 @@ export class LoginComponent {
       this.loading = false;
     }, 2000);
     if (this.loginForm.valid) {
-      console.log('login page:');
-      console.log(this.loginForm.value);
-
-      this.authService.login(this.loginForm.value);
+      this.authService.login(this.loginForm.value).subscribe((response) => {
+        if (response) {
+          console.log('Login successful');
+        } else {
+          console.error('Login failed');
+        }
+      });
     }
   }
 }
