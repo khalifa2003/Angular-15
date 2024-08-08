@@ -1,4 +1,4 @@
-<app-landing class="row" style="margin: 0"></app-landing>
+<app-landing class="row" [ngStyle]="{ margin: '0' }"></app-landing>
 <div class="row">
   <header>Shop by Categories</header>
   <p-carousel
@@ -7,7 +7,7 @@
     [numScroll]="3"
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
-    style="margin: 0; padding: 0"
+    [ngStyle]="{ margin: '0', padding: '0' }"
   >
     <ng-template let-product pTemplate="item">
       <div class="border-round text-center py-3">

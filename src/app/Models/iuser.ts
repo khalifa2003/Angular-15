@@ -14,5 +14,6 @@ export interface IUser {
   passwordResetExpires?: Date;
   passwordResetVerified?: string;
   active: boolean;
+  role: string[];
   addresses: IAddress;
 }

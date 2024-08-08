@@ -67,12 +67,12 @@ export class NavbarComponent implements OnInit {
         icon: 'pi pi-fw pi-user',
         items: [
           {
-            label: 'Features',
-            icon: 'pi pi-star',
-          },
-          {
             label: 'Profile',
             icon: 'pi pi-user',
+          },
+          {
+            label: 'Address',
+            icon: 'pi pi-location',
           },
           {
             label: 'Orders',
@@ -84,16 +84,11 @@ export class NavbarComponent implements OnInit {
         ],
       },
       {
-        label: 'Login',
+        label: 'Login/Register',
         command: () => {
           this.router.navigate(['/login']);
         },
-      },
-      {
-        label: 'register',
-        command: () => {
-          this.router.navigate(['/register']);
-        },
+        // visible: !this.authService.isAuthenticated(),
       },
       {
         label: 'Admin',
@@ -101,6 +96,7 @@ export class NavbarComponent implements OnInit {
         command: () => {
           this.router.navigate(['/admin']);
         },
+        // visible: this.authService.isAdmin(),
       },
     ];
   }

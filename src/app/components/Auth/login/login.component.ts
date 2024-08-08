@@ -30,10 +30,10 @@ export class LoginComponent {
     setTimeout(() => {
       this.loading = false;
     }, 2000);
-    if (
-      this.loginForm.value.password === this.loginForm.value.passwordConfirm &&
-      this.loginForm.valid
-    ) {
+    if (this.loginForm.valid) {
+      console.log('login page:');
+      console.log(this.loginForm.value);
+
       this.authService.login(this.loginForm.value);
     }
   }

@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   login(data: FormData) {
-    return this.http.post(`http"//localhost:3000/login`, data).pipe(
+    return this.http.post<any>(`http://localhost:3000/auth/login`, data).pipe(
       tap((user) => {
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
@@ -37,8 +37,11 @@ export class AuthService {
   }
 
   register(data: FormData) {
+    console.log(data);
+
     return this.http.post(`http://localhost:3000/auth/signup`, data).pipe(
       tap((user) => {
+        console.log(user);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
         this.router.navigate(['/home']);
@@ -50,5 +53,12 @@ export class AuthService {
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
     this.router.navigate(['/home']);
+  }
+
+  isAdmin(): boolean {
+    return (
+      this.currentUserValue.data?.role[0] == 'admin' ||
+      this.currentUserValue.data?.role[0] == 'manager'
+    );
   }
 }

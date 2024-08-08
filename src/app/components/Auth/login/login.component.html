@@ -43,11 +43,15 @@
     </div>
     <div class="d-flex justify-content-center mt-4">
       <p-button
-        label="Register"
+        label="Login"
         [loading]="loading"
         type="submit"
         [disabled]="loginForm.invalid"
       ></p-button>
+    </div>
+    <div class="forgot-password d-flex justify-content-between">
+      <a routerLink="verify">Forgot Password?</a>
+      <a routerLink="/register">Register</a>
     </div>
   </form>
 </div>
