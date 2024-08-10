@@ -4,6 +4,13 @@ import { HomeComponent } from './components/Home/home Page/home.component';
 import { NotFoundComponent } from './components/utils/not-found/not-found.component';
 import { LoginComponent } from './components/Auth/login/login.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
+import { AddCategoryComponent } from './components/Admin/add-category/add-category.component';
+import { CategoryManagementComponent } from './components/Admin/category-management/category-management.component';
+import { ProductManagementComponent } from './components/Admin/product-management/product-management.component';
+import { BrandManagementComponent } from './components/Admin/brand-management/brand-management.component';
+import { AddProductComponent } from './components/Admin/add-product/add-product.component';
+import { AddBrandComponent } from './components/Admin/add-brand/add-brand.component';
+import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   {
@@ -22,6 +29,36 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   // { path: 'login/verify', component: ForgetPasswordComponent },
+
+  // Admin
+  {
+    path: 'admin',
+    component: AdminDashboardComponent,
+  },
+  {
+    path: 'admin/category/management',
+    component: CategoryManagementComponent,
+  },
+  {
+    path: 'admin/product/management',
+    component: ProductManagementComponent,
+  },
+  {
+    path: 'admin/brand/management',
+    component: BrandManagementComponent,
+  },
+  {
+    path: 'admin/category/add',
+    component: AddCategoryComponent,
+  },
+  {
+    path: 'admin/product/add',
+    component: AddProductComponent,
+  },
+  {
+    path: 'admin/brand/add',
+    component: AddBrandComponent,
+  },
 
   { path: '**', component: NotFoundComponent }, // wild card path
 ];

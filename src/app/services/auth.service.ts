@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    const roles = this.currentUserValue?.data?.role || [];
+    const roles = this.currentUserValue?.user?.roles || [];
     return roles.includes('admin') || roles.includes('manager');
   }
 }

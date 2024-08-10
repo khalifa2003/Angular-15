@@ -1,9 +1,10 @@
-<div
-  class="d-flex justify-content-center align-items-center flex-column py-5"
-  style="min-height: 840px; background-color: #eee"
->
+<body>
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
   <form [formGroup]="loginForm" (submit)="submit()">
-    <h1>Login</h1>
+    <h3>Login Here</h3>
     <div class="d-flex flex-column gap-1 mt-2">
       <label htmlFor="email">Email*</label>
       <input
@@ -25,15 +26,15 @@
     </div>
     <div class="d-flex flex-column gap-1 mt-2">
       <label>Password*</label>
-      <p-password
+      <input
         formControlName="password"
-        [toggleMask]="true"
         placeholder="********"
+        type="password"
         [ngClass]="{
           'is-invalid':
             control['password'].touched && control['password'].invalid
         }"
-      ></p-password>
+      />
       <div
         *ngIf="control['password'].touched && control['password'].invalid"
         class="invalid-feedback"
@@ -49,9 +50,9 @@
         [disabled]="loginForm.invalid"
       ></p-button>
     </div>
-    <div class="forgot-password d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
       <a routerLink="verify">Forgot Password?</a>
-      <a routerLink="/register">Register</a>
+      <a routerLink="register">Register</a>
     </div>
   </form>
-</div>
+</body>

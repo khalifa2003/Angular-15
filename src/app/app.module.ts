@@ -13,6 +13,8 @@ import { GalleriaModule } from 'primeng/galleria';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
 import { PasswordModule } from 'primeng/password';
+import { SidebarModule } from 'primeng/sidebar';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +25,14 @@ import { FooterComponent } from './components/utils/footer/footer.component';
 import { NotFoundComponent } from './components/utils/not-found/not-found.component';
 import { LoginComponent } from './components/Auth/login/login.component';
 import { RegisterComponent } from './components/Auth/register/register.component';
+import { SidebarComponent } from './components/Admin/sidebar/sidebar.component';
+import { ProductManagementComponent } from './components/Admin/product-management/product-management.component';
+import { BrandManagementComponent } from './components/Admin/brand-management/brand-management.component';
+import { CategoryManagementComponent } from './components/Admin/category-management/category-management.component';
+import { AddProductComponent } from './components/Admin/add-product/add-product.component';
+import { AddCategoryComponent } from './components/Admin/add-category/add-category.component';
+import { AddBrandComponent } from './components/Admin/add-brand/add-brand.component';
+import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +43,14 @@ import { RegisterComponent } from './components/Auth/register/register.component
     NotFoundComponent,
     LoginComponent,
     RegisterComponent,
+    SidebarComponent,
+    ProductManagementComponent,
+    BrandManagementComponent,
+    CategoryManagementComponent,
+    AddProductComponent,
+    AddCategoryComponent,
+    AddBrandComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +68,8 @@ import { RegisterComponent } from './components/Auth/register/register.component
     CardModule,
     CarouselModule,
     PasswordModule,
+    SidebarModule,
+    PanelMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

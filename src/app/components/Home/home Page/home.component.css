@@ -34,11 +34,11 @@ header:hover::before {
 }
 .sec {
   height: 200px;
-  width: 750px;
+  max-width: 600px;
 }
 @media only screen and (min-width: 991px) {
   .sec {
-    width: 50%;
+    max-width: 50%;
   }
 }
 div {

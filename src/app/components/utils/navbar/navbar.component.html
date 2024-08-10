@@ -1,6 +1,11 @@
 <p-menubar
   [model]="items"
-  [ngStyle]="{ position: 'fixed', 'z-index': '5', width: '100%',top:'-5px'}"
+  [ngStyle]="{
+    position: 'fixed',
+    width: '100%',
+    top: '-5px',
+    'z-index': '5',
+  }"
 >
   <ng-template pTemplate="start">
     <a routerLink="/home">

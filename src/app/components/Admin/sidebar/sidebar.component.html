@@ -1,0 +1,25 @@
+<p-sidebar
+  [(visible)]="visibleSidebar"
+  [baseZIndex]="10000"
+  [fullScreen]="true"
+  [style]="{ width: sidebarWidth }"
+>
+  <div style="text-align: center; padding: 10px">
+    <img
+      src="../../../../assets/logo.ico"
+      alt="PrimeNG Logo"
+      style="width: 150px"
+    />
+  </div>
+  <p-panelMenu [model]="items"></p-panelMenu>
+</p-sidebar>
+
+<!-- Navigation Bar -->
+<nav style="display: flex;justify-content: center;">
+  <button
+    pButton
+    type="button"
+    icon="pi pi-list"
+    (click)="visibleSidebar = true"
+  ></button>
+</nav>
