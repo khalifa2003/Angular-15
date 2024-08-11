@@ -15,7 +15,16 @@ import { CarouselModule } from 'primeng/carousel';
 import { PasswordModule } from 'primeng/password';
 import { SidebarModule } from 'primeng/sidebar';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { RatingModule } from 'primeng/rating';
 
+// Modules
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './components/Home/landing/landing.component';
@@ -69,6 +78,14 @@ import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admi
     CarouselModule,
     PasswordModule,
     SidebarModule,
+    ToastModule,
+    ToolbarModule,
+    FileUploadModule,
+    TableModule,
+    DialogModule,
+    ConfirmDialogModule,
+    DropdownModule,
+    RatingModule,
     PanelMenuModule,
   ],
   providers: [],

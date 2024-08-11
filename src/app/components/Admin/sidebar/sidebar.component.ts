@@ -11,6 +11,11 @@ export class SidebarComponent {
   constructor(private router: Router) {}
   items: any[] = [
     {
+      label: 'Dashboard',
+      icon: 'pi pi-fw pi-search',
+      command: () => this.router.navigate(['admin']),
+    },
+    {
       label: 'Products',
       icon: 'pi pi-fw pi-book',
       items: [
@@ -116,11 +121,6 @@ export class SidebarComponent {
         },
       ],
     },
-
-    {
-      label: 'Discover',
-      icon: 'pi pi-fw pi-search',
-    },
   ];
 
   sidebarWidth: string = '250px';
@@ -133,7 +133,7 @@ export class SidebarComponent {
   }
   private updateSidebarWidth() {
     const width = window.innerWidth;
-    this.sidebarWidth = width > 991 ? '250px' : '100%';
+    this.sidebarWidth = width > 991 ? '400px' : '100%';
   }
 
   searchQuery: string = '';
