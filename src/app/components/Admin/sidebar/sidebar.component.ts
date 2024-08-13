@@ -20,11 +20,6 @@ export class SidebarComponent {
       icon: 'pi pi-fw pi-book',
       items: [
         {
-          label: 'Add',
-          icon: 'pi pi-fw pi-download',
-          command: () => this.router.navigate(['admin/product/add']),
-        },
-        {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',
           command: () => this.router.navigate(['admin/product/management']),
@@ -41,11 +36,6 @@ export class SidebarComponent {
       icon: 'pi pi-fw pi-book',
       items: [
         {
-          label: 'Add',
-          icon: 'pi pi-fw pi-download',
-          command: () => this.router.navigate(['admin/category/add']),
-        },
-        {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',
           command: () => this.router.navigate(['admin/category/management']),
@@ -61,11 +51,6 @@ export class SidebarComponent {
       label: 'Subcategories',
       icon: 'pi pi-fw pi-book',
       items: [
-        {
-          label: 'Add',
-          icon: 'pi pi-fw pi-download',
-          command: () => this.router.navigate(['admin/subcategories/add']),
-        },
         {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',
@@ -84,11 +69,6 @@ export class SidebarComponent {
       icon: 'pi pi-fw pi-book',
       items: [
         {
-          label: 'Add',
-          icon: 'pi pi-fw pi-download',
-          command: () => this.router.navigate(['admin/brand/add']),
-        },
-        {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',
           command: () => this.router.navigate(['admin/brand/management']),
@@ -104,11 +84,6 @@ export class SidebarComponent {
       label: 'Users',
       icon: 'pi pi-fw pi-book',
       items: [
-        {
-          label: 'Add',
-          icon: 'pi pi-fw pi-download',
-          command: () => this.router.navigate(['admin/user/add']),
-        },
         {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',

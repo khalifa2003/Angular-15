@@ -1,2 +1,183 @@
-<app-sidebar></app-sidebar>
-<p>brand-management works!</p>
+<div class="card">
+  <p-toolbar class="gap-2">
+    <app-sidebar></app-sidebar>
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="New"
+        icon="pi pi-plus"
+        class="p-button-success me-2"
+        (click)="openNew()"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="brands"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'country.name']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="brands"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="m-0">Manage brands</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search..."
+            (input)="onSearch($event)"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="ID" style="min-width: 15rem">
+          ID <p-sortIcon field="ID"></p-sortIcon>
+        </th>
+        <th pSortableColumn="name" style="min-width: 15rem">
+          Name <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th>Image</th>
+        <th pSortableColumn="price">
+          Description <p-sortIcon field="price"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-brand>
+      <tr>
+        <td>
+          {{ brand._id }}
+        </td>
+        <td>{{ brand.name }}</td>
+        <td>
+          <img
+            [src]="brand.image"
+            [alt]="brand.name"
+            width="100"
+            class="shadow-4"
+          />
+        </td>
+        <td>
+          {{ brand.description }}
+        </td>
+        <td>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success me-2"
+            (click)="openEdit(brand)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-warning"
+            (click)="deleteBrand(brand)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="d-flex align-items-center justify-content-between">
+        In total, there are {{ brands ? brands.length : 0 }} brands.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  [(visible)]="brandDialog"
+  [style]="{ width: '850px' }"
+  header="Brand Details"
+  [modal]="true"
+  class="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form class="form-inputs admin-height" [formGroup]="brandForm">
+      <div *ngIf="brandForm.value.image">
+        <img [src]="brandForm.value.image" width="25%" alt="" />
+      </div>
+      <div class="form-group">
+        <input
+          [ngClass]="{ 'is-invalid': f['name'].touched && f['name'].invalid }"
+          placeholder="Brand Name"
+          formControlName="name"
+          class="input"
+          type="text"
+          id="name"
+        />
+        <div
+          *ngIf="f['name'].touched && f['name'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="f['name'].errors?.['required']">Brand Name Required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <textarea
+          id="description"
+          placeholder="Brand Description"
+          formControlName="description"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <input
+          [ngClass]="{ 'is-invalid': f['image'].touched && f['image'].invalid }"
+          placeholder="Brand image Url"
+          formControlName="image"
+          class="input"
+          type="text"
+          id="image"
+        />
+        <div
+          *ngIf="f['image'].touched && f['image'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="f['image'].errors?.['required']">
+            Brand Image URL Required
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-2">
+        <button
+          [disabled]="brandForm.invalid"
+          class="btn btn-success mt-2"
+          type="submit"
+          (click)="submitEditBrand()"
+          *ngIf="brand.name"
+        >
+          Update
+        </button>
+        <button
+          (click)="submitAddBrand()"
+          [disabled]="brandForm.invalid"
+          class="btn btn-success mt-2"
+          type="submit"
+          *ngIf="!brand.name"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>
+<p-toast></p-toast>
+<div class="card">
+  <p-toast></p-toast>
+</div>

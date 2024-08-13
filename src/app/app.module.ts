@@ -23,7 +23,6 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
-
 // Modules
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,10 +37,9 @@ import { SidebarComponent } from './components/Admin/sidebar/sidebar.component';
 import { ProductManagementComponent } from './components/Admin/product-management/product-management.component';
 import { BrandManagementComponent } from './components/Admin/brand-management/brand-management.component';
 import { CategoryManagementComponent } from './components/Admin/category-management/category-management.component';
-import { AddProductComponent } from './components/Admin/add-product/add-product.component';
-import { AddCategoryComponent } from './components/Admin/add-category/add-category.component';
-import { AddBrandComponent } from './components/Admin/add-brand/add-brand.component';
 import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
+
+import { MessageService } from 'primeng/api';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,9 +54,6 @@ import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admi
     ProductManagementComponent,
     BrandManagementComponent,
     CategoryManagementComponent,
-    AddProductComponent,
-    AddCategoryComponent,
-    AddBrandComponent,
     AdminDashboardComponent,
   ],
   imports: [
@@ -88,7 +83,7 @@ import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admi
     RatingModule,
     PanelMenuModule,
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
