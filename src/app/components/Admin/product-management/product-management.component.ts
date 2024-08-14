@@ -74,9 +74,6 @@ export class ProductManagementComponent implements OnInit {
       this.subcategoryService
         .getSubcategories(this.productForm.value.category)
         .subscribe((res) => {
-          console.log(this.productForm.value.category);
-
-          console.log(res);
           this.subcategories = res;
         });
     }
@@ -85,6 +82,7 @@ export class ProductManagementComponent implements OnInit {
   getProducts() {
     this.productService.getAllProducts().subscribe((res) => {
       this.products = res;
+
     });
   }
 
@@ -137,7 +135,7 @@ export class ProductManagementComponent implements OnInit {
     }
   }
 
-  deleteProduct(product: any) {
+  deleteProduct(product: IProduct) {
     this.productService.deleteProduct(product._id).subscribe((res) => {
       this.getProducts();
       this.messageService.add({
@@ -150,10 +148,10 @@ export class ProductManagementComponent implements OnInit {
 
   submitAddProduct() {
     if (this.productForm.valid) {
-      this.categoryService
-        .createCategory(this.productForm.value)
+      this.productService
+        .createProduct(this.productForm.value)
         .subscribe((res) => {
-          this.getCategories();
+          this.getProducts();
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -161,16 +159,17 @@ export class ProductManagementComponent implements OnInit {
           });
           this.productDialog = false;
           this.productForm.reset();
+          this.subcategories = [];
         });
     }
   }
 
   submitEditProduct() {
     if (this.productForm.valid) {
-      this.categoryService
-        .editCategory(this.product._id, this.productForm.value)
+      this.productService
+        .updateProduct(this.product._id, this.productForm.value)
         .subscribe((res) => {
-          this.getCategories();
+          this.getProducts();
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -179,6 +178,7 @@ export class ProductManagementComponent implements OnInit {
           this.productDialog = false;
           this.productForm.reset();
           this.product = {} as IProduct;
+          this.subcategories = [];
         });
     }
   }

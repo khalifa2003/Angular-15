@@ -1,16 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from '../../../services/product.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { BrandService } from 'src/app/services/brand.service';
+import { IBrand } from 'src/app/Models/ibrand';
+import { ICategory } from 'src/app/Models/icategory';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   products: any;
-
   responsiveOptions: any[];
 
-  constructor() {
+  brands: IBrand[] = [];
+  categories: ICategory[] = [];
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private brandService: BrandService
+  ) {
     this.responsiveOptions = [
       {
         breakpoint: '1599px',
@@ -133,5 +143,20 @@ export class HomeComponent {
     ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getCategories();
+    this.getBrands();
+  }
+
+  getCategories() {
+    this.categoryService.getAllCategories().subscribe((res) => {
+      this.categories = res;
+    });
+  }
+
+  getBrands() {
+    this.brandService.getAllBrands().subscribe((res) => {
+      this.brands = res;
+    });
+  }
 }

@@ -156,15 +156,13 @@
 >
   <ng-template pTemplate="content">
     <form [formGroup]="productForm">
-      <div *ngIf="product.images">
-        <img
-          *ngFor="let image of product.images"
-          [src]="image"
-          [alt]="product.title"
-          class="product-image"
-          width="20%"
-        />
-      </div>
+      <img
+        *ngFor="let image of productForm.value.images"
+        [src]="image"
+        [alt]="product.title"
+        class="product-image"
+        width="20%"
+      />
 
       <div class="form-group">
         <input
@@ -300,7 +298,7 @@
               class="form-select"
               formControlName="category"
               aria-label="Default select example"
-              (click)="getSubcategories()"
+              (change)="getSubcategories()"
             >
               <option
                 value="{{ cat._id }}"
