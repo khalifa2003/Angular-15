@@ -97,7 +97,7 @@ export class CategoryManagementComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: `'${this.categoryForm.value.name}' removed Successfully`,
+        detail: `'${category.name}' removed Successfully`,
       });
     });
   }

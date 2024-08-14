@@ -8,6 +8,7 @@ import { CategoryManagementComponent } from './components/Admin/category-managem
 import { ProductManagementComponent } from './components/Admin/product-management/product-management.component';
 import { BrandManagementComponent } from './components/Admin/brand-management/brand-management.component';
 import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
+import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'admin/brand/management',
     component: BrandManagementComponent,
+  },
+  {
+    path: 'admin/subcategory/management',
+    component: SubcategoryMangementComponent,
   },
 
   { path: '**', component: NotFoundComponent }, // wild card path

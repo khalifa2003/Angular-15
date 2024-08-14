@@ -40,6 +40,7 @@ import { CategoryManagementComponent } from './components/Admin/category-managem
 import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
 
 import { MessageService } from 'primeng/api';
+import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +56,7 @@ import { MessageService } from 'primeng/api';
     BrandManagementComponent,
     CategoryManagementComponent,
     AdminDashboardComponent,
+    SubcategoryMangementComponent,
   ],
   imports: [
     BrowserModule,

@@ -55,7 +55,7 @@ export class SidebarComponent {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',
           command: () =>
-            this.router.navigate(['admin/subcategories/management']),
+            this.router.navigate(['admin/subcategory/management']),
         },
         {
           label: 'Accessibility',

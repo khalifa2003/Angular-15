@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="products.length > 0">
   <p-toolbar class="gap-2">
     <app-sidebar></app-sidebar>
     <ng-template pTemplate="left">
@@ -49,63 +49,76 @@
         </span>
       </div>
     </ng-template>
+
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 4rem">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th pSortableColumn="name" style="min-width: 15rem">
-          Name <p-sortIcon field="name"></p-sortIcon>
+        <th pSortableColumn="title" style="min-width: 15rem">
+          Title <p-sortIcon field="title"></p-sortIcon>
         </th>
-        <th>Image</th>
-        <th pSortableColumn="price">
+        <th pSortableColumn="description" style="max-width: 15rem">
+          Description <p-sortIcon field="description"></p-sortIcon>
+        </th>
+        <th>Images</th>
+        <th pSortableColumn="price" style="max-width: 7rem">
           Price <p-sortIcon field="price"></p-sortIcon>
         </th>
-        <th pSortableColumn="category" style="min-width: 10rem">
+        <th pSortableColumn="quantty" style="max-width: 7rem">
+          Quantity <p-sortIcon field="quantty"></p-sortIcon>
+        </th>
+        <th pSortableColumn="brand" style="max-width: 7rem">
+          Brand <p-sortIcon field="brand"></p-sortIcon>
+        </th>
+        <th pSortableColumn="category" style="max-width: 7rem">
           Category <p-sortIcon field="category"></p-sortIcon>
+        </th>
+        <th pSortableColumn="subcategory" style="max-width: 7rem">
+          Subcategory <p-sortIcon field="subcategory"></p-sortIcon>
         </th>
         <th pSortableColumn="rating">
           Reviews <p-sortIcon field="rating"></p-sortIcon>
         </th>
-        <th pSortableColumn="inventoryStatus" style="min-width: 10rem">
-          Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
-        </th>
         <th></th>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-product>
       <tr>
         <td>
           <p-tableCheckbox [value]="product"></p-tableCheckbox>
         </td>
-        <td>{{ product.name }}</td>
+        <td>
+          <p style="max-height: 10rem">
+            {{ product.title }}
+          </p>
+        </td>
+        <td style="overflow: hidden">
+          <p style="max-height: 10rem">
+            {{ product.description }}
+          </p>
+        </td>
         <td>
           <img
-            [src]="product.image"
-            [alt]="product.name"
-            width="100"
+            *ngFor="let image of product.images"
+            [src]="image"
+            [alt]="product.title"
+            width="50%"
             class="shadow-4"
           />
         </td>
-        <td>{{ product.price | currency : "USD" }}</td>
+        <td>{{ product.price | currency : "EGP" }}</td>
+        <td>{{ product.quantity }}</td>
+        <td>{{ product.brand }}</td>
         <td>{{ product.category }}</td>
+        <td>{{ product.subcategory }}</td>
         <td>
           <p-rating
-            [ngModel]="product.rating"
+            [ngModel]="product.ratings"
             [readonly]="true"
             [cancel]="false"
           ></p-rating>
-        </td>
-        <td>
-          <span
-            [class]="
-              'product-badge status-' +
-              (product.inventoryStatus
-                ? product.inventoryStatus.toLowerCase()
-                : '')
-            "
-            >{{ product.inventoryStatus }}</span
-          >
         </td>
         <td>
           <button
@@ -113,7 +126,7 @@
             pRipple
             icon="pi pi-pencil"
             class="p-button-rounded p-button-success me-2"
-            (click)="editProduct(product)"
+            (click)="openEdit(product)"
           ></button>
           <button
             pButton
@@ -125,6 +138,7 @@
         </td>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="summary">
       <div class="d-flex align-items-center justify-content-between">
         In total, there are {{ products ? products.length : 0 }} products.
@@ -141,96 +155,239 @@
   class="p-fluid"
 >
   <ng-template pTemplate="content">
-    <img
-      [src]="product.image"
-      [alt]="product.image"
-      class="product-image"
-      width="25%"
-      *ngIf="product.image"
-    />
+    <form [formGroup]="productForm">
+      <div *ngIf="product.images">
+        <img
+          *ngFor="let image of product.images"
+          [src]="image"
+          [alt]="product.title"
+          class="product-image"
+          width="20%"
+        />
+      </div>
 
-    <div class="mb-3">
-      <label for="title" class="form-label">title</label>
-      <input
-        type="text"
-        pInputText
-        id="title"
-        required
-        autofocus
-        class="form-control"
-        formControlName="title"
-      />
-      <div class="invalid-feedback" *ngIf="submitted && !product.name">
-        Name is required.
+      <div class="form-group">
+        <input
+          [ngClass]="{ 'is-invalid': f['title'].touched && f['title'].invalid }"
+          placeholder="Product title"
+          formControlName="title"
+          class="input"
+          type="text"
+          id="title"
+        />
+        <div
+          *ngIf="f['title'].touched && f['title'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="f['title'].errors?.['required']">
+            Product title Required
+          </div>
+          <div *ngIf="f['title'].errors?.['minlength']">
+            Too Short Product Title
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea
-        id="description"
-        pInputTextarea
-        [(ngModel)]="product.description"
-        required
-        rows="3"
-        cols="20"
-        class="form-control"
-        formControlName="description"
-      ></textarea>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <label for="price" class="form-label">Price</label>
-        <p-inputNumber
-          inputId="price"
-          formControlName="price"
-          mode="currency"
-          currency="USD"
-          locale="en-US"
-          class="form-control"
-        ></p-inputNumber>
-      </div>
-      <div class="col-6 mb-3">
-        <label for="quantity" class="form-label">Quantity</label>
-        <p-inputNumber
-          inputId="quantity"
-          formControlName="quantity"
-          class="form-control"
-        ></p-inputNumber>
-      </div>
-    </div>
 
-    <div class="mb-3">
-      <label for="category" class="form-label">Category</label>
-      <p-dropdown
-        [options]="categories"
-        [(ngModel)]="selectedCategory"
-        optionLabel="name"
-        class="form-select"
-        formControlName="category"
+      <div class="form-group">
+        <textarea
+          [ngClass]="{
+            'is-invalid': f['description'].touched && f['description'].invalid
+          }"
+          placeholder="Product description"
+          formControlName="description"
+          class="input"
+          id="description"
+        ></textarea>
+        <div
+          *ngIf="f['description'].touched && f['description'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="f['description'].errors?.['required']">
+            Product description Required
+          </div>
+          <div *ngIf="f['description'].errors?.['minlength']">
+            Too Short Product description
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': f['price'].touched && f['price'].invalid
+            }"
+            placeholder="Product Price"
+            formControlName="price"
+            class="input"
+            type="number"
+            id="price"
+          />
+          <div
+            *ngIf="f['price'].touched && f['price'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['price'].errors?.['required']">
+              Product Price Required
+            </div>
+            <div *ngIf="f['price'].errors?.['max']">Fake Price</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': f['quantity'].touched && f['quantity'].invalid
+            }"
+            placeholder="Product quantity"
+            formControlName="quantity"
+            class="input"
+            type="number"
+            id="quantity"
+            required
+          />
+          <div
+            *ngIf="f['quantity'].touched && f['quantity'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['quantity'].errors?.['required']">
+              Product quantity Required
+            </div>
+            <div *ngIf="f['quantity'].errors?.['max']">Too Much quantity</div>
+            <div *ngIf="f['quantity'].errors?.['min']">Too Short quantity</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="brands.length > 0">
+        <div class="radio-input">
+          <div class="info w-100">
+            <span class="question">Select Brand</span>
+            <span class="steps">{{ brands.length }}</span>
+          </div>
+          <div class="w-100">
+            <select
+              [ngClass]="{
+                'is-invalid': f['brand'].touched && f['brand'].invalid
+              }"
+              class="form-select"
+              formControlName="brand"
+              aria-label="Default select example"
+            >
+              <option
+                value="{{ brand._id }}"
+                id="{{ brand._id }}"
+                *ngFor="let brand of brands"
+              >
+                {{ brand.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="categories.length > 0">
+        <div class="radio-input">
+          <div class="info w-100">
+            <span class="question">Select Category</span>
+            <span class="steps">{{ categories.length }}</span>
+          </div>
+          <div class="w-100">
+            <select
+              [ngClass]="{
+                'is-invalid': f['category'].touched && f['category'].invalid
+              }"
+              class="form-select"
+              formControlName="category"
+              aria-label="Default select example"
+              (click)="getSubcategories()"
+            >
+              <option
+                value="{{ cat._id }}"
+                id="{{ cat._id }}"
+                *ngFor="let cat of categories"
+              >
+                {{ cat.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="subcategories.length > 0">
+        <div class="radio-input">
+          <div class="info w-100">
+            <span class="question">Select SubCategory</span>
+            <span class="steps">{{ subcategories.length }}</span>
+          </div>
+          <div class="w-100">
+            <select
+              [ngClass]="{
+                'is-invalid':
+                  f['subcategory'].touched && f['subcategory'].invalid
+              }"
+              class="form-select"
+              formControlName="subcategory"
+              aria-label="Default select example"
+            >
+              <option
+                *ngFor="let sub of subcategories"
+                value="{{ sub._id }}"
+                id="{{ sub._id }}"
+              >
+                {{ sub.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="form-group d-flex gap-2"
+        formArrayName="images"
+        *ngFor="let image of allImages.controls; let i = index"
       >
-        <ng-template let-option pTemplate="item">
-          {{ option.label }}
-        </ng-template>
-      </p-dropdown>
-    </div>
-  </ng-template>
+        <input
+          type="text"
+          [formControlName]="i"
+          class="form-control my-1"
+          id="{{ 'userImage-' + i }}"
+          name="userImage"
+          placeholder="Image Link"
+        />
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="addImage($event)"
+        >
+          +
+        </button>
+      </div>
 
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      pRipple
-      label="Cancel"
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="hideDialog()"
-    ></button>
-    <button
-      pButton
-      pRipple
-      label="Save"
-      icon="pi pi-check"
-      class="p-button-text"
-      (click)="saveProduct()"
-    ></button>
+      <div class="d-flex justify-content-center mt-2">
+        <button
+          [disabled]="productForm.invalid"
+          class="btn btn-success mt-2"
+          type="submit"
+          (click)="submitEditProduct()"
+          *ngIf="product.title"
+        >
+          Update
+        </button>
+        <button
+          (click)="submitAddProduct()"
+          [disabled]="productForm.invalid"
+          class="btn btn-success mt-2"
+          type="submit"
+          *ngIf="!product.title"
+        >
+          Create
+        </button>
+      </div>
+    </form>
   </ng-template>
 </p-dialog>
+
+<div class="card">
+  <p-toast></p-toast>
+</div>

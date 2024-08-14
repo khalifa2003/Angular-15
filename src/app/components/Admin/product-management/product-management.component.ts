@@ -1,24 +1,41 @@
-import { Component } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { IBrand } from 'src/app/Models/ibrand';
+import { ICategory } from 'src/app/Models/icategory';
+import { IProduct } from 'src/app/Models/iproduct';
+import { CategoryService } from 'src/app/services/category.service';
+import { BrandService } from '../../../services/brand.service';
+import { SubcategoryService } from '../../../services/subcategory.service';
+import { ISubcategory } from 'src/app/Models/isubcategory';
+import { ProductService } from 'src/app/services/product.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-product-management',
   templateUrl: './product-management.component.html',
   styleUrls: ['./product-management.component.css'],
 })
-export class ProductManagementComponent {
-  productDialog: boolean = true;
-  products: any[] = [];
-  product: any;
-  selectedProducts: any[] = [];
-  submitted: boolean = false;
-  statuses: any[] = [];
-  categories: any[];
-  selectedCategory: any;
-
+export class ProductManagementComponent implements OnInit {
+  productDialog: boolean = false;
+  product: IProduct = {} as IProduct;
   productForm: FormGroup;
-  constructor(private fb: FormBuilder) {
-    this.productForm = this.fb.group<any>({
+  selectedProducts: IProduct[] = [];
+
+  subcategories: ISubcategory[] = [];
+  categories: ICategory[] = [];
+  products: IProduct[] = [];
+  brands: IBrand[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private subcategoryService: SubcategoryService,
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private messageService: MessageService,
+    private brandService: BrandService
+  ) {
+    this.productForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(50)]],
       price: ['', [Validators.required, Validators.max(2000000)]],
@@ -26,355 +43,159 @@ export class ProductManagementComponent {
         '',
         [Validators.required, Validators.max(1000), Validators.min(5)],
       ],
-      images: fb.array<any>(['']),
+      images: fb.array(['']),
       category: ['', Validators.required],
       brand: ['', Validators.required],
       subcategory: ['', Validators.required],
     });
-    this.categories = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' },
-    ];
-    this.products = [
-      {
-        id: '1',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '2',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '3',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '4',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '5',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '6',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '7',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '8',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '9',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '10',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '11',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '12',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '13',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '14',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '15',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '16',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '17',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '18',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '19',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '20',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '21',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '22',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '23',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '24',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '25',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '26',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '27',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: '28',
-        name: 'Blue Band',
-        image: '../../../../assets/laptops2.png',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK',
-      },
-      {
-        id: '29',
-        name: 'Bamboo Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: '30',
-        name: 'Black Watch',
-        image: '../../../../assets/laptops2.png',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK',
-      },
-    ];
-    this.statuses = [
-      { label: 'INSTOCK', value: 'INSTOCK' },
-      { label: 'LOWSTOCK', value: 'LOWSTOCK' },
-      { label: 'OUTOFSTOCK', value: 'OUTOFSTOCK' },
-    ];
   }
+
+  ngOnInit() {
+    this.getProducts();
+    this.getCategories();
+    this.getBrands();
+    this.getSubcategories();
+  }
+
+  getCategories() {
+    this.categoryService.getAllCategories().subscribe((res) => {
+      this.categories = res;
+    });
+  }
+
+  getBrands() {
+    this.brandService.getAllBrands().subscribe((res) => {
+      this.brands = res;
+    });
+  }
+
+  getSubcategories() {
+    if (this.productForm.value.category != '') {
+      this.subcategoryService
+        .getSubcategories(this.productForm.value.category)
+        .subscribe((res) => {
+          console.log(this.productForm.value.category);
+
+          console.log(res);
+          this.subcategories = res;
+        });
+    }
+  }
+
+  getProducts() {
+    this.productService.getAllProducts().subscribe((res) => {
+      this.products = res;
+    });
+  }
+
   get f() {
     return this.productForm.controls;
   }
-  ngOnInit() {}
+
   openNew() {
-    this.product = {};
-    this.submitted = false;
+    this.product = {} as IProduct;
+    this.productForm.reset();
     this.productDialog = true;
   }
+
+  openEdit(product: IProduct) {
+    this.product = product;
+    this.productForm = this.fb.group({
+      title: [product.title, [Validators.required, Validators.minLength(3)]],
+      description: [
+        product.description,
+        [Validators.required, Validators.minLength(50)],
+      ],
+      price: [product.price, [Validators.required, Validators.max(2000000)]],
+      quantity: [
+        product.quantity,
+        [Validators.required, Validators.max(1000), Validators.min(5)],
+      ],
+      images: this.fb.array(product.images),
+      category: [product.category, Validators.required],
+      brand: [product.brand, Validators.required],
+      subcategory: [product.subcategory, Validators.required],
+    });
+
+    this.productDialog = true;
+  }
+
   deleteSelectedProducts() {
     if (this.selectedProducts && this.selectedProducts.length > 0) {
-      this.products = this.products.filter(
-        (val) => !this.selectedProducts.includes(val)
-      );
-      alert('Products Deleted Successfully');
+      this.products = this.products.filter((product) => {
+        if (this.selectedProducts.includes(product)) {
+          this.productService.deleteProduct(product._id).subscribe((res) => {
+            this.getProducts();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: `'${product.title}' removed Successfully`,
+            });
+          });
+        }
+      });
     }
   }
-  editProduct(product: any) {
-    console.log(product);
 
-    this.product = { ...product };
-    this.productDialog = true;
-  }
   deleteProduct(product: any) {
-    this.products = this.products.filter((val) => val.id !== product.id);
-    this.product = {};
-    alert('Product Deleted Successfully');
+    this.productService.deleteProduct(product._id).subscribe((res) => {
+      this.getProducts();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: `'${product.title}' removed Successfully`,
+      });
+    });
   }
-  hideDialog() {
-    this.productDialog = false;
-    this.submitted = false;
-  }
-  saveProduct() {
-    this.submitted = true;
-    if (this.product.name.trim()) {
-      if (this.product.id) {
-        this.products[this.findIndexById(this.product.id)] = this.product;
-        alert('Product Updated Successfully');
-      } else {
-        this.product.id = this.createId();
-        this.product.image = 'product-placeholder.svg';
-        this.products.push(this.product);
-        alert('Product Created Successfully');
-      }
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {};
+
+  submitAddProduct() {
+    if (this.productForm.valid) {
+      this.categoryService
+        .createCategory(this.productForm.value)
+        .subscribe((res) => {
+          this.getCategories();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `${this.productForm.value.name} added Successfully`,
+          });
+          this.productDialog = false;
+          this.productForm.reset();
+        });
     }
   }
-  findIndexById(id: string): number {
-    return this.products.findIndex((product) => product.id === id);
-  }
-  createId(): string {
-    let id = '';
-    const chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
+
+  submitEditProduct() {
+    if (this.productForm.valid) {
+      this.categoryService
+        .editCategory(this.product._id, this.productForm.value)
+        .subscribe((res) => {
+          this.getCategories();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `'${this.productForm.value.name}' edited Successfully`,
+          });
+          this.productDialog = false;
+          this.productForm.reset();
+          this.product = {} as IProduct;
+        });
     }
-    return id;
+  }
+
+  @ViewChild('dt') dt: Table = {} as Table;
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement?.value || '';
+    this.dt.filterGlobal(value, 'contains');
+  }
+
+  get allImages() {
+    return this.productForm.get('images') as FormArray;
+  }
+
+  addImage(event: any) {
+    this.allImages.push(this.fb.control(''));
+    event.target?.classList.add('d-none');
   }
 }
