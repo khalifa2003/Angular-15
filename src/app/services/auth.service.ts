@@ -65,4 +65,9 @@ export class AuthService {
     const roles = this.currentUserValue?.user?.roles || [];
     return roles.includes('admin') || roles.includes('manager');
   }
+
+  get isUserLogged(): boolean {
+    console.log(localStorage.getItem('user'));
+    return this.currentUserValue.data?.fname ? true : false;
+  }
 }

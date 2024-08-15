@@ -9,6 +9,8 @@ import { ProductManagementComponent } from './components/Admin/product-managemen
 import { BrandManagementComponent } from './components/Admin/brand-management/brand-management.component';
 import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
 import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
+import { ProductPageComponent } from './components/Product/product-page/product-page.component';
+import { SearchPageComponent } from './components/Product/search-page/search-page.component';
 
 const routes: Routes = [
   {
@@ -19,8 +21,8 @@ const routes: Routes = [
     ],
   }, // Default path
   { path: 'home', component: HomeComponent },
-  // { path: 'products', component: AllProductPageComponent },
-  // { path: 'products/:id', component: ProductPageComponent },
+  { path: 'product', component: SearchPageComponent },
+  { path: 'product/:id', component: ProductPageComponent },
   // { path: 'brands', component: BrandPageComponent },
   // { path: 'categories', component: CategoryPageComponent },
 

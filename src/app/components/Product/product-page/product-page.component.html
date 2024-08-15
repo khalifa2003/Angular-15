@@ -1,0 +1,98 @@
+<div class="product-page row" *ngIf="product.images">
+  <div class="col-xl-6 col-sm-12 col-md-12">
+    <p-galleria
+      [value]="product.images"
+      [responsiveOptions]="responsiveOptions"
+      [containerStyle]="{
+        width: '90%',
+      }"
+      [numVisible]="5"
+      [ngStyle]="{ display: 'flex', 'justify-content': 'center' }"
+    >
+      <ng-template pTemplate="item" let-item>
+        <img [src]="item" style="width: 100%" />
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div class="grid grid-nogutter d-flex justify-content-center">
+          <img [src]="item" style="height: 70px" />
+        </div>
+      </ng-template>
+    </p-galleria>
+  </div>
+  <div class="col-xl-6 col-sm-12 col-md-12 d-flex align-items-center">
+    <div class="product-details">
+      <p class="product-brand">
+        Category: {{ product.category.name + " / " + product.subcategory.name }}
+      </p>
+      <h1 class="product-title">{{ product.title }}</h1>
+      <p-rating
+        [ngModel]="product.ratingsAverage"
+        [readonly]="true"
+        [stars]="5"
+        [cancel]="false"
+      ></p-rating>
+
+      <p class="product-price">{{ product.price }} EGP</p>
+      <p class="product-brand">
+        Brand: <img src="{{ product.brand.image }}" alt="" />
+      </p>
+      <p class="product-description">Descriptopn: {{ product.description }}</p>
+      <p *ngIf="product.quantity > 2" class="in-stock">
+        <i class="bi bi-circle-fill"></i> In Stock
+      </p>
+      <p *ngIf="product.quantity == 0" class="out-stock">
+        <i class="bi bi-circle-fill"></i> Out Of Stock
+      </p>
+      <p
+        *ngIf="product.quantity > 0 && product.quantity < 10"
+        class="out-stock"
+      >
+        <i class="bi bi-circle-fill"></i> Low Stock
+      </p>
+      <button class="add-to-cart-btn" (click)="addToCart()">Add to Cart</button>
+      <button class="view-details-btn">Buy</button>
+    </div>
+  </div>
+</div>
+<div class="row review-section" *ngIf="product._id">
+  <div class="col-6">
+    <h3>Write a Review</h3>
+    <form (ngSubmit)="addReview()" [formGroup]="reviewForm" class="review-form">
+      <label for="rating">Rating:</label>
+      <p-rating formControlName="score" [cancel]="false"></p-rating>
+      <label for="comment">Comment:</label>
+      <textarea
+        formControlName="title"
+        id="comment"
+        name="comment"
+        required
+      ></textarea>
+      <button type="submit" [disabled]="reviewForm.invalid">
+        Submit Review
+      </button>
+    </form>
+  </div>
+  <div class="col-6">
+    <h2>Customer Reviews</h2>
+    <div *ngFor="let review of reviewsList" class="review">
+      <p>
+        <strong>{{ review.user.fname + " " + review.user.lname }}</strong>
+      </p>
+      <p-rating
+        [(ngModel)]="review.ratings"
+        [cancel]="false"
+        [readonly]="true"
+      ></p-rating>
+      <p>{{ review.title }}</p>
+      <div *ngIf="user">
+        <button
+          class="btn btn-danger"
+          *ngIf="review.user._id === user._id"
+          (click)="deleteReview(review._id)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

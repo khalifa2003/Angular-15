@@ -27,12 +27,7 @@
     [value]="products"
     [rows]="10"
     [paginator]="true"
-    [globalFilterFields]="[
-      'name',
-      'country.name',
-      'representative.name',
-      'status'
-    ]"
+    [globalFilterFields]="['title', 'description']"
     [tableStyle]="{ 'min-width': '75rem' }"
     [(selection)]="selectedProducts"
     [rowHover]="true"
@@ -45,7 +40,12 @@
         <h5 class="m-0">Manage Products</h5>
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
-          <input pInputText type="text" placeholder="Search..." />
+          <input
+            pInputText
+            type="text"
+            placeholder="Search..."
+            (input)="onSearch($event)"
+          />
         </span>
       </div>
     </ng-template>
@@ -55,8 +55,8 @@
         <th style="width: 2rem">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th pSortableColumn="title" style="min-width: 10rem">
-          Title <p-sortIcon field="title"></p-sortIcon>
+        <th pSortableColumn="name" style="min-width: 10rem">
+          Title <p-sortIcon field="name"></p-sortIcon>
         </th>
         <th pSortableColumn="description" style="max-width: 10rem">
           Description <p-sortIcon field="description"></p-sortIcon>

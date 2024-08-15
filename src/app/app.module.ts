@@ -23,6 +23,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
+import { MessageService } from 'primeng/api';
 // Modules
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,9 +39,10 @@ import { ProductManagementComponent } from './components/Admin/product-managemen
 import { BrandManagementComponent } from './components/Admin/brand-management/brand-management.component';
 import { CategoryManagementComponent } from './components/Admin/category-management/category-management.component';
 import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admin-dashboard.component';
-
-import { MessageService } from 'primeng/api';
 import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
+import { ProductPageComponent } from './components/Product/product-page/product-page.component';
+import { SearchPageComponent } from './components/Product/search-page/search-page.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +59,8 @@ import { SubcategoryMangementComponent } from './components/Admin/subcategory-ma
     CategoryManagementComponent,
     AdminDashboardComponent,
     SubcategoryMangementComponent,
+    ProductPageComponent,
+    SearchPageComponent,
   ],
   imports: [
     BrowserModule,

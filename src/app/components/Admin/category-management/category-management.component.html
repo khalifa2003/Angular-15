@@ -18,7 +18,7 @@
     [value]="categories"
     [rows]="10"
     [paginator]="true"
-    [globalFilterFields]="['name', 'country.name']"
+    [globalFilterFields]="['name', 'category.name']"
     [tableStyle]="{ 'min-width': '75rem' }"
     [(selection)]="categories"
     [rowHover]="true"
@@ -92,6 +92,7 @@
         </td>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="summary">
       <div class="d-flex align-items-center justify-content-between">
         In total, there are {{ categories ? categories.length : 0 }} categorys.

@@ -9,10 +9,9 @@ export interface IProduct {
   description: string;
   quantity: number;
   price: number;
-  subcategory: string;
+  subcategory: ISubcategory;
   images: string[];
   category: ICategory;
-  subcategories?: ISubcategory;
   brand: IBrand;
   averageRating?: number;
   reviewCounts?: number;

@@ -6,6 +6,7 @@ header {
   font-weight: 700;
   position: relative;
   transition: 0.5s;
+  margin: 20px 0 0;
 }
 header:hover {
   color: rgb(0, 0, 0);
@@ -53,4 +54,20 @@ div {
 .category-image:hover {
   background-color: #eee;
   transition: 0.5s;
+}
+.my-container {
+  margin: 0 40px;
+}
+@media only screen and (max-width: 1200px) {
+  .my-container {
+    margin: 0 5px;
+  }
+}
+.product-title {
+  max-height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.product-title:hover {
+  color: #555;
 }

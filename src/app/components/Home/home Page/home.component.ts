@@ -4,6 +4,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { BrandService } from 'src/app/services/brand.service';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
+import { IProduct } from 'src/app/Models/iproduct';
 
 @Component({
   selector: 'app-home',
@@ -11,11 +12,18 @@ import { ICategory } from 'src/app/Models/icategory';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  products: any;
   responsiveOptions: any[];
 
-  brands: IBrand[] = [];
+  ids: { id: string; name: string; products: IProduct[] }[] = [
+    { id: '665b9e7eee20a57f1c86a3df', name: 'NOTEBOOK', products: [] },
+    { id: '665b9e66ee20a57f1c86a3dd', name: 'DESKTOP', products: [] },
+    { id: '665b9e9cee20a57f1c86a3e1', name: 'STORAGE', products: [] },
+    { id: '665b9ebaee20a57f1c86a3e3', name: 'MONITOR', products: [] },
+    { id: '665b9ee3ee20a57f1c86a3e7', name: 'ACCESSORIES', products: [] },
+  ];
+
   categories: ICategory[] = [];
+  brands: IBrand[] = [];
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
@@ -24,7 +32,7 @@ export class HomeComponent implements OnInit {
     this.responsiveOptions = [
       {
         breakpoint: '1599px',
-        numVisible: 5,
+        numVisible: 6,
         numScroll: 2,
       },
       {
@@ -43,108 +51,11 @@ export class HomeComponent implements OnInit {
         numScroll: 1,
       },
     ];
-    this.products = [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'LOWSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'OUTOFSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'LOWSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5,
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'OUTOFSTOCK',
-        rating: 5,
-      },
-    ];
   }
 
   ngOnInit() {
     this.getCategories();
+    this.getProducts();
     this.getBrands();
   }
 
@@ -158,5 +69,16 @@ export class HomeComponent implements OnInit {
     this.brandService.getAllBrands().subscribe((res) => {
       this.brands = res;
     });
+  }
+
+  async getProducts() {
+    await this.ids.map((id) => {
+      this.productService
+        .searchProducts({ category: id.id })
+        .subscribe((res) => {
+          id.products = res;
+        });
+    });
+    for (let i = 0; i < this.ids.length; i++) {}
   }
 }
