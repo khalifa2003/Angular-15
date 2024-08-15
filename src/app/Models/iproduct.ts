@@ -1,3 +1,7 @@
+import { IBrand } from './ibrand';
+import { ICategory } from './icategory';
+import { ISubcategory } from './isubcategory';
+
 export interface IProduct {
   _id: string;
   title: string;
@@ -7,9 +11,9 @@ export interface IProduct {
   price: number;
   subcategory: string;
   images: string[];
-  category: string;
-  subcategories?: string;
-  brand: string;
+  category: ICategory;
+  subcategories?: ISubcategory;
+  brand: IBrand;
   averageRating?: number;
   reviewCounts?: number;
   ratingsAverage: number;

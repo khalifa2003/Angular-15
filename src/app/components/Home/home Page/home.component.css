@@ -45,3 +45,12 @@ div {
   margin: 0;
   padding: 0;
 }
+.category-image {
+  max-height: 190px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.category-image:hover {
+  background-color: #eee;
+  transition: 0.5s;
+}

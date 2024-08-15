@@ -2,22 +2,20 @@
 <div class="row">
   <header>Shop by Categories</header>
   <p-carousel
-    [value]="products"
-    [numVisible]="5"
+    [value]="categories"
+    [numVisible]="6"
     [numScroll]="3"
-    [circular]="true"
     [responsiveOptions]="responsiveOptions"
     [ngStyle]="{ margin: '0', padding: '0' }"
+    [showIndicators]="false"
   >
-    <ng-template let-product pTemplate="item">
+    <ng-template let-category pTemplate="item">
       <div class="border-round text-center py-3">
         <div>
           <img
-            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-              product.image
-            }}"
-            [alt]="product.name"
-            class="w-6 shadow-2"
+            [src]="category.image"
+            [alt]="category.name"
+            class="category-image"
           />
         </div>
       </div>
@@ -32,6 +30,7 @@
     [numScroll]="3"
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
+    [showIndicators]="false"
   >
     <ng-template let-product pTemplate="item">
       <div class="border-round text-center py-3">
@@ -72,6 +71,7 @@
     [numScroll]="3"
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
+    [showIndicators]="false"
   >
     <ng-template let-product pTemplate="item">
       <div class="border-round text-center py-3">
@@ -118,6 +118,7 @@
         [numScroll]="3"
         [circular]="true"
         [responsiveOptions]="responsiveOptions"
+        [showIndicators]="false"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center py-3">
@@ -162,6 +163,7 @@
         [numScroll]="3"
         [circular]="true"
         [responsiveOptions]="responsiveOptions"
+        [showIndicators]="false"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center py-3">
@@ -206,6 +208,7 @@
         [numScroll]="3"
         [circular]="true"
         [responsiveOptions]="responsiveOptions"
+        [showIndicators]="false"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center py-3">
@@ -246,6 +249,7 @@
         [numScroll]="3"
         [circular]="true"
         [responsiveOptions]="responsiveOptions"
+        [showIndicators]="false"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center py-3">
@@ -286,6 +290,7 @@
         [numScroll]="3"
         [circular]="true"
         [responsiveOptions]="responsiveOptions"
+        [showIndicators]="false"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center py-3">
@@ -326,6 +331,7 @@
         [numScroll]="3"
         [circular]="true"
         [responsiveOptions]="responsiveOptions"
+        [showIndicators]="false"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center py-3 px-2">
@@ -370,22 +376,17 @@
 <div class="row">
   <header>Shop by Brands</header>
   <p-carousel
-    [value]="products"
-    [numVisible]="5"
+    [value]="brands"
+    [numVisible]="6"
     [numScroll]="3"
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
+    [showIndicators]="false"
   >
-    <ng-template let-product pTemplate="item">
+    <ng-template let-brand pTemplate="item">
       <div class="border-round text-center py-3 px-2">
         <div>
-          <img
-            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-              product.image
-            }}"
-            [alt]="product.name"
-            class="w-6 shadow-2"
-          />
+          <img [src]="brand.image" [alt]="brand.name" class="category-image" />
         </div>
       </div>
     </ng-template>

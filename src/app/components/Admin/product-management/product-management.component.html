@@ -52,30 +52,30 @@
 
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 4rem">
+        <th style="width: 2rem">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th pSortableColumn="title" style="min-width: 15rem">
+        <th pSortableColumn="title" style="min-width: 10rem">
           Title <p-sortIcon field="title"></p-sortIcon>
         </th>
-        <th pSortableColumn="description" style="max-width: 15rem">
+        <th pSortableColumn="description" style="max-width: 10rem">
           Description <p-sortIcon field="description"></p-sortIcon>
         </th>
         <th>Images</th>
-        <th pSortableColumn="price" style="max-width: 7rem">
+        <th pSortableColumn="price" style="max-width: 10rem">
           Price <p-sortIcon field="price"></p-sortIcon>
         </th>
-        <th pSortableColumn="quantty" style="max-width: 7rem">
-          Quantity <p-sortIcon field="quantty"></p-sortIcon>
+        <th pSortableColumn="quantity" style="max-width: 10rem">
+          Quantity <p-sortIcon field="quantity"></p-sortIcon>
         </th>
-        <th pSortableColumn="brand" style="max-width: 7rem">
-          Brand <p-sortIcon field="brand"></p-sortIcon>
+        <th pSortableColumn="brand.name" style="max-width: 7rem">
+          Brand <p-sortIcon field="brand.name"></p-sortIcon>
         </th>
-        <th pSortableColumn="category" style="max-width: 7rem">
-          Category <p-sortIcon field="category"></p-sortIcon>
+        <th pSortableColumn="category.name" style="max-width: 7rem">
+          Category <p-sortIcon field="category.name"></p-sortIcon>
         </th>
-        <th pSortableColumn="subcategory" style="max-width: 7rem">
-          Subcategory <p-sortIcon field="subcategory"></p-sortIcon>
+        <th pSortableColumn="subcategory.name" style="max-width: 7rem">
+          Subcategory <p-sortIcon field="subcategory.name"></p-sortIcon>
         </th>
         <th pSortableColumn="rating">
           Reviews <p-sortIcon field="rating"></p-sortIcon>
@@ -95,9 +95,7 @@
           </p>
         </td>
         <td style="overflow: hidden">
-          <p style="max-height: 10rem">
-            {{ product.description }}
-          </p>
+          {{ product.description }}
         </td>
         <td>
           <img
@@ -108,11 +106,17 @@
             class="shadow-4"
           />
         </td>
-        <td>{{ product.price | currency : "EGP" }}</td>
+        <td>{{ product.price }} EGP</td>
         <td>{{ product.quantity }}</td>
-        <td>{{ product.brand }}</td>
-        <td>{{ product.category }}</td>
-        <td>{{ product.subcategory }}</td>
+        <td>
+          <img [src]="product.brand.image" width="100%" alt="" />
+        </td>
+        <td>
+          <img [src]="product.category.image" width="100%" alt="" />
+        </td>
+        <td>
+          {{ product.subcategory.name }}
+        </td>
         <td>
           <p-rating
             [ngModel]="product.ratings"
@@ -328,6 +332,7 @@
               formControlName="subcategory"
               aria-label="Default select example"
             >
+              <option value="">Select Subcategory</option>
               <option
                 *ngFor="let sub of subcategories"
                 value="{{ sub._id }}"

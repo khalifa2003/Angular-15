@@ -45,7 +45,7 @@ export class SubcategoryMangementComponent {
     this.subcategory = subcategory;
     this.subcategoryForm = this.fb.group({
       name: [subcategory.name, Validators.required],
-      category: [subcategory.category, Validators.required],
+      category: [subcategory.category._id, Validators.required],
     });
 
     this.subcategoryDialog = true;

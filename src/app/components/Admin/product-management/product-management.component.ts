@@ -41,7 +41,7 @@ export class ProductManagementComponent implements OnInit {
       price: ['', [Validators.required, Validators.max(2000000)]],
       quantity: [
         '',
-        [Validators.required, Validators.max(1000), Validators.min(5)],
+        [Validators.required, Validators.max(1000), Validators.min(0)],
       ],
       images: fb.array(['']),
       category: ['', Validators.required],
@@ -82,7 +82,6 @@ export class ProductManagementComponent implements OnInit {
   getProducts() {
     this.productService.getAllProducts().subscribe((res) => {
       this.products = res;
-
     });
   }
 
@@ -110,8 +109,8 @@ export class ProductManagementComponent implements OnInit {
         [Validators.required, Validators.max(1000), Validators.min(5)],
       ],
       images: this.fb.array(product.images),
-      category: [product.category, Validators.required],
-      brand: [product.brand, Validators.required],
+      category: [product.category._id, Validators.required],
+      brand: [product.brand._id, Validators.required],
       subcategory: [product.subcategory, Validators.required],
     });
 
