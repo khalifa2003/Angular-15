@@ -47,6 +47,7 @@ export class ProductManagementComponent implements OnInit {
       category: ['', Validators.required],
       brand: ['', Validators.required],
       subcategory: ['', Validators.required],
+      discount: [100],
     });
   }
 
@@ -54,7 +55,6 @@ export class ProductManagementComponent implements OnInit {
     this.getProducts();
     this.getCategories();
     this.getBrands();
-    this.getSubcategories();
   }
 
   getCategories() {
@@ -69,13 +69,11 @@ export class ProductManagementComponent implements OnInit {
     });
   }
 
-  getSubcategories() {
+  getSubcategories(category: string) {
     if (this.productForm.value.category != '') {
-      this.subcategoryService
-        .getSubcategories(this.productForm.value.category)
-        .subscribe((res) => {
-          this.subcategories = res;
-        });
+      this.subcategoryService.getSubcategories(category).subscribe((res) => {
+        this.subcategories = res;
+      });
     }
   }
 
@@ -95,26 +93,39 @@ export class ProductManagementComponent implements OnInit {
     this.productDialog = true;
   }
 
-  openEdit(product: IProduct) {
-    this.product = product;
-    this.productForm = this.fb.group({
-      title: [product.title, [Validators.required, Validators.minLength(3)]],
-      description: [
-        product.description,
-        [Validators.required, Validators.minLength(50)],
-      ],
-      price: [product.price, [Validators.required, Validators.max(2000000)]],
-      quantity: [
-        product.quantity,
-        [Validators.required, Validators.max(1000), Validators.min(5)],
-      ],
-      images: this.fb.array(product.images),
-      category: [product.category._id, Validators.required],
-      brand: [product.brand._id, Validators.required],
-      subcategory: [product.subcategory, Validators.required],
-    });
+  async openEdit(product: IProduct) {
+    this.subcategoryService
+      .getSubcategories(product.category._id)
+      .subscribe((res) => {
+        this.subcategories = res;
 
-    this.productDialog = true;
+        this.product = product;
+        this.productForm = this.fb.group({
+          title: [
+            product.title,
+            [Validators.required, Validators.minLength(3)],
+          ],
+          description: [
+            product.description,
+            [Validators.required, Validators.minLength(50)],
+          ],
+          price: [
+            product.price,
+            [Validators.required, Validators.max(2000000)],
+          ],
+          quantity: [
+            product.quantity,
+            [Validators.required, Validators.max(1000), Validators.min(5)],
+          ],
+          images: this.fb.array(product.images),
+          category: [product.category._id, Validators.required],
+          brand: [product.brand._id, Validators.required],
+          subcategory: [product.subcategory._id, Validators.required],
+          discount: [product.discount],
+        });
+
+        this.productDialog = true;
+      });
   }
 
   deleteSelectedProducts() {

@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
 
   categories: ICategory[] = [];
   brands: IBrand[] = [];
+  newArrival: IProduct[] = [];
+  specialOffers: IProduct[] = [];
+
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
@@ -57,6 +60,15 @@ export class HomeComponent implements OnInit {
     this.getCategories();
     this.getProducts();
     this.getBrands();
+
+    this.productService.getAllProducts().subscribe((res) => {
+      this.newArrival = res.slice(-12);
+    });
+    this.productService.getAllProducts().subscribe((res) => {
+      this.specialOffers = res.filter(
+        (product: IProduct) => product.discount > 0
+      );
+    });
   }
 
   getCategories() {

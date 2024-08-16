@@ -94,10 +94,13 @@
   font-weight: bold;
 }
 
-.in-stock i {
-  color: blue;
+.in-stock {
+  color: rgb(0, 155, 0);
 }
-.out-stock i {
+.low-stock {
+  color: yellow;
+}
+.out-stock {
   color: red;
 }
 /* ---- */
@@ -150,8 +153,16 @@
   border: none;
   cursor: pointer;
   display: block;
-
 }
-assa .review-form button:hover {
+.review-form button:hover {
   background-color: #0056b3;
+}
+.discount {
+  background-color: yellow;
+  border-radius: 50%;
+  font-weight: bold;
+  padding: 10px 5px;
+  font-size: 15px;
+  width: 40px;
+  height: 40px;
 }

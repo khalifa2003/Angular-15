@@ -13,8 +13,9 @@ export interface IProduct {
   images: string[];
   category: ICategory;
   brand: IBrand;
-  averageRating?: number;
-  reviewCounts?: number;
   ratingsAverage: number;
   ratingsQuantity?: number;
+  sold?: number;
+  priceAfterDiscount?: number;
+  discount: number;
 }

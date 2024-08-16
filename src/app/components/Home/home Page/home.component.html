@@ -10,7 +10,7 @@
     [showIndicators]="false"
   >
     <ng-template let-category pTemplate="item">
-      <div class="border-round text-center py-3">
+      <div class="border-round text-center py-1">
         <div>
           <img
             [src]="category.image"
@@ -24,87 +24,105 @@
 </div>
 <div class="row my-container mt-4">
   <header>Special Offers</header>
-  Under Progress...
-  <!-- <p-carousel
-    [value]="products"
-    [numVisible]="5"
+  <p-carousel
+    [value]="specialOffers"
+    [numVisible]="6"
     [numScroll]="3"
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
+    [style]="{ padding: '10px 0 0' }"
   >
     <ng-template let-product pTemplate="item">
-      <div class="border-round text-center py-3">
+      <div class="border-round text-center" [style]="{ padding: '20px' }">
         <div>
-          <img
-            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-              product.image
-            }}"
-            [alt]="product.name"
-            class="w-6 shadow-2"
-          />
+          <img [src]="product.images[0]" [alt]="product.title" width="100%" />
         </div>
         <div>
-          <h4>{{ product.name }}</h4>
-          <h6 class="mb-3">{{ "$" + product.price }}</h6>
+          <h6 class="product-title" routerLink="/product/{{ product._id }}">
+            {{ product.title }}
+          </h6>
+          <h6 class="mb-3 d-flex justify-content-evenly">
+            <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
+            <p>{{ product.priceAfterDiscount }}EGP</p>
+          </h6>
           <div class="car-buttons">
             <p-button
               type="button"
               styleClass="p-button p-button-rounded"
               icon="pi pi-search"
+              routerLink="/product/{{ product._id }}"
             ></p-button>
             <p-button
               type="button"
               styleClass="p-button-success p-button-rounded"
+              icon="pi pi-cart-plus"
+            ></p-button>
+            <p-button
+              type="button"
+              styleClass="p-button-success p-button-rounded"
+              [ngStyle]="{ position: 'fixed', top: '0' }"
               icon="pi pi-star-fill"
             ></p-button>
+            <p class="discount" *ngIf="product.discount > 0">
+              {{ product.discount }}%
+            </p>
           </div>
         </div>
       </div>
     </ng-template>
-  </p-carousel> -->
+  </p-carousel>
 </div>
 <div class="row my-container mt-4">
   <header>New Arraive</header>
-  Under Progress...
-  <!-- <p-carousel
-    [value]="products"
-    [numVisible]="5"
+  <p-carousel
+    [value]="newArrival"
+    [numVisible]="6"
     [numScroll]="3"
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
+    [style]="{ padding: '10px 0 0' }"
   >
     <ng-template let-product pTemplate="item">
-      <div class="border-round text-center py-3">
+      <div class="border-round text-center" [style]="{ padding: '20px' }">
         <div>
-          <img
-            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
-              product.image
-            }}"
-            [alt]="product.name"
-            class="w-6 shadow-2"
-          />
+          <img [src]="product.images[0]" [alt]="product.title" width="100%" />
         </div>
         <div>
-          <h4>{{ product.name }}</h4>
-          <h6 class="mb-3">{{ "$" + product.price }}</h6>
+          <h6 class="product-title" routerLink="/product/{{ product._id }}">
+            {{ product.title }}
+          </h6>
+          <h6 class="mb-3 d-flex justify-content-evenly">
+            <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
+            <p>{{ product.priceAfterDiscount }}EGP</p>
+          </h6>
           <div class="car-buttons">
             <p-button
               type="button"
               styleClass="p-button p-button-rounded"
               icon="pi pi-search"
+              routerLink="/product/{{ product._id }}"
             ></p-button>
             <p-button
               type="button"
               styleClass="p-button-success p-button-rounded"
+              icon="pi pi-cart-plus"
+            ></p-button>
+            <p-button
+              type="button"
+              styleClass="p-button-success p-button-rounded"
+              [ngStyle]="{ position: 'fixed', top: '0' }"
               icon="pi pi-star-fill"
             ></p-button>
+            <p class="discount" *ngIf="product.discount > 0">
+              {{ product.discount }}%
+            </p>
           </div>
         </div>
       </div>
     </ng-template>
-  </p-carousel> -->
+  </p-carousel>
 </div>
 <div class="row my-container mt-4">
   <div class="col-xl-10 col-lg-12">
@@ -136,7 +154,10 @@
               <h6 class="product-title" routerLink="/product/{{ product._id }}">
                 {{ product.title }}
               </h6>
-              <h6 class="mb-3">{{ product.price }} EGP</h6>
+              <h6 class="mb-3 d-flex justify-content-evenly">
+                <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
+                <p>{{ product.priceAfterDiscount }}EGP</p>
+              </h6>
               <div class="car-buttons">
                 <p-button
                   type="button"
@@ -152,9 +173,12 @@
                 <p-button
                   type="button"
                   styleClass="p-button-success p-button-rounded"
-                  style="position: fixed; top: 0"
+                  [ngStyle]="{ position: 'fixed', top: '0' }"
                   icon="pi pi-star-fill"
                 ></p-button>
+                <p class="discount" *ngIf="product.discount > 0">
+                  {{ product.discount }}%
+                </p>
               </div>
             </div>
           </div>

@@ -47,7 +47,7 @@ div {
   padding: 0;
 }
 .category-image {
-  max-height: 190px;
+  width: 100%;
   cursor: pointer;
   transition: 0.5s;
 }
@@ -64,10 +64,23 @@ div {
   }
 }
 .product-title {
-  max-height: 100px;
+  height: 100px;
   overflow: hidden;
   cursor: pointer;
 }
 .product-title:hover {
   color: #555;
+}
+.discount {
+  background-color: yellow;
+  border-radius: 50%;
+  font-weight: bold;
+  padding: 10px 5px;
+  font-size: 15px;
+  position: fixed;
+  top: 0;
+}
+.favorite-button {
+  position: fixed;
+  top: 0;
 }
