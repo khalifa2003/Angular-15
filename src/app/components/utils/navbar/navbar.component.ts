@@ -1,23 +1,44 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { ICategory } from 'src/app/Models/icategory';
+import { CategoryService } from 'src/app/services/category.service';
+import { SubcategoryService } from 'src/app/services/subcategory.service';
+import { ISubcategory } from 'src/app/Models/isubcategory';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnDestroy {
+export class NavbarComponent implements OnDestroy, OnInit {
   items: MenuItem[] = [];
   authSubscription: Subscription;
+  categories: ICategory[] = [];
+  subcategories: ISubcategory[] = [];
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private categoryService: CategoryService,
+    private subcategoryService: SubcategoryService
+  ) {
     this.authSubscription = this.authService.currentUser.subscribe(() => {
       this.updateMenuItems();
     });
     this.updateMenuItems();
+  }
+  ngOnInit(): void {
+    this.categoryService.getAllCategories().subscribe((res) => {
+      this.categories = res;
+    });
+  }
+  getSubcategories(category: string) {
+    this.subcategoryService.getSubcategories(category).subscribe((data) => {
+      this.subcategories = data;
+    });
   }
 
   ngOnDestroy() {
@@ -88,5 +109,16 @@ export class NavbarComponent implements OnDestroy {
         visible: isAdmin,
       },
     ];
+  }
+
+  getProductByCategory(item: ICategory) {
+    this.router.navigate(['/products'], {
+      queryParams: { category: item._id },
+    });
+  }
+  getProductBySubCategory(item: ISubcategory) {
+    this.router.navigate(['/products'], {
+      queryParams: { subcategory: item._id },
+    });
   }
 }

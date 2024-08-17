@@ -11,13 +11,12 @@
   >
     <ng-template let-category pTemplate="item">
       <div class="border-round text-center py-1">
-        <div>
-          <img
-            [src]="category.image"
-            [alt]="category.name"
-            class="category-image"
-          />
-        </div>
+        <img
+          [src]="category.image"
+          [alt]="category.name"
+          class="category-image"
+          (click)="getProductByCategory(category)"
+        />
       </div>
     </ng-template>
   </p-carousel>
@@ -210,9 +209,12 @@
   >
     <ng-template let-brand pTemplate="item">
       <div class="border-round text-center py-3 px-2">
-        <div>
-          <img [src]="brand.image" [alt]="brand.name" class="category-image" />
-        </div>
+        <img
+          [src]="brand.image"
+          [alt]="brand.name"
+          class="category-image"
+          (click)="getProductByBrand(brand)"
+        />
       </div>
     </ng-template>
   </p-carousel>

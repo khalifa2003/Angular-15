@@ -5,6 +5,7 @@ import { BrandService } from 'src/app/services/brand.service';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +31,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private router: Router
   ) {
     this.responsiveOptions = [
       {
@@ -92,5 +94,16 @@ export class HomeComponent implements OnInit {
         });
     });
     for (let i = 0; i < this.ids.length; i++) {}
+  }
+
+  getProductByCategory(item: ICategory) {
+    this.router.navigate(['/product'], {
+      queryParams: { category: item._id },
+    });
+  }
+  getProductByBrand(item: IBrand) {
+    this.router.navigate(['/product'], {
+      queryParams: { brand: item._id },
+    });
   }
 }
