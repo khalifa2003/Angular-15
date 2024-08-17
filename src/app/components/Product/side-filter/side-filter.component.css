@@ -48,3 +48,28 @@
   border-radius: 50%;
   margin-right: 10px;
 }
+
+
+.sidebar-menu {
+  width: 250px;
+}
+
+.p-panelmenu .p-panelmenu-header {
+  font-weight: bold;
+}
+
+.p-panelmenu .p-panelmenu-content {
+  padding: 0;
+}
+.layout {
+  display: flex;
+}
+
+.sidebar-menu {
+  flex: 0 0 250px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
