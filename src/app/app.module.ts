@@ -25,6 +25,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
 import { MessageService } from 'primeng/api';
 import { DataViewModule } from 'primeng/dataview';
+import { CheckboxModule } from 'primeng/checkbox';
+import { AccordionModule } from 'primeng/accordion';
+
 // Modules
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,7 +46,6 @@ import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admi
 import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
 import { ProductPageComponent } from './components/Product/product-page/product-page.component';
 import { SearchPageComponent } from './components/Product/search-page/search-page.component';
-import { SideFilterComponent } from './components/Product/side-filter/side-filter.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,6 @@ import { SideFilterComponent } from './components/Product/side-filter/side-filte
     SubcategoryMangementComponent,
     ProductPageComponent,
     SearchPageComponent,
-    SideFilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +93,9 @@ import { SideFilterComponent } from './components/Product/side-filter/side-filte
     RatingModule,
     PanelMenuModule,
     DataViewModule,
+    CheckboxModule,
+    AccordionModule,
+
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

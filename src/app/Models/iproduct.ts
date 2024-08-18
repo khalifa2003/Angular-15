@@ -3,6 +3,8 @@ import { ICategory } from './icategory';
 import { ISubcategory } from './isubcategory';
 
 export interface IProduct {
+  inventoryState: string;
+  inventoryStatus: number;
   _id: string;
   title: string;
   slug: string;

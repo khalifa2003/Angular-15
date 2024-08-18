@@ -1,38 +1,40 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
+import { ISubcategory } from 'src/app/Models/isubcategory';
 import { BrandService } from 'src/app/services/brand.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { SubcategoryService } from 'src/app/services/subcategory.service';
 
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
   styleUrls: ['./search-page.component.css'],
 })
-export class SearchPageComponent {
-  filterPriceForm: FormGroup = {} as FormGroup;
+export class SearchPageComponent implements OnInit {
+  visibleSidebar: boolean = false;
 
-  sortOptions: { label: string; value: string }[] = [];
-  sortOrder: number = 0;
-  sortField: string = '';
-
+  originalProducts: IProduct[] = [];
   products: IProduct[] = [];
   categories: ICategory[] = [];
+  subcategories: ISubcategory[] = [];
   brands: IBrand[] = [];
-  params: any;
-  sort: string = 'relevance';
+
+  selectedBrands: string[] = [];
+  selectedCategories: string[] = [];
+  selectedSubcategories: string[] = [];
+  priceRange: [number, number] = [0, Infinity];
+  discountRange: [number, number] = [0, 100];
+
   constructor(
+    private subcategoryService: SubcategoryService,
     private categoryService: CategoryService,
     private productService: ProductService,
     private brandService: BrandService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -42,85 +44,177 @@ export class SearchPageComponent {
     this.categoryService.getAllCategories().subscribe((data) => {
       this.categories = data;
     });
-    this.route.queryParams.subscribe((params) => {
-      if (params['min']) {
-        this.filterPriceForm.get('min')?.setValue(+params['min']);
-      }
-      if (params['max']) {
-        this.filterPriceForm.get('max')?.setValue(+params['max']);
-      }
+    this.subcategoryService.getSubcategories().subscribe((data) => {
+      this.subcategories = data;
     });
     this.route.queryParams.subscribe((params) => {
       this.productService.searchProducts(params).subscribe((res) => {
         this.products = res;
+        this.originalProducts = res;
 
-        this.filterPriceForm = this.fb.group({
-          min: [
-            Math.min(...this.products.map((product) => product.price)),
-            Validators.min(
-              Math.min(...this.products.map((product) => product.price))
-            ),
-          ],
-          max: [
-            Math.max(...this.products.map((product) => product.price)),
-            Validators.max(
-              Math.max(...this.products.map((product) => product.price))
-            ),
-          ],
-        });
+        const brandId = params['brand'];
+        const categoryId = params['category'];
+        const subcategoryId = params['subcategory'];
+
+        if (brandId) {
+          this.selectedBrands = [brandId];
+          this.brands = this.brands.map((brand) => ({
+            ...brand,
+            disabled: brand._id === brandId,
+            hidden: brand._id !== brandId,
+          }));
+        }
+
+        if (categoryId) {
+          this.selectedCategories = [categoryId];
+          this.categories = this.categories.map((category) => ({
+            ...category,
+            disabled: category._id === categoryId,
+            hidden: category._id !== categoryId,
+          }));
+        }
+
+        if (subcategoryId) {
+          this.selectedSubcategories = [subcategoryId];
+          this.subcategories = this.subcategories.map((subcategory) => ({
+            ...subcategory,
+            disabled: subcategory._id === subcategoryId,
+            hidden: subcategory._id !== subcategoryId,
+          }));
+        }
+
+        this.applyFilters();
       });
     });
-    this.sortOptions = [
-      { label: 'Price High to Low', value: '!price' },
-      { label: 'Price Low to High', value: 'price' },
-    ];
   }
 
-  onSortChange(event: any) {
-    const value = event.value;
-    this.sortOrder = value.startsWith('!') ? -1 : 1;
-    this.sortField = value.replace('!', '');
+  countProductsByBrand(brandId: string): number {
+    return this.originalProducts.filter(
+      (product) => product.brand._id === brandId
+    ).length;
   }
 
-  onFilter(dv: any, event: Event) {
-    dv.filter((event.target as HTMLInputElement).value);
+  countProductsByCategory(categoryId: string): number {
+    return this.originalProducts.filter(
+      (product) => product.category._id === categoryId
+    ).length;
   }
 
-  getStatusClass(status: string) {
-    return {
-      'badge-success': status === 'INSTOCK',
-      'badge-danger': status === 'OUTOFSTOCK',
-      'badge-warning': status === 'LOWSTOCK',
-    };
+  countProductsBySubcategory(subcategoryId: string): number {
+    return this.originalProducts.filter(
+      (product) => product.subcategory._id === subcategoryId
+    ).length;
   }
 
-  updateQueryParams(): void {
-    const queryParams: any = {};
+  updateProductCounts() {
+    this.brands.forEach((brand) => {
+      brand.productCount = this.originalProducts.filter(
+        (product) => product.brand._id === brand._id
+      ).length;
+    });
 
-    if (this.filterPriceForm.value.min !== null) {
-      queryParams.min = this.filterPriceForm.value.min;
-    }
+    this.categories.forEach((category) => {
+      category.productCount = this.originalProducts.filter(
+        (product) => product.category._id === category._id
+      ).length;
+    });
 
-    if (this.filterPriceForm.value.max !== null) {
-      queryParams.max = this.filterPriceForm.value.max;
-    }
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: queryParams,
-      queryParamsHandling: 'merge',
+    this.subcategories.forEach((subcategory) => {
+      subcategory.productCount = this.originalProducts.filter(
+        (product) => product.subcategory._id === subcategory._id
+      ).length;
     });
   }
-  onFilterChange() {
-    if (this.sort === 'priceAsc') {
-      this.products.sort((a, b) => a.price - b.price);
-    } else if (this.sort === 'priceDesc') {
-      this.products.sort((a, b) => b.price - a.price);
+
+  onStockChange(event: any) {
+    console.log('history.get');
+
+    const value = event.target.value;
+    this.selectedCategories = value;
+    // this.applyFilters();
+  }
+
+  onBrandChange(event: any) {
+    const value = event.target.value;
+    if (event.target.checked) {
+      this.selectedBrands.push(value);
+    } else {
+      this.selectedBrands = this.selectedBrands.filter(
+        (brand) => brand !== value
+      );
     }
+    this.applyFilters();
   }
 
-  filterPrice() {
-    this.updateQueryParams();
+  onCategoryChange(event: any) {
+    const value = event.target.value;
+    this.subcategoryService.getSubcategories(value).subscribe((data) => {
+      this.subcategories = data;
+    });
+    this.selectedCategories = value;
+    this.applyFilters();
   }
 
+  onSubcategoryChange(event: any) {
+    const value = event.target.value;
+    if (event.target.checked) {
+      this.selectedSubcategories.push(value);
+    } else {
+      this.selectedSubcategories = this.selectedSubcategories.filter(
+        (subcategory) => subcategory !== value
+      );
+    }
+    this.applyFilters();
+  }
+
+  onPriceRangeChange(min: string | number, max: string | number) {
+    this.priceRange = [Number(min), Number(max)];
+    this.applyFilters();
+  }
+
+  onDiscountChange(min: string | number, max: string | number) {
+    this.discountRange = [Number(min), Number(max)];
+    this.applyFilters();
+  }
+
+  getValueFromEvent(event: Event): string {
+    const target = event.target as HTMLInputElement;
+    return target.value;
+  }
+
+  applyFilters() {
+    this.products = this.originalProducts.filter((product) => {
+      const matchesBrand =
+        this.selectedBrands.length === 0 ||
+        this.selectedBrands.includes(product.brand._id);
+      const matchesCategory =
+        this.selectedCategories.length === 0 ||
+        this.selectedCategories.includes(product.category._id);
+      const matchesSubcategory =
+        this.selectedSubcategories.length === 0 ||
+        this.selectedSubcategories.includes(product.subcategory._id);
+      const matchesPrice =
+        product.price >= this.priceRange[0] &&
+        product.price <= this.priceRange[1];
+      const matchesDiscount =
+        product.discount >= this.discountRange[0] &&
+        product.discount <= this.discountRange[1];
+
+      return (
+        matchesBrand &&
+        matchesCategory &&
+        matchesSubcategory &&
+        matchesPrice &&
+        matchesDiscount
+      );
+    });
+  }
+
+  onFilter(event: any) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    this.products = this.originalProducts.filter((product) =>
+      product.title.toLowerCase().includes(query)
+    );
+    this.applyFilters();
+  }
 }
