@@ -11,6 +11,7 @@ import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admi
 import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
 import { ProductPageComponent } from './components/Product/product-page/product-page.component';
 import { SearchPageComponent } from './components/Product/search-page/search-page.component';
+import { AdminGuard } from './Guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminDashboardComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'admin/category/management',
