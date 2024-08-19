@@ -15,7 +15,7 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
   styleUrls: ['./search-page.component.css'],
 })
 export class SearchPageComponent implements OnInit {
-  visibleSidebar: boolean = false;
+  visibleSidebar: boolean = true;
 
   originalProducts: IProduct[] = [];
   products: IProduct[] = [];
@@ -127,10 +127,11 @@ export class SearchPageComponent implements OnInit {
   }
 
   onStockChange(event: any) {
-    console.log('history.get');
-
     const value = event.target.value;
-    this.selectedCategories = value;
+
+    console.log(value);
+
+    // this.selectedCategories = value;
     // this.applyFilters();
   }
 
@@ -193,19 +194,15 @@ export class SearchPageComponent implements OnInit {
       const matchesSubcategory =
         this.selectedSubcategories.length === 0 ||
         this.selectedSubcategories.includes(product.subcategory._id);
+      const matchesStock =
+        this.selectedSubcategories.length === 0 ||
+        this.selectedSubcategories.includes(product.subcategory._id);
       const matchesPrice =
         product.price >= this.priceRange[0] &&
         product.price <= this.priceRange[1];
-      const matchesDiscount =
-        product.discount >= this.discountRange[0] &&
-        product.discount <= this.discountRange[1];
 
       return (
-        matchesBrand &&
-        matchesCategory &&
-        matchesSubcategory &&
-        matchesPrice &&
-        matchesDiscount
+        matchesBrand && matchesCategory && matchesSubcategory && matchesPrice
       );
     });
   }

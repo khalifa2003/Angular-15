@@ -1,7 +1,7 @@
-import { ICategory } from "./icategory";
+import { ICategory } from './icategory';
 
 export interface ISubcategory {
-disabled: any;
+  disabled: any;
   productCount: number;
   _id: string;
   name: string;
