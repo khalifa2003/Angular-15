@@ -18,4 +18,5 @@ export interface IProduct {
   sold?: number;
   priceAfterDiscount?: number;
   discount: number;
+  stock: string;
 }

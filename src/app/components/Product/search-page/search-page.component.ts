@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
@@ -15,7 +15,7 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
   styleUrls: ['./search-page.component.css'],
 })
 export class SearchPageComponent implements OnInit {
-  visibleSidebar: boolean = true;
+  visibleSidebar: boolean = false;
 
   originalProducts: IProduct[] = [];
   products: IProduct[] = [];
@@ -38,131 +38,116 @@ export class SearchPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.brandService.getAllBrands().subscribe((data) => {
-      this.brands = data;
-    });
-    this.categoryService.getAllCategories().subscribe((data) => {
-      this.categories = data;
-    });
-    this.subcategoryService.getSubcategories().subscribe((data) => {
-      this.subcategories = data;
-    });
+    this.loadInitialData();
+
     this.route.queryParams.subscribe((params) => {
-      this.productService.searchProducts(params).subscribe((res) => {
-        this.products = res;
-        this.originalProducts = res;
-
-        const brandId = params['brand'];
-        const categoryId = params['category'];
-        const subcategoryId = params['subcategory'];
-
-        if (brandId) {
-          this.selectedBrands = [brandId];
-          this.brands = this.brands.map((brand) => ({
-            ...brand,
-            disabled: brand._id === brandId,
-            hidden: brand._id !== brandId,
-          }));
-        }
-
-        if (categoryId) {
-          this.selectedCategories = [categoryId];
-          this.categories = this.categories.map((category) => ({
-            ...category,
-            disabled: category._id === categoryId,
-            hidden: category._id !== categoryId,
-          }));
-        }
-
-        if (subcategoryId) {
-          this.selectedSubcategories = [subcategoryId];
-          this.subcategories = this.subcategories.map((subcategory) => ({
-            ...subcategory,
-            disabled: subcategory._id === subcategoryId,
-            hidden: subcategory._id !== subcategoryId,
-          }));
-        }
-
-        this.applyFilters();
-      });
+      this.applyQueryParams(params);
+      this.applyFilters();
     });
   }
 
-  countProductsByBrand(brandId: string): number {
-    return this.originalProducts.filter(
-      (product) => product.brand._id === brandId
-    ).length;
+  loadInitialData() {
+    this.brandService.getAllBrands().subscribe((data) => (this.brands = data));
+    this.categoryService
+      .getAllCategories()
+      .subscribe((data) => (this.categories = data));
+    this.subcategoryService
+      .getSubcategories()
+      .subscribe((data) => (this.subcategories = data));
   }
 
-  countProductsByCategory(categoryId: string): number {
-    return this.originalProducts.filter(
-      (product) => product.category._id === categoryId
-    ).length;
+  applyQueryParams(params: Params) {
+    this.productService.searchProducts(params).subscribe((res) => {
+      this.originalProducts = this.products = res;
+      this.selectedBrands = params['brand'] ? [params['brand']] : [];
+      this.selectedCategories = params['category'] ? [params['category']] : [];
+      this.selectedSubcategories = params['subcategory']
+        ? [params['subcategory']]
+        : [];
+
+      if (params['category']) {
+        this.categories = this.categories.filter(
+          (category) => category._id === params['category']
+        );
+      }
+      if (params['brand']) {
+        this.brands = this.brands.filter(
+          (brand) => brand._id === params['brand']
+        );
+      }
+      if (params['subcategory']) {
+        this.subcategories = this.subcategories.filter(
+          (subcategory) => subcategory._id === params['subcategory']
+        );
+      }
+    });
   }
 
-  countProductsBySubcategory(subcategoryId: string): number {
-    return this.originalProducts.filter(
-      (product) => product.subcategory._id === subcategoryId
-    ).length;
-  }
-
-  updateProductCounts() {
-    this.brands.forEach((brand) => {
-      brand.productCount = this.originalProducts.filter(
-        (product) => product.brand._id === brand._id
+  countProductsModel(id: string, modelName: string): number {
+    if (modelName == 'category') {
+      return this.originalProducts.filter(
+        (product) => product.category._id === id
       ).length;
-    });
-
-    this.categories.forEach((category) => {
-      category.productCount = this.originalProducts.filter(
-        (product) => product.category._id === category._id
+    } else if (modelName == 'brand') {
+      return this.originalProducts.filter((product) => product.brand._id === id)
+        .length;
+    } else if (modelName == 'discount') {
+      return this.products.filter((product) => product.discount > 0).length;
+    } else if (modelName == 'stock') {
+      return this.originalProducts.filter((product) => product.stock == id)
+        .length;
+    } else {
+      return this.originalProducts.filter(
+        (product) => product.subcategory._id === id
       ).length;
-    });
-
-    this.subcategories.forEach((subcategory) => {
-      subcategory.productCount = this.originalProducts.filter(
-        (product) => product.subcategory._id === subcategory._id
-      ).length;
-    });
+    }
   }
 
   onStockChange(event: any) {
+    this.applyFilters();
     const value = event.target.value;
+    if (event.target.checked) {
+      this.products = this.products.filter((product) => product.stock == value);
+    } else {
+      this.applyFilters();
+    }
+  }
 
-    console.log(value);
-
-    // this.selectedCategories = value;
-    // this.applyFilters();
+  onDiscountChange(event: any) {
+    if (event.target.checked) {
+      this.products = this.products.filter((product) => product.discount > 0);
+    } else {
+      this.applyFilters();
+    }
   }
 
   onBrandChange(event: any) {
-    const value = event.target.value;
     if (event.target.checked) {
-      this.selectedBrands.push(value);
+      this.selectedBrands.push(event.target.value);
     } else {
       this.selectedBrands = this.selectedBrands.filter(
-        (brand) => brand !== value
+        (brand) => brand !== event.target.value
       );
     }
     this.applyFilters();
   }
 
   onCategoryChange(event: any) {
-    const value = event.target.value;
-    this.subcategoryService.getSubcategories(value).subscribe((data) => {
-      this.subcategories = data;
-    });
-    this.selectedCategories = value;
+    this.subcategoryService
+      .getSubcategories(event.target.value)
+      .subscribe((data) => {
+        this.subcategories = data;
+      });
+    this.selectedCategories = event.target.value;
     this.applyFilters();
   }
 
   onSubcategoryChange(event: any) {
-    const value = event.target.value;
     if (event.target.checked) {
-      this.selectedSubcategories.push(value);
+      this.selectedSubcategories.push(event.target.value);
     } else {
       this.selectedSubcategories = this.selectedSubcategories.filter(
-        (subcategory) => subcategory !== value
+        (subcategory) => subcategory !== event.target.value
       );
     }
     this.applyFilters();
@@ -170,11 +155,6 @@ export class SearchPageComponent implements OnInit {
 
   onPriceRangeChange(min: string | number, max: string | number) {
     this.priceRange = [Number(min), Number(max)];
-    this.applyFilters();
-  }
-
-  onDiscountChange(min: string | number, max: string | number) {
-    this.discountRange = [Number(min), Number(max)];
     this.applyFilters();
   }
 
@@ -192,9 +172,6 @@ export class SearchPageComponent implements OnInit {
         this.selectedCategories.length === 0 ||
         this.selectedCategories.includes(product.category._id);
       const matchesSubcategory =
-        this.selectedSubcategories.length === 0 ||
-        this.selectedSubcategories.includes(product.subcategory._id);
-      const matchesStock =
         this.selectedSubcategories.length === 0 ||
         this.selectedSubcategories.includes(product.subcategory._id);
       const matchesPrice =
