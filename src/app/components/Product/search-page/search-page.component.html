@@ -1,216 +1,207 @@
-<div class="row">
+<div class="row" [ngStyle]="{ margin: '0' }">
   <p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000">
-    <img src="../../../../assets/logo.ico" alt="" width="100px" /> Filters
+    <div class="d-flex justify-content-center my-4">
+      <img src="../../../../assets/logo.ico" alt="" width="100px" />
+    </div>
 
     <!-- stock -->
     <div class="filter-group">
-      <button
-        data-bs-target="#availableInStores"
-        aria-controls="availableInStores"
-        class="btn w-100"
-        data-bs-toggle="collapse"
-        aria-expanded="false"
-        type="button"
-      >
-        Available In Stores <i class="pi pi-chevron-down"></i>
-      </button>
-      <div class="collapse" id="availableInStores" class="checkbox-container">
-        <label>
-          <input
-            type="checkbox"
-            name="stock"
-            value="INSTOCK"
-            id="stock1"
-            (change)="onStockChange($event)"
-            class="mx-2"
-          />
-          INSTOCK ({{ countProductsModel("INSTOCK", "stock") }})
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="stock"
-            value="LOWSTOCK"
-            (change)="onStockChange($event)"
-            class="mx-2"
-          />
-          LOWSTOCK ({{ countProductsModel("LOWSTOCK", "stock") }})
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="stock"
-            value="OUTOFSTOCK"
-            (change)="onStockChange($event)"
-            class="mx-2"
-          />
-          OUTOFSTOCK ({{ countProductsModel("OUTOFSTOCK", "stock") }})
-        </label>
-      </div>
+      <p-accordion [style]="{ width: '100%' }">
+        <p-accordionTab header="Available In Stores">
+          <div
+            class="collapse"
+            id="availableInStores"
+            class="checkbox-container"
+          >
+            <label>
+              <input
+                type="checkbox"
+                name="stock"
+                value="INSTOCK"
+                id="stock1"
+                (change)="onModelChange($event, 'stock')"
+                class="mx-2"
+              />
+              INSTOCK ({{ countProductsModel("INSTOCK", "stock") }})
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="stock"
+                value="LOWSTOCK"
+                (change)="onModelChange($event, 'stock')"
+                class="mx-2"
+              />
+              LOWSTOCK ({{ countProductsModel("LOWSTOCK", "stock") }})
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="stock"
+                value="OUTOFSTOCK"
+                (change)="onModelChange($event, 'stock')"
+                class="mx-2"
+              />
+              OUTOFSTOCK ({{ countProductsModel("OUTOFSTOCK", "stock") }})
+            </label>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
     </div>
 
     <!-- discount -->
     <div class="filter-group">
-      <button
-        class="btn w-100"
-        data-bs-target="#discount"
-        data-bs-toggle="collapse"
-        aria-controls="discount"
-        aria-expanded="false"
-        type="button"
+      <p-accordion [style]="{ width: '100%' }"
+        ><p-accordionTab header="Discounts">
+          <div class="checkbox-container">
+            <div class="collapse" id="discount" class="checkbox-container">
+              <label>
+                <input
+                  type="checkbox"
+                  name="stock"
+                  value="discount"
+                  id="stock1"
+                  (change)="onModelChange($event, 'discount')"
+                  class="mx-2"
+                />
+                Discount ({{ countProductsModel("discount", "discount") }})
+              </label>
+            </div>
+          </div></p-accordionTab
+        ></p-accordion
       >
-        Discounts <i class="pi pi-chevron-down"></i>
-      </button>
-      <div class="collapse" id="discount" class="checkbox-container">
-        <label>
-          <input
-            type="checkbox"
-            name="stock"
-            value="discount"
-            id="stock1"
-            (change)="onDiscountChange($event)"
-            class="mx-2"
-          />
-          Discount ({{ countProductsModel("discount", "discount") }})
-        </label>
-      </div>
     </div>
 
     <!-- categories -->
     <div class="filter-group">
-      <button
-        class="btn w-100"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#categories"
-        aria-expanded="false"
-        aria-controls="categories"
-      >
-        Categories <i class="pi pi-chevron-down"></i>
-      </button>
-      <ng-container *ngFor="let category of categories">
-        <div
-          id="categories"
-          class="checkbox-container"
-          *ngIf="countProductsModel(category._id, 'category') != 0"
-        >
-          <label>
-            <input
-              type="radio"
-              name="category"
-              [value]="category._id"
-              (change)="onCategoryChange($event)"
-              class="mx-2"
-            />
-            {{ category.name }} ({{
-              countProductsModel(category._id, "category")
-            }})
-          </label>
-        </div>
-      </ng-container>
+      <p-accordion [style]="{ width: '100%' }">
+        <p-accordionTab header="Categories">
+          <ng-container *ngFor="let category of categories">
+            <div
+              id="categories"
+              class="checkbox-container"
+              *ngIf="countProductsModel(category._id, 'category') != 0"
+            >
+              <label>
+                <input
+                  type="radio"
+                  name="category"
+                  [value]="category._id"
+                  (change)="onModelChange($event, 'category')"
+                  class="mx-2"
+                />
+                {{ category.name }} ({{
+                  countProductsModel(category._id, "category")
+                }})
+              </label>
+            </div>
+          </ng-container>
+        </p-accordionTab>
+      </p-accordion>
     </div>
 
     <!-- subcategories -->
     <div class="filter-group">
-      <button
-        class="btn w-100"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#subcategories"
-        aria-expanded="false"
-        aria-controls="subcategories"
-      >
-        SubCategories <i class="pi pi-chevron-down"></i>
-      </button>
-      <ng-container *ngFor="let subcategory of subcategories">
-        <div
-          id="subcategories"
-          class="checkbox-container"
-          *ngIf="countProductsModel(subcategory._id, 'subcategory') > 0"
-        >
-          <label>
-            <input
-              type="checkbox"
-              [value]="subcategory._id"
-              (change)="onSubcategoryChange($event)"
-            />
-            {{ subcategory.name }} ({{
-              countProductsModel(subcategory._id, "subcategory")
-            }})
-          </label>
-        </div>
-      </ng-container>
+      <p-accordion [style]="{ width: '100%' }">
+        <p-accordionTab header="SubCategories">
+          <ng-container *ngFor="let subcategory of subcategories">
+            <div
+              id="subcategories"
+              class="checkbox-container"
+              *ngIf="countProductsModel(subcategory._id, 'subcategory') > 0"
+            >
+              <label>
+                <input
+                  type="checkbox"
+                  [value]="subcategory._id"
+                  (change)="onModelChange($event, 'subcategory')"
+                />
+                {{ subcategory.name }} ({{
+                  countProductsModel(subcategory._id, "subcategory")
+                }})
+              </label>
+            </div>
+          </ng-container>
+        </p-accordionTab>
+      </p-accordion>
     </div>
 
     <!-- brands -->
     <div class="filter-group">
-      <button
-        class="btn w-100"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#brands"
-        aria-expanded="false"
-        aria-controls="brands"
-      >
-        brands <i class="pi pi-chevron-down"></i>
-      </button>
-      <ng-container *ngFor="let brand of brands">
-        <div
-          *ngIf="countProductsModel(brand._id, 'brand') > 0"
-          class="checkbox-container"
-          id="brands"
-        >
-          <label>
-            <input
-              type="checkbox"
-              [value]="brand._id"
-              (change)="onBrandChange($event)"
-            />
-            {{ brand.name }} ({{ countProductsModel(brand._id, "brand") }})
-          </label>
-        </div>
-      </ng-container>
+      <p-accordion [style]="{ width: '100%' }">
+        <p-accordionTab header="Brands">
+          <ng-container *ngFor="let brand of brands">
+            <div
+              *ngIf="countProductsModel(brand._id, 'brand') > 0"
+              class="checkbox-container"
+              id="brands"
+            >
+              <label>
+                <input
+                  type="checkbox"
+                  [value]="brand._id"
+                  (change)="onModelChange($event, 'brand')"
+                />
+                {{ brand.name }} ({{ countProductsModel(brand._id, "brand") }})
+              </label>
+            </div>
+          </ng-container>
+        </p-accordionTab>
+      </p-accordion>
     </div>
 
+    <!-- price range -->
     <div class="filter-group">
-      <button
-        class="btn w-100"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#price"
-        aria-expanded="false"
-        aria-controls="price"
-      >
-        Price Range <i class="pi pi-chevron-down"></i>
-      </button>
-      <div
-        class="checkbox-container"
-        id="price"
-        [style]="{ padding: '10px 10px 0 ' }"
-      >
-        <p-slider
-          [(ngModel)]="priceRange"
-          [min]="min"
-          [max]="max"
-          [range]="true"
-          [style]="{ width: '100%', padding: '0 50px ' }"
-          (onChange)="onPriceRangeChange(priceRange)"
-        ></p-slider>
-        <div class="price-inputs">
-          <input
-            type="number"
-            placeholder="Min"
-            [(ngModel)]="priceRange[0]"
-            (input)="onPriceRangeChange(priceRange)"
-          />
-          <input
-            type="number"
-            placeholder="Max"
-            [(ngModel)]="priceRange[1]"
-            (input)="onPriceRangeChange(priceRange)"
-          />
-        </div>
-      </div>
+      <p-accordion [style]="{ width: '100%' }">
+        <p-accordionTab header="Price Range">
+          <div
+            class="checkbox-container"
+            id="price"
+            [style]="{ padding: '10px 10px 0 ' }"
+          >
+            <p-slider
+              [(ngModel)]="priceRange"
+              [min]="min"
+              [max]="max"
+              [range]="true"
+              [style]="{ width: '100%', padding: '0 50px ' }"
+              (onChange)="onPriceRangeChange(priceRange)"
+            ></p-slider>
+            <div class="price-inputs">
+              <input
+                type="number"
+                placeholder="Min"
+                [(ngModel)]="priceRange[0]"
+                (input)="onPriceRangeChange(priceRange)"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                [(ngModel)]="priceRange[1]"
+                (input)="onPriceRangeChange(priceRange)"
+              />
+            </div>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+
+    <!-- price range -->
+    <div class="filter-group">
+      <p-accordion [style]="{ width: '100%' }">
+        <p-accordionTab header="Sort By">
+          <div class="sort-group">
+            <label for="sort">Sort By:</label>
+            <select id="sort" (change)="onSortChange($event)">
+              <option value="relevance">Relevance</option>
+              <option value="priceAsc">Price: Low to High</option>
+              <option value="priceDesc">Price: High to Low</option>
+              <option value="rating">Rating</option>
+              <option value="date">Date</option>
+            </select>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
     </div>
   </p-sidebar>
 

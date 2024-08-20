@@ -28,6 +28,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AccordionModule } from 'primeng/accordion';
 import { SliderModule } from 'primeng/slider';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -47,6 +48,8 @@ import { AdminDashboardComponent } from './components/Admin/admin-dashboard/admi
 import { SubcategoryMangementComponent } from './components/Admin/subcategory-mangement/subcategory-mangement.component';
 import { ProductPageComponent } from './components/Product/product-page/product-page.component';
 import { SearchPageComponent } from './components/Product/search-page/search-page.component';
+import { AboutUsComponent } from './components/utils/about-us/about-us.component';
+import { ContactComponent } from './components/utils/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +69,8 @@ import { SearchPageComponent } from './components/Product/search-page/search-pag
     SubcategoryMangementComponent,
     ProductPageComponent,
     SearchPageComponent,
+    AboutUsComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,6 +102,7 @@ import { SearchPageComponent } from './components/Product/search-page/search-pag
     CheckboxModule,
     AccordionModule,
     SliderModule,
+    RadioButtonModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

@@ -124,3 +124,21 @@
   border: 1px solid #ced4da;
   border-radius: 4px;
 }
+.sort-group {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.sort-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.sort-group select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}

@@ -17,21 +17,22 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
 export class SearchPageComponent implements OnInit {
   visibleSidebar: boolean = false;
 
-  subcategories: ISubcategory[] = [];
   originalProducts: IProduct[] = [];
+  subcategories: ISubcategory[] = [];
   categories: ICategory[] = [];
   products: IProduct[] = [];
   brands: IBrand[] = [];
-  priceRange: number[] = [0, 10000];
-  min: number = 0;
-  max: number = 10000;
 
   selectedSubcategories: string[] = [];
   selectedCategories: string[] = [];
-  query: string = '';
   selectedDiscount: number[] = [];
   selectedBrands: string[] = [];
   selectedStock: string[] = [];
+  priceRange: number[] = [0, 10000];
+  selectedSort: string = 'relevance';
+  query: string = '';
+  min: number = 0;
+  max: number = 10000;
 
   constructor(
     private subcategoryService: SubcategoryService,
@@ -91,84 +92,96 @@ export class SearchPageComponent implements OnInit {
   }
 
   countProductsModel(id: string, modelName: string): number {
-    if (modelName == 'category') {
-      return this.originalProducts.filter(
-        (product) => product.category._id === id
-      ).length;
-    } else if (modelName == 'stock') {
-      return this.originalProducts.filter((product) => product.stock == id)
-        .length;
-    } else if (modelName == 'brand') {
-      return this.products.filter((product) => product.brand._id === id).length;
-    } else if (modelName == 'discount') {
-      return this.products.filter((product) => product.discount > 0).length;
-    } else {
-      return this.originalProducts.filter(
-        (product) => product.subcategory._id === id
-      ).length;
+    switch (modelName) {
+      case 'category':
+        return this.originalProducts.filter(
+          (product) => product.category._id === id
+        ).length;
+      case 'stock':
+        return this.originalProducts.filter((product) => product.stock === id)
+          .length;
+      case 'brand':
+        return this.originalProducts.filter(
+          (product) => product.brand._id === id
+        ).length;
+      case 'discount':
+        return this.originalProducts.filter((product) => product.discount > 0)
+          .length;
+      case 'subcategory':
+        return this.originalProducts.filter(
+          (product) => product.subcategory._id === id
+        ).length;
+      default:
+        return 0;
     }
   }
 
-  onStockChange(event: Event) {
+  onModelChange(event: any, model: string) {
     const inputElement = event.target as HTMLInputElement;
-    if (inputElement.checked) {
-      this.selectedStock.push(inputElement.value);
-    } else {
-      this.selectedStock = this.selectedStock.filter(
-        (status) => status !== inputElement.value
-      );
-    }
-    this.applyFilters();
-  }
-
-  onDiscountChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.checked) {
-      this.selectedDiscount = [0];
-    } else {
-      this.selectedDiscount = [];
-    }
-    this.applyFilters();
-  }
-
-  onBrandChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.checked) {
-      this.selectedBrands.push(inputElement.value);
-    } else {
-      this.selectedBrands = this.selectedBrands.filter(
-        (brand) => brand !== inputElement.value
-      );
-    }
-    this.applyFilters();
-  }
-
-  onCategoryChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.subcategoryService
-      .getSubcategories(inputElement.value)
-      .subscribe((data) => {
-        this.subcategories = data;
-      });
-    this.selectedCategories = [inputElement.value];
-    this.applyFilters();
-  }
-
-  onSubcategoryChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.checked) {
-      this.selectedSubcategories.push(inputElement.value);
-    } else {
-      this.selectedSubcategories = this.selectedSubcategories.filter(
-        (subcategory) => subcategory !== inputElement.value
-      );
+    if (model == 'stock') {
+      if (inputElement.checked) {
+        this.selectedStock.push(inputElement.value);
+      } else {
+        this.selectedStock = this.selectedStock.filter(
+          (status) => status !== inputElement.value
+        );
+      }
+    } else if (model == 'discount') {
+      if (inputElement.checked) {
+        this.selectedDiscount = [0];
+      } else {
+        this.selectedDiscount = [];
+      }
+    } else if (model == 'brand') {
+      if (inputElement.checked) {
+        this.selectedBrands.push(inputElement.value);
+      } else {
+        this.selectedBrands = this.selectedBrands.filter(
+          (brand) => brand !== inputElement.value
+        );
+      }
+    } else if (model == 'category') {
+      this.subcategoryService
+        .getSubcategories(inputElement.value)
+        .subscribe((data) => {
+          this.subcategories = data;
+        });
+      this.selectedCategories = [inputElement.value];
+    } else if (model == 'subcategory') {
+      if (inputElement.checked) {
+        this.selectedSubcategories.push(inputElement.value);
+      } else {
+        this.selectedSubcategories = this.selectedSubcategories.filter(
+          (subcategory) => subcategory !== inputElement.value
+        );
+      }
     }
     this.applyFilters();
   }
 
-  onPriceRangeChange(range: number[]) {
-    this.priceRange = range;
-    this.applyFilters();
+  onSortChange(event: Event) {
+    const sortOption = (event.target as HTMLSelectElement).value;
+    this.selectedSort = sortOption;
+    this.applyFilters(); // Reapply the filters to include sorting
+  }
+
+  sortProducts(products: IProduct[]): IProduct[] {
+    switch (this.selectedSort) {
+      case 'priceAsc':
+        return products.sort((a, b) => a.price - b.price);
+      case 'priceDesc':
+        return products.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return products.sort((a, b) => b.ratingsAverage - a.ratingsAverage);
+      case 'date':
+        return products.sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime(); // Assuming createdAt is a property
+          const dateB = new Date(b.createdAt).getTime();
+          return dateB - dateA;
+        });
+      default:
+        return products;
+    }
   }
 
   applyFilters() {
@@ -205,6 +218,12 @@ export class SearchPageComponent implements OnInit {
         matchesQuery
       );
     });
+    this.products = this.sortProducts(this.products);
+  }
+
+  onPriceRangeChange(range: number[]) {
+    this.priceRange = range;
+    this.applyFilters();
   }
 
   onFilter(event: any) {

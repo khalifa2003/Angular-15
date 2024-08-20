@@ -12,6 +12,8 @@ import { SubcategoryMangementComponent } from './components/Admin/subcategory-ma
 import { ProductPageComponent } from './components/Product/product-page/product-page.component';
 import { SearchPageComponent } from './components/Product/search-page/search-page.component';
 import { AdminGuard } from './Guards/admin.guard';
+import { AboutUsComponent } from './components/utils/about-us/about-us.component';
+import { ContactComponent } from './components/utils/contact/contact.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'product', component: SearchPageComponent },
   { path: 'product/:id', component: ProductPageComponent },
+  { path: 'about', component: AboutUsComponent },
+  { path: 'contact', component: ContactComponent },
   // { path: 'brands', component: BrandPageComponent },
   // { path: 'categories', component: CategoryPageComponent },
 

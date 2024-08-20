@@ -15,7 +15,29 @@
   <ng-template pTemplate="end">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
-      <input type="text" pInputText />
+      <input
+        type="text"
+        pInputText
+        class="search-input"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+      <button (click)="reloadPage()" class="search-button">
+        Search
+      </button>
     </span>
   </ng-template>
 </p-menubar>
+
+<div *ngIf="searchResults.length > 0" class="search-results">
+  <ul>
+    <li *ngFor="let product of searchResults">
+      <a (click)="navigate(product)" class="cursor-pointer">
+        <img [src]="product.images[0]" alt="{{ product.title }}" />
+        <div>
+          <h4>{{ product.title }}</h4>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

@@ -19,4 +19,6 @@ export interface IProduct {
   priceAfterDiscount?: number;
   discount: number;
   stock: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
