@@ -101,6 +101,7 @@ export class HomeComponent implements OnInit {
       queryParams: { category: item._id },
     });
   }
+
   getProductByBrand(item: IBrand) {
     this.router.navigate(['/product'], {
       queryParams: { brand: item._id },

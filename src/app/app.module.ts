@@ -29,6 +29,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { AccordionModule } from 'primeng/accordion';
 import { SliderModule } from 'primeng/slider';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { MenuModule } from 'primeng/menu';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -103,6 +104,7 @@ import { ContactComponent } from './components/utils/contact/contact.component';
     AccordionModule,
     SliderModule,
     RadioButtonModule,
+    MenuModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

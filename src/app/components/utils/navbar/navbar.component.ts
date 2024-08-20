@@ -1,8 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { ICategory } from 'src/app/Models/icategory';
 import { CategoryService } from 'src/app/services/category.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
@@ -15,7 +15,7 @@ import { IProduct } from 'src/app/Models/iproduct';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnDestroy, OnInit {
+export class NavbarComponent implements OnDestroy {
   items: MenuItem[] = [];
   authSubscription: Subscription;
 
@@ -36,15 +36,23 @@ export class NavbarComponent implements OnDestroy, OnInit {
     });
     this.updateMenuItems();
   }
-  ngOnInit(): void {
-    this.categoryService.getAllCategories().subscribe((res) => {
-      this.categories = res;
-    });
-  }
-  getSubcategories(category: string) {
-    this.subcategoryService.getSubcategories(category).subscribe((data) => {
-      this.subcategories = data;
-    });
+
+  async loadSubcategories(categoryId: string) {
+    try {
+      const subcategories = await firstValueFrom(
+        this.subcategoryService.getSubcategories(categoryId)
+      );
+      return subcategories.map((subcategory: { name: any; _id: any }) => ({
+        label: subcategory.name,
+        command: () =>
+          this.router.navigate(['/product'], {
+            queryParams: { subcategory: subcategory._id },
+          }),
+      }));
+    } catch (error) {
+      console.error('Failed to load subcategories', error);
+      return [];
+    }
   }
 
   ngOnDestroy() {
@@ -53,9 +61,13 @@ export class NavbarComponent implements OnDestroy, OnInit {
     }
   }
 
-  updateMenuItems() {
+  async updateMenuItems() {
     const isAuthenticated = this.authService.isAuthenticated();
     const isAdmin = this.authService.isAdmin();
+
+    this.categories = await firstValueFrom(
+      this.categoryService.getAllCategories()
+    );
 
     this.items = [
       {
@@ -66,11 +78,16 @@ export class NavbarComponent implements OnDestroy, OnInit {
       {
         label: 'Categories',
         icon: 'pi pi-search',
-        items: [
-          { label: 'Desktop', items: [{ label: 'Processors' }] },
-          { label: 'Notebook', items: [{ label: 'Notebook' }] },
-          { label: 'Monitors', items: [{ label: 'Monitors' }] },
-        ],
+        items: await Promise.all(
+          this.categories.map(async (category) => ({
+            label: category.name,
+            command: () =>
+              this.router.navigate(['/product'], {
+                queryParams: { category: category._id },
+              }),
+            items: await this.loadSubcategories(category._id),
+          }))
+        ),
       },
       { label: 'Special Offers' },
       { label: 'About Us', command: () => this.router.navigate(['/about']) },
@@ -146,7 +163,12 @@ export class NavbarComponent implements OnDestroy, OnInit {
     }
   }
 
-  navigate(product: IProduct) {}
+  navigate(product: IProduct) {
+    this.router.navigate(['/product', product._id]);
+    this.searchTerm = '';
+    this.searchResults = [];
+  }
+
   reloadPage() {
     if (this.searchTerm != '') {
       this.router.navigate(['/product'], {

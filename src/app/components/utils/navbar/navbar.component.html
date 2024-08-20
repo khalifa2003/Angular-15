@@ -12,6 +12,7 @@
       <img src="../../assets/logo.ico" height="40" class="mr-2" />
     </a>
   </ng-template>
+
   <ng-template pTemplate="end">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
@@ -22,9 +23,7 @@
         [(ngModel)]="searchTerm"
         (input)="onSearch()"
       />
-      <button (click)="reloadPage()" class="search-button">
-        Search
-      </button>
+      <button (click)="reloadPage()" class="search-button">Search</button>
     </span>
   </ng-template>
 </p-menubar>
