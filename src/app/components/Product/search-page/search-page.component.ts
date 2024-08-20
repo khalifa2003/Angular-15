@@ -17,17 +17,21 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
 export class SearchPageComponent implements OnInit {
   visibleSidebar: boolean = false;
 
-  originalProducts: IProduct[] = [];
-  products: IProduct[] = [];
-  categories: ICategory[] = [];
   subcategories: ISubcategory[] = [];
+  originalProducts: IProduct[] = [];
+  categories: ICategory[] = [];
+  products: IProduct[] = [];
   brands: IBrand[] = [];
+  priceRange: number[] = [0, 10000];
+  min: number = 0;
+  max: number = 10000;
 
-  selectedBrands: string[] = [];
-  selectedCategories: string[] = [];
   selectedSubcategories: string[] = [];
-  priceRange: [number, number] = [0, Infinity];
-  discountRange: [number, number] = [0, 100];
+  selectedCategories: string[] = [];
+  query: string = '';
+  selectedDiscount: number[] = [];
+  selectedBrands: string[] = [];
+  selectedStock: string[] = [];
 
   constructor(
     private subcategoryService: SubcategoryService,
@@ -39,7 +43,6 @@ export class SearchPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInitialData();
-
     this.route.queryParams.subscribe((params) => {
       this.applyQueryParams(params);
       this.applyFilters();
@@ -59,6 +62,10 @@ export class SearchPageComponent implements OnInit {
   applyQueryParams(params: Params) {
     this.productService.searchProducts(params).subscribe((res) => {
       this.originalProducts = this.products = res;
+      this.min = Math.min(...this.products.map((product) => product.price));
+      this.max = Math.max(...this.products.map((product) => product.price));
+      this.priceRange = [this.min, this.max];
+
       this.selectedBrands = params['brand'] ? [params['brand']] : [];
       this.selectedCategories = params['category'] ? [params['category']] : [];
       this.selectedSubcategories = params['subcategory']
@@ -88,14 +95,13 @@ export class SearchPageComponent implements OnInit {
       return this.originalProducts.filter(
         (product) => product.category._id === id
       ).length;
-    } else if (modelName == 'brand') {
-      return this.originalProducts.filter((product) => product.brand._id === id)
-        .length;
-    } else if (modelName == 'discount') {
-      return this.products.filter((product) => product.discount > 0).length;
     } else if (modelName == 'stock') {
       return this.originalProducts.filter((product) => product.stock == id)
         .length;
+    } else if (modelName == 'brand') {
+      return this.products.filter((product) => product.brand._id === id).length;
+    } else if (modelName == 'discount') {
+      return this.products.filter((product) => product.discount > 0).length;
     } else {
       return this.originalProducts.filter(
         (product) => product.subcategory._id === id
@@ -103,92 +109,106 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
-  onStockChange(event: any) {
-    this.applyFilters();
-    const value = event.target.value;
-    if (event.target.checked) {
-      this.products = this.products.filter((product) => product.stock == value);
+  onStockChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.checked) {
+      this.selectedStock.push(inputElement.value);
     } else {
-      this.applyFilters();
-    }
-  }
-
-  onDiscountChange(event: any) {
-    if (event.target.checked) {
-      this.products = this.products.filter((product) => product.discount > 0);
-    } else {
-      this.applyFilters();
-    }
-  }
-
-  onBrandChange(event: any) {
-    if (event.target.checked) {
-      this.selectedBrands.push(event.target.value);
-    } else {
-      this.selectedBrands = this.selectedBrands.filter(
-        (brand) => brand !== event.target.value
+      this.selectedStock = this.selectedStock.filter(
+        (status) => status !== inputElement.value
       );
     }
     this.applyFilters();
   }
 
-  onCategoryChange(event: any) {
+  onDiscountChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.checked) {
+      this.selectedDiscount = [0];
+    } else {
+      this.selectedDiscount = [];
+    }
+    this.applyFilters();
+  }
+
+  onBrandChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.checked) {
+      this.selectedBrands.push(inputElement.value);
+    } else {
+      this.selectedBrands = this.selectedBrands.filter(
+        (brand) => brand !== inputElement.value
+      );
+    }
+    this.applyFilters();
+  }
+
+  onCategoryChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
     this.subcategoryService
-      .getSubcategories(event.target.value)
+      .getSubcategories(inputElement.value)
       .subscribe((data) => {
         this.subcategories = data;
       });
-    this.selectedCategories = event.target.value;
+    this.selectedCategories = [inputElement.value];
     this.applyFilters();
   }
 
-  onSubcategoryChange(event: any) {
-    if (event.target.checked) {
-      this.selectedSubcategories.push(event.target.value);
+  onSubcategoryChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.checked) {
+      this.selectedSubcategories.push(inputElement.value);
     } else {
       this.selectedSubcategories = this.selectedSubcategories.filter(
-        (subcategory) => subcategory !== event.target.value
+        (subcategory) => subcategory !== inputElement.value
       );
     }
     this.applyFilters();
   }
 
-  onPriceRangeChange(min: string | number, max: string | number) {
-    this.priceRange = [Number(min), Number(max)];
+  onPriceRangeChange(range: number[]) {
+    this.priceRange = range;
     this.applyFilters();
-  }
-
-  getValueFromEvent(event: Event): string {
-    const target = event.target as HTMLInputElement;
-    return target.value;
   }
 
   applyFilters() {
     this.products = this.originalProducts.filter((product) => {
-      const matchesBrand =
-        this.selectedBrands.length === 0 ||
-        this.selectedBrands.includes(product.brand._id);
       const matchesCategory =
         this.selectedCategories.length === 0 ||
         this.selectedCategories.includes(product.category._id);
+      const matchesBrand =
+        this.selectedBrands.length === 0 ||
+        this.selectedBrands.includes(product.brand._id);
       const matchesSubcategory =
         this.selectedSubcategories.length === 0 ||
         this.selectedSubcategories.includes(product.subcategory._id);
+      const matchesStock =
+        this.selectedStock.length === 0 ||
+        this.selectedStock.includes(product.stock);
+      const matchesDiscount =
+        this.selectedDiscount.length === 0 ||
+        this.selectedDiscount[0] != product.discount;
       const matchesPrice =
         product.price >= this.priceRange[0] &&
         product.price <= this.priceRange[1];
+      const matchesQuery =
+        product.price >= this.priceRange[0] &&
+        product.title.toLowerCase().includes(this.query);
 
       return (
-        matchesBrand && matchesCategory && matchesSubcategory && matchesPrice
+        matchesBrand &&
+        matchesCategory &&
+        matchesSubcategory &&
+        matchesPrice &&
+        matchesStock &&
+        matchesDiscount &&
+        matchesQuery
       );
     });
   }
 
   onFilter(event: any) {
-    const query = (event.target as HTMLInputElement).value.toLowerCase();
-    this.products = this.originalProducts.filter((product) =>
-      product.title.toLowerCase().includes(query)
-    );
+    this.query = (event.target as HTMLInputElement).value.toLowerCase();
     this.applyFilters();
   }
 }

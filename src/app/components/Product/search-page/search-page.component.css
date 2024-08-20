@@ -4,20 +4,24 @@
 }
 /* General Sidebar Button Styles */
 .filter-group .btn {
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 4px;
-  padding: 10px;
-  text-align: left;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   margin: 10px 0;
+  border: 1px solid #007bff;
+  text-align: left;
+  border-radius: 4px;
+  color: #007bff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #eee;
 }
 
 .filter-group .btn:hover {
   background-color: #0056b3;
+  color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -77,20 +81,7 @@
   width: 70%;
 }
 
-.discount {
-  width: 50px;
-  height: 50px;
-  background-color: yellow;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 10%;
-  right: 10%;
-}
+.discount,
 .discount2 {
   width: 50px;
   height: 50px;
@@ -102,6 +93,13 @@
   justify-content: center;
   align-items: center;
   position: absolute;
+}
+.discount {
+  top: 10%;
+  right: 10%;
+}
+.discount2 {
+  position: absolute;
   top: 5%;
   left: 1%;
 }
@@ -112,5 +110,17 @@
   font-size: 20px;
   font-weight: 600;
   color: #000000;
-  transition: 0.5s ease-in-out;;
+  transition: 0.5s ease-in-out;
+}
+.price-inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.price-inputs input {
+  width: 48%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
 }

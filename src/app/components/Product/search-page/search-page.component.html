@@ -1,23 +1,23 @@
 <div class="row">
   <p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000">
-    <h3>Filter Options</h3>
+    <img src="../../../../assets/logo.ico" alt="" width="100px" /> Filters
 
     <!-- stock -->
     <div class="filter-group">
       <button
-        class="btn btn-primary w-100"
-        type="button"
-        data-bs-toggle="collapse"
         data-bs-target="#availableInStores"
-        aria-expanded="false"
         aria-controls="availableInStores"
+        class="btn w-100"
+        data-bs-toggle="collapse"
+        aria-expanded="false"
+        type="button"
       >
         Available In Stores <i class="pi pi-chevron-down"></i>
       </button>
       <div class="collapse" id="availableInStores" class="checkbox-container">
         <label>
           <input
-            type="radio"
+            type="checkbox"
             name="stock"
             value="INSTOCK"
             id="stock1"
@@ -28,7 +28,7 @@
         </label>
         <label>
           <input
-            type="radio"
+            type="checkbox"
             name="stock"
             value="LOWSTOCK"
             (change)="onStockChange($event)"
@@ -38,7 +38,7 @@
         </label>
         <label>
           <input
-            type="radio"
+            type="checkbox"
             name="stock"
             value="OUTOFSTOCK"
             (change)="onStockChange($event)"
@@ -52,12 +52,12 @@
     <!-- discount -->
     <div class="filter-group">
       <button
-        class="btn btn-primary w-100"
-        type="button"
-        data-bs-toggle="collapse"
+        class="btn w-100"
         data-bs-target="#discount"
-        aria-expanded="false"
+        data-bs-toggle="collapse"
         aria-controls="discount"
+        aria-expanded="false"
+        type="button"
       >
         Discounts <i class="pi pi-chevron-down"></i>
       </button>
@@ -79,7 +79,7 @@
     <!-- categories -->
     <div class="filter-group">
       <button
-        class="btn btn-primary w-100"
+        class="btn w-100"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#categories"
@@ -113,7 +113,7 @@
     <!-- subcategories -->
     <div class="filter-group">
       <button
-        class="btn btn-primary w-100"
+        class="btn w-100"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#subcategories"
@@ -133,8 +133,6 @@
               type="checkbox"
               [value]="subcategory._id"
               (change)="onSubcategoryChange($event)"
-              [disabled]="subcategory.disabled"
-              [checked]="subcategory.disabled"
             />
             {{ subcategory.name }} ({{
               countProductsModel(subcategory._id, "subcategory")
@@ -147,7 +145,7 @@
     <!-- brands -->
     <div class="filter-group">
       <button
-        class="btn btn-primary w-100"
+        class="btn w-100"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#brands"
@@ -175,17 +173,44 @@
     </div>
 
     <div class="filter-group">
-      <h5>Price Range</h5>
-      <input
-        type="number"
-        placeholder="Min"
-        (change)="onPriceRangeChange(getValueFromEvent($event), priceRange[1])"
-      />
-      <input
-        type="number"
-        placeholder="Max"
-        (change)="onPriceRangeChange(priceRange[0], getValueFromEvent($event))"
-      />
+      <button
+        class="btn w-100"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#price"
+        aria-expanded="false"
+        aria-controls="price"
+      >
+        Price Range <i class="pi pi-chevron-down"></i>
+      </button>
+      <div
+        class="checkbox-container"
+        id="price"
+        [style]="{ padding: '10px 10px 0 ' }"
+      >
+        <p-slider
+          [(ngModel)]="priceRange"
+          [min]="min"
+          [max]="max"
+          [range]="true"
+          [style]="{ width: '100%', padding: '0 50px ' }"
+          (onChange)="onPriceRangeChange(priceRange)"
+        ></p-slider>
+        <div class="price-inputs">
+          <input
+            type="number"
+            placeholder="Min"
+            [(ngModel)]="priceRange[0]"
+            (input)="onPriceRangeChange(priceRange)"
+          />
+          <input
+            type="number"
+            placeholder="Max"
+            [(ngModel)]="priceRange[1]"
+            (input)="onPriceRangeChange(priceRange)"
+          />
+        </div>
+      </div>
     </div>
   </p-sidebar>
 
@@ -195,7 +220,7 @@
         #dv
         [value]="products"
         [paginator]="true"
-        [rows]="20"
+        [rows]="16"
         layout="grid"
       >
         <ng-template pTemplate="header">
@@ -285,7 +310,7 @@
         </ng-template>
 
         <ng-template let-product pTemplate="gridItem">
-          <div class="col-12 col-md-6 col-lg-3 col-xl-2 p-2">
+          <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
             <div class="card h-100">
               <div class="card-body d-flex flex-column">
                 <p class="discount" *ngIf="product.discount > 0">

@@ -27,6 +27,7 @@ import { MessageService } from 'primeng/api';
 import { DataViewModule } from 'primeng/dataview';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AccordionModule } from 'primeng/accordion';
+import { SliderModule } from 'primeng/slider';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -95,7 +96,7 @@ import { SearchPageComponent } from './components/Product/search-page/search-pag
     DataViewModule,
     CheckboxModule,
     AccordionModule,
-
+    SliderModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],
