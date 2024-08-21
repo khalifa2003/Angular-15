@@ -1,1 +1,126 @@
-<p>wishlist works!</p>
+<!-- <div class="address-page">
+  <div class="content">
+    <p-panel header="Saved Addresses">
+      <p-listbox [options]="savedAddresses" [(ngModel)]="selectedAddress">
+        <ng-template let-address pTemplate="item">
+          <div class="address-item">
+            <strong>{{ address.fullName }}</strong
+            ><br />
+            {{ address.streetAddress }}<br />
+            {{ address.city }}, {{ address.state }}, {{ address.postalCode
+            }}<br />
+            {{ address.country }}
+          </div>
+        </ng-template>
+      </p-listbox>
+
+      <div class="address-actions">
+        <button
+          pButton
+          type="button"
+          label="Edit Selected"
+          class="p-button-warning"
+          [disabled]="!selectedAddress"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Delete Selected"
+          class="p-button-danger"
+          [disabled]="!selectedAddress"
+        ></button>
+      </div>
+    </p-panel>
+    <p-panel header="Shipping Address">
+      <div class="address-form">
+        <div class="p-fluid">
+          <div class="p-field">
+            <label for="fullName">Full Name</label>
+            <input
+              id="fullName"
+              type="text"
+              pInputText
+              [(ngModel)]="address.fullName"
+            />
+          </div>
+          <div class="p-field">
+            <label for="streetAddress">Street Address</label>
+            <input
+              id="streetAddress"
+              type="text"
+              pInputText
+              [(ngModel)]="address.streetAddress"
+            />
+          </div>
+          <div class="p-field">
+            <label for="city">City</label>
+            <input
+              id="city"
+              type="text"
+              pInputText
+              [(ngModel)]="address.city"
+            />
+          </div>
+          <div class="p-field">
+            <label for="state">State/Province</label>
+            <input
+              id="state"
+              type="text"
+              pInputText
+              [(ngModel)]="address.state"
+            />
+          </div>
+          <div class="p-field">
+            <label for="postalCode">Postal Code</label>
+            <input
+              id="postalCode"
+              type="text"
+              pInputText
+              [(ngModel)]="address.postalCode"
+            />
+          </div>
+          <div class="p-field">
+            <label for="country">Country</label>
+            <input
+              id="country"
+              type="text"
+              pInputText
+              [(ngModel)]="address.country"
+            />
+          </div>
+        </div>
+      </div>
+      <button
+        pButton
+        type="button"
+        label="Save Address"
+        class="p-button-primary"
+      ></button>
+    </p-panel>
+  </div>
+</div> -->
+<div class="wishlist-page">
+  <div class="content">
+    <p-panel header="My Wishlist">
+      <p-table [value]="wishlistItems" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.price | currency: 'EGP' }}</td>
+            <td>
+              <button pButton type="button" icon="pi pi-shopping-cart" label="Add to Cart" class="p-button-success" (click)="addToCart(item)"></button>
+              <button pButton type="button" icon="pi pi-times" label="Remove" class="p-button-danger" (click)="removeFromWishlist(item)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </div>
+</div>

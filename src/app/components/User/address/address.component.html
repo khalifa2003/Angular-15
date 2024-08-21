@@ -1,43 +1,93 @@
-<div class="container">
-  <div class="profile-header">
-    <h2>Address Settings</h2>
+<div class="p-fluid">
+  <h2 class="p-text-center">Manage Addresses</h2>
+
+  <!-- Address List -->
+  <div class="p-grid">
+    <div *ngFor="let address of addresses" class="p-col-12 p-md-6 p-lg-4">
+      <p-card>
+        <ng-template pTemplate="title">
+          {{ address.fname }} {{ address.lname }}
+        </ng-template>
+        <ng-template pTemplate="content">
+          <p><strong>State:</strong> {{ address.state }}</p>
+          <p><strong>Country:</strong> {{ address.country }}</p>
+          <p><strong>City:</strong> {{ address.city }}</p>
+          <p><strong>Address:</strong> {{ address.address }}</p>
+          <p><strong>Phone:</strong> {{ address.phone }}</p>
+          <p><strong>Email:</strong> {{ address.email }}</p>
+          <p><strong>Postal Code:</strong> {{ address.postalCode }}</p>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            label="Edit"
+            icon="pi pi-pencil"
+            class="p-button-warning"
+            (click)="openModal(address)"
+          ></button>
+          <button
+            pButton
+            label="Delete"
+            icon="pi pi-times"
+            class="p-button-danger"
+            (click)="deleteAddress(address._id)"
+          ></button>
+        </ng-template>
+      </p-card>
+    </div>
   </div>
 
-  <p-card class="address-card">
-    <div class="p-grid p-align-center">
-      <div class="p-col-12 p-md-6">
-        <img
-          src="../../../../assets/person.jpg"
-          width="150px"
-          height="150px"
-          alt="Profile Image"
-        />
-      </div>
-      <div class="p-col-12 p-md-6">
-        <div class="p-fluid">
-          <div class="p-field">
-            <label for="street">Street</label>
-            <input pInputText id="street" type="text" />
-          </div>
-          <div class="p-field">
-            <label for="city">City</label>
-            <input pInputText id="city" type="text" />
-          </div>
-          <div class="p-field">
-            <label for="state">State</label>
-            <input pInputText id="state" type="text" />
-          </div>
-          <div class="p-field">
-            <label for="zip">Zip Code</label>
-            <input pInputText id="zip" type="text" />
-          </div>
-          <div class="p-field">
-            <label for="country">Country</label>
-            <input pInputText id="country" type="text" />
-          </div>
-          <button pButton label="Save Address" icon="pi pi-check"></button>
+  <!-- Add New Address Button -->
+  <button
+    pButton
+    label="Add New Address"
+    icon="pi pi-plus"
+    class="p-button-success p-mt-3"
+    (click)="openModal()"
+  ></button>
+
+  <!-- Modal Dialog for Adding/Editing Address -->
+  <p-dialog
+    header="Address"
+    [(visible)]="showModal"
+    [modal]="true"
+    [closable]="false"
+  >
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="p-field">
+        <label for="fname">First Name</label>
+        <input id="fname" type="text" pInputText formControlName="fname" />
+        <div *ngIf="f['fname'].invalid && f['fname'].touched" class="error">
+          First Name is required
         </div>
       </div>
-    </div>
-  </p-card>
+
+      <div class="p-field">
+        <label for="lname">Last Name</label>
+        <input id="lname" type="text" pInputText formControlName="lname" />
+        <div *ngIf="f['lname'].invalid && f['lname'].touched" class="error">
+          Last Name is required
+        </div>
+      </div>
+
+      <!-- Repeat similar fields for other form controls -->
+
+      <div class="p-d-flex p-jc-end">
+        <button
+          pButton
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="closeModal()"
+        ></button>
+        <button
+          pButton
+          label="Save"
+          icon="pi pi-check"
+          class="p-button-primary"
+          type="submit"
+        ></button>
+      </div>
+    </form>
+  </p-dialog>
 </div>

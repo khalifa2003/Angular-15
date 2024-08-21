@@ -33,6 +33,8 @@ import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SkeletonModule } from 'primeng/skeleton';
+import { PanelModule } from 'primeng/panel';
+import { ListboxModule } from 'primeng/listbox';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -121,6 +123,8 @@ import { OrdersComponent } from './components/User/orders/orders.component';
     TagModule,
     ProgressSpinnerModule,
     SkeletonModule,
+    PanelModule,
+    ListboxModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

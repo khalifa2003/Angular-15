@@ -1,42 +1,22 @@
-.container {
-  max-width: 1200px;
+.p-fluid {
+  max-width: 900px;
   margin: auto;
   padding: 20px;
 }
 
-.profile-header {
-  text-align: center;
+h2 {
   margin-bottom: 20px;
 }
 
-.address-card {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.p-grid {
+  gap: 20px;
 }
 
-.profile-image {
-  width: 100%;
-  height: auto;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.error {
+  color: red;
+  font-size: 0.8em;
 }
 
-.p-field {
-  margin-bottom: 15px;
-}
-
-button[pButton] {
-  background-color: #007bff;
-  border: none;
-  border-radius: 25px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button[pButton]:hover {
-  background-color: #0056b3;
+p-card {
+  margin-bottom: 20px;
 }

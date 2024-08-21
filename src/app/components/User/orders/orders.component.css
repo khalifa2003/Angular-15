@@ -1,0 +1,38 @@
+.order-page {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.content {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.cart-totals, .delivery-return {
+  width: 300px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-header h2 {
+  margin: 0;
+}
+
+p-panel {
+  margin-bottom: 20px;
+}
+
+button.p-button-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+button.p-button-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
