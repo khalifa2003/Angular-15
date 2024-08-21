@@ -213,6 +213,7 @@
         [paginator]="true"
         [rows]="16"
         layout="grid"
+        *ngIf="products[0]"
       >
         <ng-template pTemplate="header">
           <div class="flex flex-row md:flex-row md:justify-content-between">
@@ -367,6 +368,7 @@
           </div>
         </ng-template>
       </p-dataView>
+      <p-progressSpinner ariaLabel="loading" *ngIf="!products[0]" />
     </div>
   </div>
 </div>

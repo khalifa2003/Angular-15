@@ -31,6 +31,8 @@ import { SliderModule } from 'primeng/slider';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SkeletonModule } from 'primeng/skeleton';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -53,6 +55,10 @@ import { SearchPageComponent } from './components/Product/search-page/search-pag
 import { AboutUsComponent } from './components/utils/about-us/about-us.component';
 import { ContactComponent } from './components/utils/contact/contact.component';
 import { ProfileComponent } from './components/User/profile/profile.component';
+import { AddressComponent } from './components/User/address/address.component';
+import { CartComponent } from './components/User/cart/cart.component';
+import { WishlistComponent } from './components/User/wishlist/wishlist.component';
+import { OrdersComponent } from './components/User/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +81,10 @@ import { ProfileComponent } from './components/User/profile/profile.component';
     AboutUsComponent,
     ContactComponent,
     ProfileComponent,
+    AddressComponent,
+    CartComponent,
+    WishlistComponent,
+    OrdersComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +119,8 @@ import { ProfileComponent } from './components/User/profile/profile.component';
     RadioButtonModule,
     MenuModule,
     TagModule,
+    ProgressSpinnerModule,
+    SkeletonModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

@@ -1,6 +1,7 @@
 <app-landing class="row my-container"></app-landing>
 <div class="row my-container mt-4">
   <header>Shop by Categories</header>
+  <p-progressSpinner ariaLabel="loading" *ngIf="!categories[0]" />
   <p-carousel
     [value]="categories"
     [numVisible]="6"
@@ -8,6 +9,7 @@
     [responsiveOptions]="responsiveOptions"
     [ngStyle]="{ margin: '0', padding: '0' }"
     [showIndicators]="false"
+    *ngIf="categories[0]"
   >
     <ng-template let-category pTemplate="item">
       <div class="border-round text-center py-1">
@@ -24,6 +26,7 @@
 
 <div class="row my-container mt-4">
   <header>Special Offers</header>
+  <p-progressSpinner ariaLabel="loading" *ngIf="!specialOffers[0]" />
   <p-carousel
     [value]="specialOffers"
     [numVisible]="6"
@@ -32,6 +35,7 @@
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
     [style]="{ padding: '10px 0 0' }"
+    *ngIf="specialOffers[0]"
   >
     <ng-template let-product pTemplate="item">
       <div class="border-round text-center" [style]="{ padding: '20px' }">
@@ -76,6 +80,7 @@
 
 <div class="row my-container mt-4">
   <header>New Arraive</header>
+  <p-progressSpinner ariaLabel="loading" *ngIf="!newArrival[0]" />
   <p-carousel
     [value]="newArrival"
     [numVisible]="6"
@@ -84,6 +89,7 @@
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
     [style]="{ padding: '10px 0 0' }"
+    *ngIf="!newArrival[0]"
   >
     <ng-template let-product pTemplate="item">
       <div class="border-round text-center" [style]="{ padding: '20px' }">
@@ -134,6 +140,7 @@
     </div>
     <div *ngFor="let item of ids">
       <header>{{ item.name }}</header>
+      <p-progressSpinner ariaLabel="loading" *ngIf="!item.products[0]" />
       <p-carousel
         [value]="item.products"
         [numVisible]="6"
@@ -142,6 +149,7 @@
         [responsiveOptions]="responsiveOptions"
         [showIndicators]="false"
         [style]="{ padding: '10px 0 0' }"
+        *ngIf="item.products[0]"
       >
         <ng-template let-product pTemplate="item">
           <div class="border-round text-center" [style]="{ padding: '20px' }">
@@ -205,6 +213,7 @@
 
 <div class="row my-container mt-4">
   <header>Shop by Brands</header>
+  <p-progressSpinner ariaLabel="loading" *ngIf="!brands[0]" />
   <p-carousel
     [value]="brands"
     [numVisible]="6"
@@ -212,6 +221,7 @@
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
+    *ngIf="brands[0]"
   >
     <ng-template let-brand pTemplate="item">
       <div class="border-round text-center py-3 px-2">

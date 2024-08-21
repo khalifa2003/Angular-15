@@ -81,6 +81,7 @@ export class NavbarComponent implements OnDestroy {
         items: await Promise.all(
           this.categories.map(async (category) => ({
             label: category.name,
+            icon: 'pi pi-arrow-right',
             command: () =>
               this.router.navigate(['/product'], {
                 queryParams: { category: category._id },
@@ -89,15 +90,19 @@ export class NavbarComponent implements OnDestroy {
           }))
         ),
       },
-      { label: 'Special Offers' },
-      { label: 'About Us', command: () => this.router.navigate(['/about']) },
+      { label: 'Special Offers', icon: 'pi pi-gift' },
+      {
+        label: 'About Us',
+        icon: 'pi pi-info-circle',
+        command: () => this.router.navigate(['/about']),
+      },
       {
         label: 'Contact Us',
         icon: 'pi pi-envelope',
         command: () => this.router.navigate(['/contact']),
       },
       {
-        label: 'Users',
+        label: '',
         visible: isAuthenticated,
         icon: 'pi pi-fw pi-user',
         items: [
@@ -108,19 +113,30 @@ export class NavbarComponent implements OnDestroy {
           },
           {
             label: 'Address',
-            icon: 'pi pi-location',
+            icon: 'pi pi-map-marker',
             command: () => this.router.navigate(['/address']),
           },
           {
             label: 'Orders',
-            icon: 'pi pi-list',
             command: () => this.router.navigate(['/orders']),
+            icon: 'pi pi-shopping-cart',
+          },
+          {
+            label: 'Wishlist',
+            command: () => this.router.navigate(['/wishlist']),
+            icon: 'pi pi-heart',
+          },
+          {
+            label: 'Cart',
+            command: () => this.router.navigate(['/cart']),
+            icon: 'pi pi-shopping-cart',
           },
           {
             label: 'Logout',
             command: () => {
               this.authService.logout();
             },
+            icon: 'pi pi-power-off',
           },
         ],
       },
@@ -128,6 +144,7 @@ export class NavbarComponent implements OnDestroy {
         label: 'Login/Register',
         command: () => this.router.navigate(['/login']),
         visible: !isAuthenticated,
+        icon: 'pi pi-fw pi-sign-in',
       },
       {
         label: 'Admin',
