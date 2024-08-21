@@ -8,7 +8,7 @@ import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
-  private currentUserSubject: BehaviorSubject<any>;
+  public currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
   constructor(private http: HttpClient, private router: Router) {

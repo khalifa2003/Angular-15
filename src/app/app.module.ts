@@ -30,6 +30,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { SliderModule } from 'primeng/slider';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MenuModule } from 'primeng/menu';
+import { TagModule } from 'primeng/tag';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -51,6 +52,7 @@ import { ProductPageComponent } from './components/Product/product-page/product-
 import { SearchPageComponent } from './components/Product/search-page/search-page.component';
 import { AboutUsComponent } from './components/utils/about-us/about-us.component';
 import { ContactComponent } from './components/utils/contact/contact.component';
+import { ProfileComponent } from './components/User/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,7 @@ import { ContactComponent } from './components/utils/contact/contact.component';
     SearchPageComponent,
     AboutUsComponent,
     ContactComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,6 +108,7 @@ import { ContactComponent } from './components/utils/contact/contact.component';
     SliderModule,
     RadioButtonModule,
     MenuModule,
+    TagModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

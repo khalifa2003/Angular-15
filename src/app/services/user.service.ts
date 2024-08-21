@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -15,14 +15,23 @@ export class UserService {
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
 
-    return this.http.get(`${this.apiUrl}/users/getMe`, { headers });
+    return this.http.get(`${this.apiUrl}/user/me`, { headers });
   }
 
-  updateMe(formData: any): Observable<any> {
+  updateLoggedUserData(formData: any): Observable<any> {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.put(`${this.apiUrl}/users/updateMe`, formData, {
+    return this.http.put(`${this.apiUrl}/user/me`, formData, {
+      headers,
+    });
+  }
+
+  updateLoggedUserPassword(passwords: FormData): Observable<any> {
+    const headers = new HttpHeaders({
+      authorization: `Bearer ${this.authService.currentUserValue.token}`,
+    });
+    return this.http.put(`${this.apiUrl}/user/me/password`, passwords, {
       headers,
     });
   }

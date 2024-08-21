@@ -129,8 +129,8 @@
 <div class="row my-container mt-4">
   <div class="col-xl-10 col-lg-12">
     <div class="d-flex flex-wrap justify-content-evenly">
-      <img src="../../../assets/sec1.1.jpg" class="sec p-1" />
-      <img src="../../../assets/sec1.2.jpg" class="sec p-1" />
+      <img src="../../../assets/sec1.1.jpg" class="sec p-1 w-100" />
+      <img src="../../../assets/sec1.2.jpg" class="sec p-1 w-100" />
     </div>
     <div *ngFor="let item of ids">
       <header>{{ item.name }}</header>
@@ -188,16 +188,18 @@
       </p-carousel>
     </div>
     <div class="d-flex flex-wrap justify-content-evenly">
-      <img src="../../../assets/advertise/R.jpg" class="sec p-1" />
-      <img src="../../../assets/advertise/R.jpg" class="sec p-1" />
+      <img src="../../../assets/advertise/R.jpg" class="sec p-1 w-100" />
+      <img src="../../../assets/advertise/R.jpg" class="sec p-1 w-100" />
     </div>
   </div>
-  <div class="col-xl-2 col-lg-12">
-    <img src="../../../assets/side/side1.jpg" />
-    <img src="../../../assets/side/side2.jpg" class="mt-1" />
-    <img src="../../../assets/side/side3.jpg" class="mt-1" />
-    <img src="../../../assets/side/side4.jpg" class="mt-1" />
-    <img src="../../../assets/side/side5.jpg" class="mt-1" />
+  <div
+    class="col-xl-2 col-lg-12 d-flex flex-xl-column flex-row flex-wrap align-items-center"
+  >
+    <img src="../../../assets/side/side1.jpg" width="200px" />
+    <img src="../../../assets/side/side2.jpg" width="200px" class="mt-1" />
+    <img src="../../../assets/side/side3.jpg" width="200px" class="mt-1" />
+    <img src="../../../assets/side/side4.jpg" width="200px" class="mt-1" />
+    <img src="../../../assets/side/side5.jpg" width="200px" class="mt-1" />
   </div>
 </div>
 

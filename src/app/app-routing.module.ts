@@ -14,6 +14,7 @@ import { SearchPageComponent } from './components/Product/search-page/search-pag
 import { AdminGuard } from './Guards/admin.guard';
 import { AboutUsComponent } from './components/utils/about-us/about-us.component';
 import { ContactComponent } from './components/utils/contact/contact.component';
+import { ProfileComponent } from './components/User/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -28,12 +29,14 @@ const routes: Routes = [
   { path: 'product/:id', component: ProductPageComponent },
   { path: 'about', component: AboutUsComponent },
   { path: 'contact', component: ContactComponent },
-  // { path: 'brands', component: BrandPageComponent },
-  // { path: 'categories', component: CategoryPageComponent },
 
+  // Auth
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   // { path: 'login/verify', component: ForgetPasswordComponent },
+
+  // User
+  { path: 'profile', component: ProfileComponent },
 
   // Admin
   {
@@ -44,21 +47,25 @@ const routes: Routes = [
   {
     path: 'admin/category/management',
     component: CategoryManagementComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'admin/product/management',
     component: ProductManagementComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'admin/brand/management',
     component: BrandManagementComponent,
+    canActivate: [AdminGuard],
   },
   {
     path: 'admin/subcategory/management',
     component: SubcategoryMangementComponent,
+    canActivate: [AdminGuard],
   },
 
-  { path: '**', component: NotFoundComponent }, // wild card path
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

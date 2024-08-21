@@ -3,9 +3,8 @@ export interface IUser {
   _id: string;
   fname: string;
   lname: string;
-  slug?: string;
-  phone?: string;
-  profileImage: string;
+  phone: string;
+  image: string;
   wishlist: string[];
   email: string;
   password: string;
@@ -14,6 +13,6 @@ export interface IUser {
   passwordResetExpires?: Date;
   passwordResetVerified?: string;
   active: boolean;
-  role: string[];
+  roles: string[];
   addresses: IAddress;
 }
