@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   newArrival: IProduct[] = [];
   specialOffers: IProduct[] = [];
   product: IProduct = {} as IProduct;
-  isInWishlist = false;
+  wishlist: any[] = [];
 
   constructor(
     private categoryService: CategoryService,
@@ -83,6 +83,15 @@ export class HomeComponent implements OnInit {
         (product: IProduct) => product.discount > 0
       );
     });
+  }
+
+  getWishlist() {
+    if (this.authService.isUserLogged) {
+      this.wishlistService.getWishlist().subscribe((res) => {
+        this.wishlist = res;
+        console.log(res);
+      });
+    }
   }
 
   getCategories() {
@@ -146,16 +155,17 @@ export class HomeComponent implements OnInit {
   addToWishlist(product: IProduct) {
     if (this.authService.isUserLogged) {
       this.wishlistService.addToWishlist(product).subscribe((res) => {
-        this.isInWishlist = true;
+        console.log(res);
       });
     }
   }
 
   RemoveFromWishlist(product: IProduct) {
     if (this.authService.isUserLogged) {
-      this.wishlistService.removeFromWishlist(product).subscribe((res) => {
-        this.isInWishlist = false;
-      });
+      this.wishlistService.removeFromWishlist(product).subscribe((res) => {});
     }
+  }
+  isInWishlist(id: string): boolean {
+    return this.wishlist.includes(id);
   }
 }
