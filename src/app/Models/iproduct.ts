@@ -16,7 +16,7 @@ export interface IProduct {
   ratingsAverage: number;
   ratingsQuantity?: number;
   sold?: number;
-  priceAfterDiscount?: number;
+  priceAfterDiscount: number;
   discount: number;
   stock: string;
   createdAt: Date;

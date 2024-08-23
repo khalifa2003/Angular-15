@@ -67,7 +67,6 @@ export class AuthService {
   }
 
   get isUserLogged(): boolean {
-    console.log(localStorage.getItem('user'));
-    return this.currentUserValue.data?.fname ? true : false;
+    return this.currentUserValue.user?.fname ? true : false;
   }
 }

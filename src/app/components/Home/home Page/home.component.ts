@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { BrandService } from 'src/app/services/brand.service';
@@ -6,6 +7,9 @@ import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
 import { Router } from '@angular/router';
+import { CartService } from 'src/app/services/cart.service';
+import { WishlistService } from 'src/app/services/wishlist.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -27,12 +31,20 @@ export class HomeComponent implements OnInit {
   brands: IBrand[] = [];
   newArrival: IProduct[] = [];
   specialOffers: IProduct[] = [];
+  product: IProduct = {} as IProduct;
+  isInWishlist = false;
 
   constructor(
-    private productService: ProductService,
     private categoryService: CategoryService,
+    private wishlistService: WishlistService,
+    private productService: ProductService,
+    private messageService: MessageService,
     private brandService: BrandService,
-    private router: Router
+    private authService: AuthService,
+    private cartService: CartService,
+    private renderer: Renderer2,
+    private router: Router,
+    private el: ElementRef
   ) {
     this.responsiveOptions = [
       {
@@ -106,5 +118,44 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/product'], {
       queryParams: { brand: item._id },
     });
+  }
+
+  addToCart(selectedProduct: IProduct) {
+    if (this.authService.isUserLogged) {
+      const audio = this.renderer.createElement('audio');
+      this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
+      this.renderer.appendChild(this.el.nativeElement, audio);
+      if (this.authService.isUserLogged) {
+        this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
+          this.product = selectedProduct;
+          audio.play();
+          this.showModal = true;
+          setTimeout(() => {
+            this.showModal = false;
+          }, 3000);
+        });
+      }
+    }
+  }
+
+  showModal: boolean = false;
+  closeModal() {
+    this.showModal = false;
+  }
+
+  addToWishlist(product: IProduct) {
+    if (this.authService.isUserLogged) {
+      this.wishlistService.addToWishlist(product).subscribe((res) => {
+        this.isInWishlist = true;
+      });
+    }
+  }
+
+  RemoveFromWishlist(product: IProduct) {
+    if (this.authService.isUserLogged) {
+      this.wishlistService.removeFromWishlist(product).subscribe((res) => {
+        this.isInWishlist = false;
+      });
+    }
   }
 }

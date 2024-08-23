@@ -14,7 +14,6 @@ export class CartService {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-
     return this.http.post(
       `${this.apiUrl}/cart`,
       { productId },
@@ -51,11 +50,11 @@ export class CartService {
     return this.http.delete(`${this.apiUrl}/cart`, { headers });
   }
 
-  deleteCartItem(productId: string): Observable<any> {
+  deleteCartItem(itemId: string): Observable<any> {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.delete(`${this.apiUrl}/cart/${productId}`, {
+    return this.http.delete(`${this.apiUrl}/cart/${itemId}`, {
       headers,
     });
   }

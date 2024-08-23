@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { ICart } from 'src/app/Models/icart';
 import { IProduct } from 'src/app/Models/iproduct';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
-import { ProductService } from 'src/app/services/product.service';
+import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,65 +14,80 @@ import { ProductService } from 'src/app/services/product.service';
 export class CartComponent {
   products: IProduct[] = [];
   cart: ICart = {} as ICart;
+
   constructor(
     private cartService: CartService,
-    private productService: ProductService
+    private authService: AuthService,
+    private wishlistService: WishlistService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.getCart();
   }
+
   getCart() {
     this.cartService.getCart().subscribe((res) => {
-      this.products = [];
       this.cart = res.data;
-      this.cart.cartItems.map((id: any) => {
-        this.productService.getProductById(id.product).subscribe((res) => {
-          this.cart.cartItems.map((el: any, index: number) => {
-            if (el.product == res.data._id) {
-              this.cart.cartItems[index].product = res.data;
-            }
-          });
-        });
+      this.cart.cartItems.map((cart: any) => {
+        this.products.push(cart.product);
       });
     });
   }
+
   addOne(id: string, quantity: number) {
     this.cartService
       .updateCartItemQuantity(id, quantity + 1)
       .subscribe((res) => {
         this.getCart();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail: `Quantity Updated`,
+        });
       });
   }
+
   removeOne(id: string, quantity: number) {
-    if (quantity == 1) {
-      return;
-    }
-    this.cartService
-      .updateCartItemQuantity(id, quantity - 1)
-      .subscribe((res) => {
-        this.getCart();
+    if (quantity > 1) {
+      this.cartService
+        .updateCartItemQuantity(id, quantity - 1)
+        .subscribe((res) => {
+          this.getCart();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'success',
+            detail: `Quantity Updated`,
+          });
+        });
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warn',
+        detail: `Invalid Quantity`,
       });
+    }
   }
+
   deleteCart() {
     this.cartService.deleteCart().subscribe(() => {
       this.cart = {} as ICart;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'success',
+        detail: `Cart Deleted Successfully`,
+      });
     });
   }
 
-  showModal: boolean = false;
-  selectedItem: string = '';
-  openModel(id: string) {
-    this.showModal = true;
-    this.selectedItem = id;
-  }
-  closeModal() {
-    this.showModal = false;
-  }
-  deleteItem() {
-    this.cartService.deleteCartItem(this.selectedItem).subscribe((res) => {
+  deleteItem(itemId: string) {
+    this.cartService.deleteCartItem(itemId).subscribe((res) => {
       this.getCart();
-      this.closeModal();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'success',
+        detail: `Product Deleted `,
+      });
     });
   }
 }

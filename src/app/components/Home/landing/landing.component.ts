@@ -25,38 +25,14 @@ export class LandingComponent {
 
   constructor() {
     this.images = [
-      {
-        itemImageSrc: '../../assets/swipper/swipper1.jpg',
-        thumbnailImageSrc: '../../assets/swipper/swipper1.jpg',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper2.jpg',
-        thumbnailImageSrc: '../../assets/swipper/swipper2.jpg',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper3.jpg',
-        thumbnailImageSrc: '../../assets/swipper/swipper3.jpg',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper4.jpg',
-        thumbnailImageSrc: '../../assets/swipper/swipper4.jpg',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper5.jpg',
-        thumbnailImageSrc: '../../assets/swipper/swipper5.jpg',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper6.jpg',
-        thumbnailImageSrc: '../../assets/swipper/swipper6.jpg',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper7.webp',
-        thumbnailImageSrc: '../../assets/swipper/swipper7.webp',
-      },
-      {
-        itemImageSrc: '../../assets/swipper/swipper8.avif',
-        thumbnailImageSrc: '../../assets/swipper/swipper8.avif',
-      },
+      '../../assets/swipper/swipper1.jpg',
+      '../../assets/swipper/swipper2.jpg',
+      '../../assets/swipper/swipper3.jpg',
+      '../../assets/swipper/swipper4.jpg',
+      '../../assets/swipper/swipper5.jpg',
+      '../../assets/swipper/swipper6.jpg',
+      '../../assets/swipper/swipper7.webp',
+      '../../assets/swipper/swipper8.avif',
     ];
   }
 }

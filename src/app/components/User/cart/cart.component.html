@@ -1,11 +1,13 @@
-<div class="container shopping-cart col-12">
-  <div class="cart-items col-md-8 col-sm-12">
+<div class="shopping-cart row">
+  <div class="cart-items col-xl-8 col-lg-12">
     <div class="cart-item" *ngFor="let item of cart.cartItems; index as index">
-      <img [src]="item.product.images[0]" alt="a" />
-      <div class="item-details">
-        <p class="product-name">{{ item.product.title }}</p>
-        <p class="price">Price: {{ item.product.price }} EGP</p>
-        <div class="quantity">
+      <img [src]="item.product.images[0]" width="100px" class="mx-5" />
+      <div class="item-details w-100">
+        <p class="product-name w-50">{{ item.product.title }}</p>
+        <p class="price w-25">
+          Price: {{ item.product.priceAfterDiscount }} EGP
+        </p>
+        <div class="quantity w-25">
           <button
             class="quantity-button"
             (click)="removeOne(item._id, +item.quantity)"
@@ -20,10 +22,12 @@
             +
           </button>
         </div>
-        <p class="subtotal">
-          Total: {{ item.product.price * item.quantity }} EGP
+        <p class="subtotal w-25">
+          Total: {{ item.product.priceAfterDiscount * item.quantity }} EGP
         </p>
-        <span class="close" (click)="openModel(item._id)">&times;</span>
+        <button class="btn btn-danger w-" (click)="deleteItem(item._id)">
+          Delete
+        </button>
       </div>
     </div>
     <button class="btn btn-danger mt-2" (click)="deleteCart()">
@@ -75,14 +79,5 @@
       </ul>
     </div>
   </div>
-  <div class="modall" [class.show]="showModal">
-    <div class="modall-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <h2>Are You Sure You Want ?</h2>
-      <div class="modall-buttons">
-        <button (click)="closeModal()" class="btn btn-success mx-2">No</button>
-        <button (click)="deleteItem()" class="btn btn-danger">Yes</button>
-      </div>
-    </div>
-  </div>
 </div>
+<p-toast></p-toast>
