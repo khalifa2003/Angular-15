@@ -24,6 +24,7 @@
   </p-carousel>
 </div>
 
+<!-- Special Offers -->
 <div class="row my-container mt-4">
   <header>Special Offers</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!specialOffers[0]" />
@@ -85,8 +86,9 @@
   </p-carousel>
 </div>
 
+<!-- New Arrival -->
 <div class="row my-container mt-4">
-  <header>New Arraive</header>
+  <header>New Arrival</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!newArrival[0]" />
   <p-carousel
     [value]="newArrival"
@@ -96,7 +98,7 @@
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
     [style]="{ padding: '10px 0 0' }"
-    *ngIf="!newArrival[0]"
+    *ngIf="newArrival[0]"
   >
     <ng-template let-product pTemplate="item">
       <div class="border-round text-center" [style]="{ padding: '20px' }">
@@ -124,12 +126,18 @@
               icon="pi pi-cart-plus"
               (onClick)="addToCart(product)"
             ></p-button>
-            <p-button
-              type="button"
-              styleClass="p-button-success p-button-rounded"
+            <i
               [ngStyle]="{ position: 'fixed', top: '0' }"
-              icon="pi pi-star-fill"
-            ></p-button>
+              (click)="addToWishlist(product)"
+              *ngIf="!isInWishlist(product._id)"
+              class="pi pi-heart"
+            ></i>
+            <i
+              [ngStyle]="{ position: 'fixed', top: '0' }"
+              (click)="RemoveFromWishlist(product)"
+              *ngIf="isInWishlist(product._id)"
+              class="pi pi-heart-fill"
+            ></i>
             <p class="discount" *ngIf="product.discount > 0">
               {{ product.discount }}%
             </p>
@@ -189,12 +197,18 @@
                   icon="pi pi-cart-plus"
                   (onClick)="addToCart(product)"
                 ></p-button>
-                <p-button
-                  type="button"
-                  styleClass="p-button-success p-button-rounded"
+                <i
                   [ngStyle]="{ position: 'fixed', top: '0' }"
-                  icon="pi pi-star-fill"
-                ></p-button>
+                  (click)="addToWishlist(product)"
+                  *ngIf="!isInWishlist(product._id)"
+                  class="pi pi-heart"
+                ></i>
+                <i
+                  [ngStyle]="{ position: 'fixed', top: '0' }"
+                  (click)="RemoveFromWishlist(product)"
+                  *ngIf="isInWishlist(product._id)"
+                  class="pi pi-heart-fill"
+                ></i>
                 <p class="discount" *ngIf="product.discount > 0">
                   {{ product.discount }}%
                 </p>
@@ -252,7 +266,7 @@
   </div>
   <div class="modall-body">
     <img [src]="product.images[0]" alt="" />
-    <a routerLink="/user/id/cart" style="text-decoration: none">{{
+    <a routerLink="/cart" style="text-decoration: none">{{
       product.title
     }}</a>
   </div>

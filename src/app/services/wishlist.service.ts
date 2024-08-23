@@ -10,40 +10,36 @@ import { IProduct } from '../Models/iproduct';
 })
 export class WishlistService {
   private apiUrl = 'http://localhost:3000';
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private userService: UserService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getWishlist(): Observable<any> {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.post(`${this.apiUrl}/wishlist`, {
+    return this.http.get(`${this.apiUrl}/wishlist`, {
       headers,
     });
   }
 
-  addToWishlist(product: IProduct) {
+  addToWishlist(productId: string) {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
 
     return this.http.post(
       `${this.apiUrl}/wishlist`,
-      { productId: product._id },
+      { productId },
       {
         headers,
       }
     );
   }
 
-  removeFromWishlist(product: IProduct) {
+  removeFromWishlist(productId: string) {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.delete(`${this.apiUrl}/wishlist/${product._id}`, {
+    return this.http.delete(`${this.apiUrl}/wishlist/${productId}`, {
       headers,
     });
   }

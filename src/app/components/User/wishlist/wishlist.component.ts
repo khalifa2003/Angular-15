@@ -1,3 +1,4 @@
+import { WishlistService } from 'src/app/services/wishlist.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -33,6 +34,19 @@ export class WishlistComponent {
   //   },
   // ];
   // selectedAddress: any;
+  wishList: any[] = [];
+  constructor(private WishlistService: WishlistService) {}
+
+  ngOnInit() {
+    this.getWishlist();
+  }
+
+  getWishlist() {
+    this.WishlistService.getWishlist().subscribe((res) => {
+      this.wishList = res.data;
+    });
+  }
+
   wishlistItems = [
     { productName: 'Product 1', price: 100 },
     { productName: 'Product 2', price: 150 },
@@ -40,7 +54,6 @@ export class WishlistComponent {
   ];
 
   addToCart(item: any) {
-    // Logic to add item to cart
     console.log('Added to cart:', item);
   }
 

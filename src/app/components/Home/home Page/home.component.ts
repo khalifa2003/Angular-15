@@ -18,7 +18,6 @@ import { MessageService } from 'primeng/api';
 })
 export class HomeComponent implements OnInit {
   responsiveOptions: any[];
-
   ids: { id: string; name: string; products: IProduct[] }[] = [
     { id: '665b9e7eee20a57f1c86a3df', name: 'NOTEBOOK', products: [] },
     { id: '665b9e66ee20a57f1c86a3dd', name: 'DESKTOP', products: [] },
@@ -77,21 +76,13 @@ export class HomeComponent implements OnInit {
 
     this.productService.getAllProducts().subscribe((res) => {
       this.newArrival = res.slice(-12);
-    });
-    this.productService.getAllProducts().subscribe((res) => {
+
       this.specialOffers = res.filter(
         (product: IProduct) => product.discount > 0
       );
     });
-  }
 
-  getWishlist() {
-    if (this.authService.isUserLogged) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res;
-        console.log(res);
-      });
-    }
+    this.getWishlist();
   }
 
   getCategories() {
@@ -137,11 +128,11 @@ export class HomeComponent implements OnInit {
       if (this.authService.isUserLogged) {
         this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
           this.product = selectedProduct;
-          audio.play();
           this.showModal = true;
           setTimeout(() => {
             this.showModal = false;
-          }, 3000);
+          }, 7000);
+          audio.play();
         });
       }
     }
@@ -153,18 +144,55 @@ export class HomeComponent implements OnInit {
   }
 
   addToWishlist(product: IProduct) {
+    const audio = this.renderer.createElement('audio');
+    this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
+    this.renderer.appendChild(this.el.nativeElement, audio);
     if (this.authService.isUserLogged) {
-      this.wishlistService.addToWishlist(product).subscribe((res) => {
-        console.log(res);
+      this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
+        audio.play();
+        this.wishlist = res.data.map((product: { _id: any }) => {
+          return product._id;
+        });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail: res.message,
+        });
       });
     }
   }
 
   RemoveFromWishlist(product: IProduct) {
+    const audio = this.renderer.createElement('audio');
+    this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
+    this.renderer.appendChild(this.el.nativeElement, audio);
     if (this.authService.isUserLogged) {
-      this.wishlistService.removeFromWishlist(product).subscribe((res) => {});
+      this.wishlistService
+        .removeFromWishlist(product._id)
+        .subscribe((res: any) => {
+          audio.play();
+          this.wishlist = res.data.map((product: { _id: any }) => {
+            return product._id;
+          });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'success',
+            detail: res.message,
+          });
+        });
     }
   }
+
+  getWishlist() {
+    if (this.authService.isUserLogged) {
+      this.wishlistService.getWishlist().subscribe((res) => {
+        this.wishlist = res.data.map((product: { _id: any }) => {
+          return product._id;
+        });
+      });
+    }
+  }
+
   isInWishlist(id: string): boolean {
     return this.wishlist.includes(id);
   }
