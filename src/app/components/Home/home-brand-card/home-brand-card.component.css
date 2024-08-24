@@ -1,0 +1,9 @@
+.category-image {
+  width: 100%;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.category-image:hover {
+  background-color: #eee;
+  transition: 0.5s;
+}

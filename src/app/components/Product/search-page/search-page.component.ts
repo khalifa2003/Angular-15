@@ -230,4 +230,6 @@ export class SearchPageComponent implements OnInit {
     this.query = (event.target as HTMLInputElement).value.toLowerCase();
     this.applyFilters();
   }
+
+  
 }

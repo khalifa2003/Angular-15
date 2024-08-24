@@ -1,0 +1,43 @@
+<div class="border-round text-center" [style]="{ padding: '20px' }">
+  <div>
+    <img [src]="product.images[0]" [alt]="product.title" width="100%" />
+  </div>
+  <div>
+    <h6 class="product-title" routerLink="/product/{{ product._id }}">
+      {{ product.title }}
+    </h6>
+    <h6 class="mb-3 d-flex justify-content-evenly">
+      <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
+      <p>{{ product.priceAfterDiscount }}EGP</p>
+    </h6>
+    <div class="car-buttons">
+      <p-button
+        type="button"
+        styleClass="p-button p-button-rounded"
+        icon="pi pi-search"
+        routerLink="/product/{{ product._id }}"
+      ></p-button>
+      <p-button
+        type="button"
+        styleClass="p-button-success p-button-rounded"
+        icon="pi pi-cart-plus"
+        (onClick)="addToCart()"
+      ></p-button>
+      <i
+        [ngStyle]="{ position: 'fixed', top: '0' }"
+        (click)="addToWishlist(product)"
+        *ngIf="!isInWishlist(product._id)"
+        class="pi pi-heart"
+      ></i>
+      <i
+        [ngStyle]="{ position: 'fixed', top: '0' }"
+        (click)="RemoveFromWishlist(product)"
+        *ngIf="isInWishlist(product._id)"
+        class="pi pi-heart-fill"
+      ></i>
+      <p class="discount" *ngIf="product.discount > 0">
+        {{ product.discount }}%
+      </p>
+    </div>
+  </div>
+</div>

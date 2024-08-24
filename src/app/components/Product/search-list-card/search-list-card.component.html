@@ -1,0 +1,76 @@
+<div
+  class="d-flex align-items-center border-bottom py-3"
+  style="position: relative"
+>
+  <div class="discount2" *ngIf="product.discount > 0">
+    {{ product.discount }}%
+  </div>
+  <img [src]="product.images[0]" [alt]="product.title" width="20%" />
+  <div class="card-text">
+    <p class="text-muted">
+      <i class="pi pi-tag me-2"></i>
+      {{ product.category.name }}
+    </p>
+    <a class="h5 title" [routerLink]="product._id">{{ product.title }}</a>
+    <p-rating
+      [ngModel]="product.ratingsAverage"
+      [readonly]="true"
+      [cancel]="false"
+    ></p-rating>
+  </div>
+  <div
+    class="text-end"
+    class="d-flex flex-row flex-md-column justify-content-between w-md-auto align-items-center mt-3 mt-md-0"
+  >
+    <div class="d-flex flex-column">
+      <del class="mb-2" *ngIf="product.discount > 0"
+        >{{ product.price }}EGP</del
+      >
+      <span class="fs-4 fw-semibold mb-2"
+        >{{ product.priceAfterDiscount }}EGP</span
+      >
+    </div>
+    <p-button
+      icon="pi pi-shopping-cart"
+      label="Add to Cart"
+      [disabled]="product.quantity === 0"
+      styleClass="mb-2 p-button-sm"
+      (click)="addToCart(product)"
+    ></p-button>
+    <span
+      class="text-success rounded-pill fw-semibold"
+      [ngClass]="
+        product.stock == 'LOWSTOCK'
+          ? 'text-warning'
+          : product.stock == 'OUTOFSTOCK'
+          ? 'text-danger'
+          : ''
+      "
+    >
+      {{ product.stock }}
+    </span>
+  </div>
+  <i
+    [ngStyle]="{ position: 'absolute', top: '10%', right: '5%' }"
+    (click)="addToWishlist(product)"
+    *ngIf="!isInWishlist(product._id)"
+    class="pi pi-heart"
+  ></i>
+  <i
+    [ngStyle]="{ position: 'absolute', top: '10%', right: '5%' }"
+    (click)="RemoveFromWishlist(product)"
+    *ngIf="isInWishlist(product._id)"
+    class="pi pi-heart-fill"
+  ></i>
+</div>
+
+<div class="modall" *ngIf="showModal">
+  <div class="modall-header">
+    <span class="modall-title">Product added to Cart</span>
+    <button class="close-btn" (click)="closeModal()">&times;</button>
+  </div>
+  <div class="modall-body">
+    <img [src]="product.images[0]" alt="" />
+    <a routerLink="/cart" style="text-decoration: none">{{ product.title }}</a>
+  </div>
+</div>

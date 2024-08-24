@@ -12,14 +12,7 @@
     *ngIf="categories[0]"
   >
     <ng-template let-category pTemplate="item">
-      <div class="border-round text-center py-1">
-        <img
-          [src]="category.image"
-          [alt]="category.name"
-          class="category-image"
-          (click)="getProductByCategory(category)"
-        />
-      </div>
+      <app-home-category-card [category]="category"></app-home-category-card>
     </ng-template>
   </p-carousel>
 </div>
@@ -39,49 +32,10 @@
     *ngIf="specialOffers[0]"
   >
     <ng-template let-product pTemplate="item">
-      <div class="border-round text-center" [style]="{ padding: '20px' }">
-        <div>
-          <img [src]="product.images[0]" [alt]="product.title" width="100%" />
-        </div>
-        <div>
-          <h6 class="product-title" routerLink="/product/{{ product._id }}">
-            {{ product.title }}
-          </h6>
-          <h6 class="mb-3 d-flex justify-content-evenly">
-            <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
-            <p>{{ product.priceAfterDiscount }}EGP</p>
-          </h6>
-          <div class="car-buttons">
-            <p-button
-              type="button"
-              styleClass="p-button p-button-rounded"
-              icon="pi pi-search"
-              routerLink="/product/{{ product._id }}"
-            ></p-button>
-            <p-button
-              type="button"
-              styleClass="p-button-success p-button-rounded"
-              icon="pi pi-cart-plus"
-              (onClick)="addToCart(product)"
-            ></p-button>
-            <i
-              [ngStyle]="{ position: 'fixed', top: '0' }"
-              (click)="addToWishlist(product)"
-              *ngIf="!isInWishlist(product._id)"
-              class="pi pi-heart"
-            ></i>
-            <i
-              [ngStyle]="{ position: 'fixed', top: '0' }"
-              (click)="RemoveFromWishlist(product)"
-              *ngIf="isInWishlist(product._id)"
-              class="pi pi-heart-fill"
-            ></i>
-            <p class="discount" *ngIf="product.discount > 0">
-              {{ product.discount }}%
-            </p>
-          </div>
-        </div>
-      </div>
+      <app-home-product-card
+        (notifyParent)="addToCart($event)"
+        [product]="product"
+      ></app-home-product-card>
     </ng-template>
   </p-carousel>
 </div>
@@ -101,49 +55,10 @@
     *ngIf="newArrival[0]"
   >
     <ng-template let-product pTemplate="item">
-      <div class="border-round text-center" [style]="{ padding: '20px' }">
-        <div>
-          <img [src]="product.images[0]" [alt]="product.title" width="100%" />
-        </div>
-        <div>
-          <h6 class="product-title" routerLink="/product/{{ product._id }}">
-            {{ product.title }}
-          </h6>
-          <h6 class="mb-3 d-flex justify-content-evenly">
-            <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
-            <p>{{ product.priceAfterDiscount }}EGP</p>
-          </h6>
-          <div class="car-buttons">
-            <p-button
-              type="button"
-              styleClass="p-button p-button-rounded"
-              icon="pi pi-search"
-              routerLink="/product/{{ product._id }}"
-            ></p-button>
-            <p-button
-              type="button"
-              styleClass="p-button-success p-button-rounded"
-              icon="pi pi-cart-plus"
-              (onClick)="addToCart(product)"
-            ></p-button>
-            <i
-              [ngStyle]="{ position: 'fixed', top: '0' }"
-              (click)="addToWishlist(product)"
-              *ngIf="!isInWishlist(product._id)"
-              class="pi pi-heart"
-            ></i>
-            <i
-              [ngStyle]="{ position: 'fixed', top: '0' }"
-              (click)="RemoveFromWishlist(product)"
-              *ngIf="isInWishlist(product._id)"
-              class="pi pi-heart-fill"
-            ></i>
-            <p class="discount" *ngIf="product.discount > 0">
-              {{ product.discount }}%
-            </p>
-          </div>
-        </div>
-      </div>
+      <app-home-product-card
+        (notifyParent)="addToCart($event)"
+        [product]="product"
+      ></app-home-product-card>
     </ng-template>
   </p-carousel>
 </div>
@@ -168,53 +83,10 @@
         *ngIf="item.products[0]"
       >
         <ng-template let-product pTemplate="item">
-          <div class="border-round text-center" [style]="{ padding: '20px' }">
-            <div>
-              <img
-                [src]="product.images[0]"
-                [alt]="product.title"
-                width="100%"
-              />
-            </div>
-            <div>
-              <h6 class="product-title" routerLink="/product/{{ product._id }}">
-                {{ product.title }}
-              </h6>
-              <h6 class="mb-3 d-flex justify-content-evenly">
-                <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
-                <p>{{ product.priceAfterDiscount }}EGP</p>
-              </h6>
-              <div class="car-buttons">
-                <p-button
-                  type="button"
-                  styleClass="p-button p-button-rounded"
-                  icon="pi pi-search"
-                  routerLink="/product/{{ product._id }}"
-                ></p-button>
-                <p-button
-                  type="button"
-                  styleClass="p-button-success p-button-rounded"
-                  icon="pi pi-cart-plus"
-                  (onClick)="addToCart(product)"
-                ></p-button>
-                <i
-                  [ngStyle]="{ position: 'fixed', top: '0' }"
-                  (click)="addToWishlist(product)"
-                  *ngIf="!isInWishlist(product._id)"
-                  class="pi pi-heart"
-                ></i>
-                <i
-                  [ngStyle]="{ position: 'fixed', top: '0' }"
-                  (click)="RemoveFromWishlist(product)"
-                  *ngIf="isInWishlist(product._id)"
-                  class="pi pi-heart-fill"
-                ></i>
-                <p class="discount" *ngIf="product.discount > 0">
-                  {{ product.discount }}%
-                </p>
-              </div>
-            </div>
-          </div>
+          <app-home-product-card
+            (notifyParent)="addToCart($event)"
+            [product]="product"
+          ></app-home-product-card>
         </ng-template>
       </p-carousel>
     </div>
@@ -234,6 +106,7 @@
   </div>
 </div>
 
+<!-- Brands -->
 <div class="row my-container mt-4">
   <header>Shop by Brands</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!brands[0]" />
@@ -247,29 +120,20 @@
     *ngIf="brands[0]"
   >
     <ng-template let-brand pTemplate="item">
-      <div class="border-round text-center py-3 px-2">
-        <img
-          [src]="brand.image"
-          [alt]="brand.name"
-          class="category-image"
-          (click)="getProductByBrand(brand)"
-        />
-      </div>
+      <app-home-brand-card [brand]="brand"></app-home-brand-card>
     </ng-template>
   </p-carousel>
 </div>
 
-<div class="modall" *ngIf="showModal">
-  <div class="modall-header">
-    <span class="modall-title">Product added to Cart</span>
+<p-toast></p-toast>
+
+<div class="my-modal" *ngIf="showModal">
+  <div class="my-modal-header">
+    <span class="my-modal-title">Product added to Cart</span>
     <button class="close-btn" (click)="closeModal()">&times;</button>
   </div>
-  <div class="modall-body">
+  <div class="my-modal-body">
     <img [src]="product.images[0]" alt="" />
-    <a routerLink="/cart" style="text-decoration: none">{{
-      product.title
-    }}</a>
+    <a routerLink="/cart" style="text-decoration: none">{{ product.title }}</a>
   </div>
 </div>
-
-<p-toast></p-toast>

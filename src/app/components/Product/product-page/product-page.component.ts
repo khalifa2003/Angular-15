@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -9,6 +9,9 @@ import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { UserService } from '../../../services/user.service';
+import { WishlistService } from 'src/app/services/wishlist.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-product-page',
@@ -17,30 +20,24 @@ import { UserService } from '../../../services/user.service';
 })
 export class ProductPageComponent {
   product: IProduct = {} as IProduct;
+  wishlist: any[] = [];
   constructor(
+    private wishlistService: WishlistService,
     private productService: ProductService,
-    private userService: UserService,
+    private messageService: MessageService,
     private reviewService: ReviewService,
+    private userService: UserService,
     private cartService: CartService,
+    private authService: AuthService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private renderer: Renderer2,
+    private fb: FormBuilder,
+    private el: ElementRef
   ) {
     this.reviewForm = this.fb.group({
       score: [0, Validators.required],
       title: ['', Validators.required],
     });
-  }
-
-  ngOnInit(): void {
-    this.route.paramMap
-      .pipe(
-        switchMap((params) => {
-          return this.productService.getProductById(params.get('id'));
-        })
-      )
-      .subscribe((res) => {
-        this.product = res;
-      });
   }
 
   get activeIndex(): number {
@@ -95,8 +92,95 @@ export class ProductPageComponent {
     this.halfStar = hasHalfStar;
     this.emptyStars = Array(emptyStarsCount).fill(0);
   }
+  ngOnInit() {
+    this.getWishlist();
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          return this.productService.getProductById(params.get('id'));
+        })
+      )
+      .subscribe((res) => {
+        this.product = res;
+      });
+  }
+
+  addToWishlist() {
+    const audio = this.renderer.createElement('audio');
+    this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
+    this.renderer.appendChild(this.el.nativeElement, audio);
+    if (this.authService.isUserLogged) {
+      this.wishlistService
+        .addToWishlist(this.product._id)
+        .subscribe((res: any) => {
+          audio.play();
+          this.wishlist = res.data.map((product: { _id: any }) => {
+            return product._id;
+          });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'success',
+            detail: res.message,
+          });
+        });
+    }
+  }
+
+  RemoveFromWishlist() {
+    const audio = this.renderer.createElement('audio');
+    this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
+    this.renderer.appendChild(this.el.nativeElement, audio);
+    if (this.authService.isUserLogged) {
+      this.wishlistService
+        .removeFromWishlist(this.product._id)
+        .subscribe((res: any) => {
+          audio.play();
+          this.wishlist = res.data.map((product: { _id: any }) => {
+            return product._id;
+          });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'success',
+            detail: res.message,
+          });
+        });
+    }
+  }
+
+  getWishlist() {
+    if (this.authService.isUserLogged) {
+      this.wishlistService.getWishlist().subscribe((res) => {
+        this.wishlist = res.data.map((product: { _id: any }) => {
+          return product._id;
+        });
+      });
+    }
+  }
+
+  isInWishlist(): boolean {
+    return this.wishlist.includes(this.product._id);
+  }
+
   addToCart() {
-    this.cartService.addToCart(this.product._id).subscribe((res) => {});
+    if (this.authService.isUserLogged) {
+      const audio = this.renderer.createElement('audio');
+      this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
+      this.renderer.appendChild(this.el.nativeElement, audio);
+      if (this.authService.isUserLogged) {
+        this.cartService.addToCart(this.product._id).subscribe((res) => {
+          this.product = this.product;
+          this.showModal = true;
+          setTimeout(() => {
+            this.showModal = false;
+          }, 7000);
+          audio.play();
+        });
+      }
+    }
+  }
+  showModal: boolean = false;
+  closeModal() {
+    this.showModal = false;
   }
   // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   reviewsList: IReview[] = [];

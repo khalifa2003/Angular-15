@@ -1,0 +1,21 @@
+.product-title {
+  height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.product-title:hover {
+  color: #555;
+}
+.discount {
+  background-color: yellow;
+  border-radius: 50%;
+  font-weight: bold;
+  padding: 10px 5px;
+  font-size: 15px;
+  position: fixed;
+  top: 0;
+}
+.favorite-button {
+  position: fixed;
+  top: 0;
+}

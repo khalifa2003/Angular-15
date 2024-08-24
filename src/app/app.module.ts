@@ -61,6 +61,11 @@ import { AddressComponent } from './components/User/address/address.component';
 import { CartComponent } from './components/User/cart/cart.component';
 import { WishlistComponent } from './components/User/wishlist/wishlist.component';
 import { OrdersComponent } from './components/User/orders/orders.component';
+import { SearchGridCardComponent } from './components/Product/search-grid-card/search-grid-card.component';
+import { SearchListCardComponent } from './components/Product/search-list-card/search-list-card.component';
+import { HomeCategoryCardComponent } from './components/Home/home-category-card/home-category-card.component';
+import { HomeProductCardComponent } from './components/Home/home-product-card/home-product-card.component';
+import { HomeBrandCardComponent } from './components/Home/home-brand-card/home-brand-card.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +92,11 @@ import { OrdersComponent } from './components/User/orders/orders.component';
     CartComponent,
     WishlistComponent,
     OrdersComponent,
+    SearchGridCardComponent,
+    SearchListCardComponent,
+    HomeCategoryCardComponent,
+    HomeProductCardComponent,
+    HomeBrandCardComponent,
   ],
   imports: [
     BrowserModule,

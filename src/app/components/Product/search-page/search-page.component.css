@@ -1,7 +1,3 @@
-.product-title {
-  height: 100px;
-  overflow: hidden;
-}
 /* General Sidebar Button Styles */
 .filter-group .btn {
   display: flex;
@@ -77,41 +73,6 @@
   border-radius: 50%;
 }
 
-.card-text {
-  width: 70%;
-}
-
-.discount,
-.discount2 {
-  width: 50px;
-  height: 50px;
-  background-color: yellow;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-}
-.discount {
-  top: 10%;
-  right: 10%;
-}
-.discount2 {
-  position: absolute;
-  top: 5%;
-  left: 1%;
-}
-.title:hover {
-  color: #007bff;
-}
-.title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #000000;
-  transition: 0.5s ease-in-out;
-}
 .price-inputs {
   display: flex;
   justify-content: space-between;

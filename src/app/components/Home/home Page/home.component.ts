@@ -6,10 +6,7 @@ import { BrandService } from 'src/app/services/brand.service';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
-import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
-import { WishlistService } from 'src/app/services/wishlist.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -31,18 +28,14 @@ export class HomeComponent implements OnInit {
   newArrival: IProduct[] = [];
   specialOffers: IProduct[] = [];
   product: IProduct = {} as IProduct;
-  wishlist: any[] = [];
 
   constructor(
     private categoryService: CategoryService,
-    private wishlistService: WishlistService,
     private productService: ProductService,
-    private messageService: MessageService,
     private brandService: BrandService,
     private authService: AuthService,
     private cartService: CartService,
     private renderer: Renderer2,
-    private router: Router,
     private el: ElementRef
   ) {
     this.responsiveOptions = [
@@ -81,8 +74,6 @@ export class HomeComponent implements OnInit {
         (product: IProduct) => product.discount > 0
       );
     });
-
-    this.getWishlist();
   }
 
   getCategories() {
@@ -108,16 +99,9 @@ export class HomeComponent implements OnInit {
     for (let i = 0; i < this.ids.length; i++) {}
   }
 
-  getProductByCategory(item: ICategory) {
-    this.router.navigate(['/product'], {
-      queryParams: { category: item._id },
-    });
-  }
-
-  getProductByBrand(item: IBrand) {
-    this.router.navigate(['/product'], {
-      queryParams: { brand: item._id },
-    });
+  showModal: boolean = false;
+  closeModal() {
+    this.showModal = false;
   }
 
   addToCart(selectedProduct: IProduct) {
@@ -125,75 +109,15 @@ export class HomeComponent implements OnInit {
       const audio = this.renderer.createElement('audio');
       this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
       this.renderer.appendChild(this.el.nativeElement, audio);
-      if (this.authService.isUserLogged) {
-        this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
-          this.product = selectedProduct;
-          this.showModal = true;
-          setTimeout(() => {
-            this.showModal = false;
-          }, 7000);
-          audio.play();
-        });
-      }
-    }
-  }
 
-  showModal: boolean = false;
-  closeModal() {
-    this.showModal = false;
-  }
-
-  addToWishlist(product: IProduct) {
-    const audio = this.renderer.createElement('audio');
-    this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
-    this.renderer.appendChild(this.el.nativeElement, audio);
-    if (this.authService.isUserLogged) {
-      this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
-        audio.play();
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
-        });
-        this.messageService.add({
-          severity: 'success',
-          summary: 'success',
-          detail: res.message,
-        });
+      audio.play();
+      this.product = selectedProduct;
+      this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
+        this.showModal = true;
+        setTimeout(() => {
+          this.showModal = false;
+        }, 7000);
       });
     }
-  }
-
-  RemoveFromWishlist(product: IProduct) {
-    const audio = this.renderer.createElement('audio');
-    this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
-    this.renderer.appendChild(this.el.nativeElement, audio);
-    if (this.authService.isUserLogged) {
-      this.wishlistService
-        .removeFromWishlist(product._id)
-        .subscribe((res: any) => {
-          audio.play();
-          this.wishlist = res.data.map((product: { _id: any }) => {
-            return product._id;
-          });
-          this.messageService.add({
-            severity: 'success',
-            summary: 'success',
-            detail: res.message,
-          });
-        });
-    }
-  }
-
-  getWishlist() {
-    if (this.authService.isUserLogged) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
-        });
-      });
-    }
-  }
-
-  isInWishlist(id: string): boolean {
-    return this.wishlist.includes(id);
   }
 }

@@ -1,58 +1,28 @@
-header {
-  font-size: 18px;
-  color: #555;
-  text-transform: uppercase;
-  padding: 0 0 8px 0;
-  font-weight: 700;
-  position: relative;
-  transition: 0.5s;
-  margin: 20px 0 0;
+.discount {
+  top: 10%;
+  left: 10%;
 }
-header:hover {
-  color: rgb(0, 0, 0);
-}
-header::after,
-header::before {
-  transition: 0.5s;
-  content: "";
-  height: 3px;
+.discount {
+  width: 50px;
+  height: 50px;
+  background-color: yellow;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  bottom: 0;
-  left: 0;
 }
-header::after {
-  width: calc(100% - 40px);
-  background-color: #eee;
+
+.title:hover {
+  color: #007bff;
 }
-header::before {
-  background-color: blue;
-  width: 200px;
-  z-index: 1;
-}
-header:hover::before {
-  transition: 0.5s;
-  width: calc(100% - 40px);
-}
-.sec {
-  height: 200px;
-  max-width: 600px;
-}
-@media only screen and (min-width: 991px) {
-  .sec {
-    max-width: 50%;
-  }
-}
-div {
-  margin: 0;
-  padding: 0;
-}
-.my-container {
-  margin: 0 40px;
-}
-@media only screen and (max-width: 1200px) {
-  .my-container {
-    margin: 0 5px;
-  }
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  transition: 0.5s ease-in-out;
 }
 
 .my-modal {
