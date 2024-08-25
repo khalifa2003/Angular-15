@@ -35,6 +35,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PanelModule } from 'primeng/panel';
 import { ListboxModule } from 'primeng/listbox';
+import { DividerModule } from 'primeng/divider';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -135,6 +137,8 @@ import { HomeBrandCardComponent } from './components/Home/home-brand-card/home-b
     SkeletonModule,
     PanelModule,
     ListboxModule,
+    DividerModule,
+    BreadcrumbModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

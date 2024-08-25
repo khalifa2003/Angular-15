@@ -6,12 +6,37 @@ import { Component } from '@angular/core';
   styleUrls: ['./orders.component.css'],
 })
 export class OrdersComponent {
-  cartItems = [
-    { productName: 'Product 1', price: 100, quantity: 2, total: 200 },
-    { productName: 'Product 2', price: 150, quantity: 1, total: 150 },
+  orderDetails = [
+    {
+      orderNumber: 262387,
+      orderDate: '2023-08-18',
+      user: 'khalifa4112003@gmail.com',
+      mobile: '01015388310',
+      city: 'alexandria',
+      address: 'الإسكندرية - العجمي - البيطاش - أخر شارع الوصيفي خلف مسجدكستي',
+    },
   ];
 
-  subtotal = this.cartItems.reduce((acc, item) => acc + item.total, 0);
-  shipping = 120;
-  total = this.subtotal + this.shipping;
+  devices = [
+    {
+      id: 1,
+      name: 'ONIKUMA CW902 Wired Gaming Mouse With Colorful',
+      price: 125,
+      quantity: 1,
+      total: 125,
+      totalPoint: 10,
+    },
+  ];
+
+  paymentDetails = [
+    { label: 'Total', value: '125 LE' },
+    { label: 'Shipping Rate', value: '45 LE' },
+    { label: 'Voucher', value: '0 LE' },
+    { label: 'Payment method', value: 'Cash On Delivery' },
+    { label: 'Payment type', value: 'Not Completed' },
+    { label: 'Net', value: '170 LE' },
+    { label: 'Total Point', value: '10' },
+  ];
+
+  statusDetails = [{ value: 'PENDING' }];
 }

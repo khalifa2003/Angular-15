@@ -1,67 +1,67 @@
-<div class="order-page">
-  <div class="content">
-    <p-panel>
-      <div class="cart-header">
-        <h2>Order Summary</h2>
-        <button
-          pButton
-          type="button"
-          label="Clear Cart"
-          class="p-button-danger"
-        ></button>
-      </div>
-
-      <p-table [value]="cartItems">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-item>
-          <tr>
-            <td>{{ item.productName }}</td>
-            <td>{{ item.price | currency : "EGP" }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.total | currency : "EGP" }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-panel>
-
-    <div class="cart-totals">
-      <p-panel>
-        <div>
-          <p>Subtotal: {{ subtotal | currency : "EGP" }}</p>
-          <p>Shipping: {{ shipping | currency : "EGP" }}</p>
-          <p>Total: {{ total | currency : "EGP" }}</p>
-        </div>
-        <button
-          pButton
-          type="button"
-          label="Proceed to Checkout"
-          class="p-button-primary"
-        ></button>
-      </p-panel>
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card col-12 col-md-10 col-lg-8">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2>Sales Order</h2>
+      <span class="order-status text-warning">Pending</span>
     </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-12 col-md-6">
+          <h4 class="mb-3">User Information</h4>
+          <p><strong>User:</strong> khalifa4112003@gmail.com</p>
+          <p><strong>Mobile:</strong> 01015388310</p>
+          <p><strong>City:</strong> Alexandria</p>
+          <p><strong>Address:</strong> Last street behind X hospital</p>
+        </div>
+        <div class="col-12 col-md-6">
+          <h4 class="mb-3">Order Information</h4>
+          <p><strong>Order ID:</strong> 262387</p>
+          <p><strong>Order Date:</strong> 2023-08-18</p>
+        </div>
+      </div>
+      <table class="table table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Device Name</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Total Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of devices; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.total }}</td>
+            <td>{{ item.totalPoint }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="delivery-return">
-      <p-panel header="Delivery & Return">
-        <p-accordion>
-          <p-accordionTab header="When Do I Receive My Order?">
-            Your order will be delivered within 3-5 business days.
-          </p-accordionTab>
-          <p-accordionTab header="30 Days Return">
-            You can return items within 30 days of receipt.
-          </p-accordionTab>
-          <p-accordionTab header="Refund Request">
-            Refunds will be processed within 7 days after receiving the returned
-            items.
-          </p-accordionTab>
-        </p-accordion>
-      </p-panel>
+      <div class="row mt-4 justify-content-end">
+        <div class="col-12 col-md-6">
+          <div class="summary-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <span>Total</span>
+                <!-- <span>{{ orderTotal }}</span> -->
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <span>Shipping Rate</span>
+                <!-- <span>{{ shippingRate }}</span> -->
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <span>Payment Method</span>
+                <!-- <span>{{ paymentMethod }}</span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
