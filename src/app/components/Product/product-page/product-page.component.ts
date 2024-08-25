@@ -40,58 +40,6 @@ export class ProductPageComponent {
     });
   }
 
-  get activeIndex(): number {
-    return this._activeIndex;
-  }
-  set activeIndex(newValue) {
-    if (
-      this.product.images &&
-      0 <= newValue &&
-      newValue <= this.product.images.length - 1
-    ) {
-      this._activeIndex = newValue;
-    }
-  }
-  _activeIndex: number = 2;
-  responsiveOptions: any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 5,
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 3,
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-    },
-  ];
-  next() {
-    this.activeIndex++;
-  }
-  prev() {
-    this.activeIndex--;
-  }
-  // ----------------------------------
-  fullStars: number[] = [];
-  halfStar: boolean = false;
-  emptyStars: number[] = [];
-
-  ngOnChanges(): void {
-    this.updateStars();
-    this.getReviews();
-  }
-
-  private updateStars(): void {
-    const fullStarsCount = Math.floor(this.product.ratingsAverage);
-    const hasHalfStar = this.product.ratingsAverage % 1 !== 0;
-    const emptyStarsCount = 5 - fullStarsCount - (hasHalfStar ? 1 : 0);
-
-    this.fullStars = Array(fullStarsCount).fill(0);
-    this.halfStar = hasHalfStar;
-    this.emptyStars = Array(emptyStarsCount).fill(0);
-  }
   ngOnInit() {
     this.getWishlist();
     this.route.paramMap
@@ -102,6 +50,7 @@ export class ProductPageComponent {
       )
       .subscribe((res) => {
         this.product = res;
+        this.getReviews();
       });
   }
 
@@ -182,30 +131,44 @@ export class ProductPageComponent {
   closeModal() {
     this.showModal = false;
   }
-  // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   reviewsList: IReview[] = [];
   user: IUser = {} as IUser;
   reviewForm: FormGroup;
 
   addReview() {
-    this.reviewService
-      .addReview(
-        this.reviewForm.value.title,
-        this.reviewForm.value.score,
-        this.product._id
-      )
-      .subscribe((res) => {
-        this.reviewForm.reset();
-        this.getReviews();
+    if (this.authService.isUserLogged) {
+      this.reviewService
+        .addReview(
+          this.reviewForm.value.title,
+          this.reviewForm.value.score,
+          this.product._id
+        )
+        .subscribe((res) => {
+          this.reviewForm.reset();
+          this.getReviews();
+          console.log('Post req from addReview');
+          console.log(res);
+        });
+    } else {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'success',
+        detail: 'You Are not Logged In',
       });
+    }
   }
 
   getReviews() {
     this.reviewService.getReviews(this.product._id).subscribe((res) => {
       this.reviewsList = res;
+      console.log('reviewlist');
+
+      console.log(res);
     });
     this.userService.getMe().subscribe((res) => {
       this.user = res;
+      console.log('user');
+      console.log(res);
     });
   }
 
@@ -214,4 +177,40 @@ export class ProductPageComponent {
       this.getReviews();
     });
   }
+
+  // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  get activeIndex(): number {
+    return this._activeIndex;
+  }
+  set activeIndex(newValue) {
+    if (
+      this.product.images &&
+      0 <= newValue &&
+      newValue <= this.product.images.length - 1
+    ) {
+      this._activeIndex = newValue;
+    }
+  }
+  _activeIndex: number = 2;
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1024px',
+      numVisible: 5,
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 3,
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1,
+    },
+  ];
+  next() {
+    this.activeIndex++;
+  }
+  prev() {
+    this.activeIndex--;
+  }
+  // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }

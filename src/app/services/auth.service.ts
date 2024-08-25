@@ -67,6 +67,6 @@ export class AuthService {
   }
 
   get isUserLogged(): boolean {
-    return this.currentUserValue.user?.fname ? true : false;
+    return this.currentUserValue.user ? true : false;
   }
 }

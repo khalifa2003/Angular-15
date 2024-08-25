@@ -103,18 +103,26 @@
   <div class="col-xl-5 col-sm-12 col-md-12">
     <h3>Write a Review</h3>
     <form (ngSubmit)="addReview()" [formGroup]="reviewForm" class="review-form">
-      <label for="rating">Rating:</label>
-      <p-rating formControlName="score" [cancel]="false"></p-rating>
-      <label for="comment">Comment:</label>
-      <textarea
-        formControlName="title"
-        id="comment"
-        name="comment"
-        required
-      ></textarea>
-      <button type="submit" [disabled]="reviewForm.invalid">
-        Submit Review
-      </button>
+      <div class="form-group">
+        <label for="rating">Rating:</label>
+        <p-rating formControlName="score" [cancel]="false"></p-rating>
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Comment:</label>
+        <textarea
+          formControlName="title"
+          id="comment"
+          name="comment"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" [disabled]="reviewForm.invalid">
+          Submit Review
+        </button>
+      </div>
     </form>
   </div>
   <div class="col-xl-5 col-sm-12 col-md-12">
