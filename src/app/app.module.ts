@@ -68,6 +68,7 @@ import { SearchListCardComponent } from './components/Product/search-list-card/s
 import { HomeCategoryCardComponent } from './components/Home/home-category-card/home-category-card.component';
 import { HomeProductCardComponent } from './components/Home/home-product-card/home-product-card.component';
 import { HomeBrandCardComponent } from './components/Home/home-brand-card/home-brand-card.component';
+import { CheckOutComponent } from './components/User/check-out/check-out.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { HomeBrandCardComponent } from './components/Home/home-brand-card/home-b
     HomeCategoryCardComponent,
     HomeProductCardComponent,
     HomeBrandCardComponent,
+    CheckOutComponent,
   ],
   imports: [
     BrowserModule,

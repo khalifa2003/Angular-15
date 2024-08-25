@@ -19,6 +19,7 @@ import { AddressComponent } from './components/User/address/address.component';
 import { CartComponent } from './components/User/cart/cart.component';
 import { WishlistComponent } from './components/User/wishlist/wishlist.component';
 import { OrdersComponent } from './components/User/orders/orders.component';
+import { CheckOutComponent } from './components/User/check-out/check-out.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'wishlist', component: WishlistComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'checkout', component: CheckOutComponent },
 
   // Admin
   {

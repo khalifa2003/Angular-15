@@ -1,0 +1,170 @@
+<div class="container-xxl my-4">
+  <div class="row">
+    <div class="col-md-6 my-5">
+      <!-- Select Your Address Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="pi pi-user"></i> Select Your Address
+        </div>
+        <div class="card-body">
+          <div *ngFor="let address of addresses">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="selectedAddress"
+                [value]="address"
+                [(ngModel)]="selectedAddress"
+              />
+              <label class="form-check-label">
+                {{ address }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New Address Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="pi pi-user"></i> Add New Address
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="addNewAddress()">
+            <div class="mb-3">
+              <label for="mobile" class="form-label">Mobile</label>
+              <input
+                type="text"
+                class="form-control"
+                id="mobile"
+                [(ngModel)]="newAddress.mobile"
+                name="mobile"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                [(ngModel)]="newAddress.city"
+                name="city"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                id="address"
+                [(ngModel)]="newAddress.address"
+                name="address"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              Add Address
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 my-5">
+      <!-- Shipping Method Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="pi pi-truck"></i> Shipping Method
+        </div>
+        <div class="card-body">
+          <p>{{ selectedAddress }}</p>
+          <p>{{ shippingCost }} LE</p>
+        </div>
+      </div>
+
+      <!-- Payment Method Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="pi pi-credit-card"></i> Payment Method
+        </div>
+        <div class="card-body">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="paymentMethod"
+              value="cod"
+              [(ngModel)]="paymentMethod"
+            />
+            <label class="form-check-label"> Cash On Delivery </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coupon Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="pi pi-gift"></i> Do You Have a Coupon or Voucher?
+        </div>
+        <div class="card-body">
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="couponCode"
+            placeholder="Enter voucher code"
+          />
+          <button class="btn btn-primary w-100" (click)="applyCoupon()">
+            Apply Voucher
+          </button>
+        </div>
+      </div>
+
+      <!-- Shopping Cart Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="pi pi-shopping-cart"></i> Shopping Cart
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Point</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of cartItems">
+                <td>
+                  <img
+                    src="../../../../assets/laptops2.png"
+                    alt="{{ item.name }}"
+                    class="img-thumbnail"
+                    style="width: 50px"
+                  />
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice }} LE</td>
+                <td>{{ item.points }}</td>
+                <td>{{ item.total }} LE</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-end">
+            <p>Sub-Total: {{ subTotal }} LE</p>
+            <p>Flat Shipping Rate: {{ shippingCost }} LE</p>
+            <p>Voucher: {{ voucherDiscount }} LE</p>
+            <h5>Total: {{ total }} LE</h5>
+            <p>Total points: {{ totalPoints }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
