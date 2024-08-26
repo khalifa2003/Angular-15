@@ -1,5 +1,8 @@
-<div class="shopping-cart row">
-  <div class="cart-items col-xl-8 col-lg-12">
+<div class="shopping-cart row" style="min-height: 80vh">
+  <div class="cart-items col-lg-8 col-md-12">
+    <button class="btn btn-danger my-2 mx-auto d-block" (click)="deleteCart()">
+      Clear Cart
+    </button>
     <div class="cart-item" *ngFor="let item of cart.cartItems; index as index">
       <img [src]="item.product.images[0]" width="100px" class="mx-5" />
       <div class="item-details w-100">
@@ -30,11 +33,8 @@
         </button>
       </div>
     </div>
-    <button class="btn btn-danger mt-2" (click)="deleteCart()">
-      Clear Cart
-    </button>
   </div>
-  <div class="col-md-3 col-sm-12">
+  <div class="col-lg-4 col-md-12">
     <div class="cart-summary">
       <h3>Cart Totals</h3>
       <p>
@@ -82,4 +82,5 @@
     </div>
   </div>
 </div>
+
 <p-toast></p-toast>

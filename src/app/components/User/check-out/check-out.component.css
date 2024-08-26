@@ -8,21 +8,37 @@
   height: auto;
 }
 
-.table th,
-.table td {
-  vertical-align: middle;
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: green;
 }
 
-.text-end p {
-  margin: 0;
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+label {
+  color: green;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #004085;
+input {
+  margin-bottom: 15px;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.name-fields {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name-fields > div {
+  width: 48%;
 }
