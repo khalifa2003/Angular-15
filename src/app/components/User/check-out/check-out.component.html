@@ -21,6 +21,7 @@
               name="address"
               [id]="address._id"
               [value]="address.address"
+              (click)="selectAddress($event, address)"
             />
             {{ address.address }}
           </label>
@@ -39,7 +40,7 @@
           <i class="pi pi-truck"></i> Shipping Method
         </div>
         <div class="card-body">
-          <!-- <p>{{ address.address }}</p> -->
+          <p>{{ address.address }}</p>
           <p>{{ 50 }} LE</p>
         </div>
       </div>
@@ -59,6 +60,7 @@
                 type="radio"
                 value="cash"
                 id="cash"
+                (click)="selectPaymentMethod($event)"
               />
               <!-- [(ngModel)]="paymentMethod" -->
               Cash On Delivery
@@ -70,6 +72,7 @@
                 value="credit"
                 type="radio"
                 id="credit"
+                (click)="selectPaymentMethod($event)"
               />
               <!-- [(ngModel)]="paymentMethod" -->
               Credit Card
@@ -152,7 +155,9 @@
   </div>
 
   <div class="row d-flex justify-content-center" *ngIf="cart">
-    <button class="btn btn-success w-25">Place Order</button>
+    <button class="btn btn-success w-25" (click)="checkout()">
+      Place Order
+    </button>
   </div>
 </div>
 

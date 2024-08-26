@@ -1,3 +1,4 @@
+import { OrderService } from './../../../services/order.service';
 import { UserService } from './../../../services/user.service';
 import { AddressService } from 'src/app/services/address.service';
 import { Component } from '@angular/core';
@@ -7,6 +8,8 @@ import { MessageService } from 'primeng/api';
 import { IAddress } from 'src/app/Models/iaddress';
 import { ICart } from 'src/app/Models/icart';
 import { CartService } from 'src/app/services/cart.service';
+import { IOrder } from 'src/app/Models/iorder';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-check-out',
@@ -14,18 +17,22 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./check-out.component.css'],
 })
 export class CheckOutComponent {
+  checkoutForm!: FormGroup;
   listOfAddresses: IAddress[] = [];
   addressDialog: boolean = false;
   user: IUser = {} as IUser;
   addressForm: FormGroup;
   cart!: ICart;
   cartItems: any[] = [];
+  address: IAddress = {} as IAddress;
 
   constructor(
     private addressService: AddressService,
     private messageService: MessageService,
     private userService: UserService,
     private cartService: CartService,
+    private orderService: OrderService,
+    private router: Router,
     private fb: FormBuilder
   ) {
     this.addressForm = this.fb.group({
@@ -37,6 +44,17 @@ export class CheckOutComponent {
       city: ['', Validators.required],
       state: ['', Validators.required],
       postalCode: [''],
+    });
+    this.checkoutForm = this.fb.group({
+      shippingAddress: this.fb.group({
+        address: [this.address.address, Validators.required],
+        phone: [this.address.phone, Validators.required],
+        city: [this.address.city, Validators.required],
+        postalCode: [this.address.postalCode],
+        state: [this.address.state, Validators.required],
+        country: [this.address.country, Validators.required],
+      }),
+      paymentMethodType: ['cash', Validators.required],
     });
   }
 
@@ -99,5 +117,48 @@ export class CheckOutComponent {
       summary: 'Error',
       detail: `This Feature Under Progress`,
     });
+  }
+  checkout(): void {
+    if (this.checkoutForm.valid) {
+      const order: Partial<IOrder> = {
+        cartItems: this.cartItems.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        shippingAddress: this.checkoutForm.value.shippingAddress,
+        totalOrderPrice: this.cart.totalCartPrice,
+        paymentMethodType: this.checkoutForm.value.paymentMethodType,
+      };
+
+      console.log(order);
+
+      this.orderService.createOrder(order).subscribe((res) => {
+        console.log(res);
+        this.router.navigate(['order']);
+      });
+    }
+  }
+
+  selectAddress(event: any, address: IAddress) {
+    if (event.target.checked) {
+      this.address = address;
+      this.checkoutForm = this.fb.group({
+        shippingAddress: this.fb.group({
+          address: [this.address.address, Validators.required],
+          phone: [this.address.phone, Validators.required],
+          city: [this.address.city, Validators.required],
+          postalCode: [this.address.postalCode],
+          state: [this.address.state, Validators.required],
+          country: [this.address.country, Validators.required],
+        }),
+      });
+    }
+  }
+
+  selectPaymentMethod(event: any) {
+    if (event.target.checked) {
+      this.checkoutForm.value.paymentMethodType = event.target.value;
+    }
   }
 }
