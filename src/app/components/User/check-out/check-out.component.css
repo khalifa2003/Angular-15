@@ -1,44 +1,23 @@
-.card-header {
-  background-color: #f8f9fa;
-  font-weight: bold;
+textarea {
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 7px;
+  width: 100%;
+  height: 120px;
+  border: 1px solid #ccc;
 }
-
-.img-thumbnail {
-  width: 50px;
-  height: auto;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: green;
-}
-
-form {
+.form-inputs {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-label {
-  color: green;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input {
-  margin-bottom: 15px;
-  padding: 8px;
-  border: 1px solid #333;
-  border-radius: 4px;
+.form-group {
   width: 100%;
-  box-sizing: border-box;
 }
-
-.name-fields {
-  display: flex;
-  justify-content: space-between;
-}
-
-.name-fields > div {
-  width: 48%;
+.input {
+  width: 100%;
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

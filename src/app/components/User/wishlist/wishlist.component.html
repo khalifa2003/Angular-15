@@ -2,18 +2,14 @@
   style="
     min-height: 80vh;
     border: 1px solid #eee;
-    margin: 100px;
     border-radius: 10px;
     padding: 20px;
   "
-  style="min-height: 80vh"
+  class="container-xxl"
 >
   <h1 class="text-center">My Wishlist</h1>
   <div *ngFor="let product of products" class="py-5">
-    <div
-      class="d-flex align-items-center border-bottom py-3"
-      style="position: relative"
-    >
+    <div class="d-flex align-items-center border-bottom position-relative">
       <div class="discount2" *ngIf="product.discount > 0">
         {{ product.discount }}%
       </div>
@@ -23,7 +19,9 @@
           <i class="pi pi-tag me-2"></i>
           {{ product.category.name }}
         </p>
-        <a class="h5 title" [routerLink]="product._id">{{ product.title }}</a>
+        <a class="h5 title" [routerLink]="'/product/' + product._id">{{
+          product.title
+        }}</a>
         <p-rating
           [ngModel]="product.ratingsAverage"
           [readonly]="true"
@@ -31,8 +29,7 @@
         ></p-rating>
       </div>
       <div
-        class="text-end"
-        class="d-flex flex-row flex-md-column justify-content-between w-md-auto align-items-center mt-3 mt-md-0"
+        class="d-flex flex-column justify-content-between align-items-center"
       >
         <div class="d-flex flex-column">
           <del class="mb-2" *ngIf="product.discount > 0"

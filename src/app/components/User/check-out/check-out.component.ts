@@ -1,8 +1,12 @@
+import { UserService } from './../../../services/user.service';
 import { AddressService } from 'src/app/services/address.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IUser } from 'src/app/Models/iuser';
+import { MessageService } from 'primeng/api';
+import { IAddress } from 'src/app/Models/iaddress';
+import { ICart } from 'src/app/Models/icart';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-check-out',
@@ -10,90 +14,90 @@ import { IUser } from 'src/app/Models/iuser';
   styleUrls: ['./check-out.component.css'],
 })
 export class CheckOutComponent {
-  userForm: FormGroup = new FormGroup({});
+  listOfAddresses: IAddress[] = [];
+  addressDialog: boolean = false;
   user: IUser = {} as IUser;
-  showModal: boolean = false;
+  addressForm: FormGroup;
+  cart!: ICart;
+  cartItems: any[] = [];
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private addressService: AddressService
-  ) {}
-  ngOnInit(): void {
-    this.user = this.authService.currentUserValue.data;
-    this.userForm = this.fb.group({
+    private addressService: AddressService,
+    private messageService: MessageService,
+    private userService: UserService,
+    private cartService: CartService,
+    private fb: FormBuilder
+  ) {
+    this.addressForm = this.fb.group({
       fname: [this.user.fname, Validators.required],
       lname: [this.user.lname, Validators.required],
-      email: [this.user.email, [Validators.required, Validators.email]],
       phone: [this.user.phone, Validators.required],
-      address: [, Validators.required],
-      city: [, Validators.required],
-      country: [, Validators.required],
-      state: ['Alexandria', Validators.required],
-      postalCode: [],
+      address: ['', Validators.required],
+      country: ['Egypt', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      postalCode: [''],
     });
   }
+
+  ngOnInit(): void {
+    this.userService.getMe().subscribe((res) => {
+      this.user = res;
+    });
+    this.cartService.getCart().subscribe((res) => {
+      this.cart = res.data;
+      this.cartItems = this.cart.cartItems;
+    });
+    this.getAddresses();
+  }
+
+  openNew() {
+    this.addressDialog = true;
+  }
+
   get f() {
-    return this.userForm.controls;
-  }
-  openModal() {
-    this.showModal = true;
+    return this.addressForm.controls;
   }
 
-  closeModal() {
-    this.showModal = false;
-  }
-
-  onSubmit() {
-    if (this.userForm.invalid) {
-      return;
-    }
-
-    this.addressService.addAddress(this.userForm.value).subscribe((res) => {
-      this.openModal();
-      this.userForm.reset();
+  getAddresses() {
+    this.addressService.getAddresses().subscribe((res) => {
+      this.listOfAddresses = res.data;
     });
   }
-  // -------------------------------------------------
-  addresses = ['01015388310 - Alexandria - شارع العوضي'];
-  selectedAddress = this.addresses[0];
-  newAddress = { mobile: '', city: '', address: '' };
-  paymentMethod = 'cod';
-  couponCode = '';
-  shippingCost = 51;
-  voucherDiscount = 0;
 
-  cartItems = [
-    {
-      image: 'path/to/image1.jpg',
-      name: 'Rahala RAL2209 laptop backpack 15.6-Inch With USB Charging Black',
-      quantity: 1,
-      unitPrice: 1225,
-      points: 10,
-      total: 1225,
-    },
-  ];
-
-  get subTotal() {
-    return this.cartItems.reduce((sum, item) => sum + item.total, 0);
+  addAddress() {
+    if (this.addressForm.valid) {
+      this.addressService
+        .addAddress(this.addressForm.value)
+        .subscribe((res) => {
+          this.getAddresses();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `Address added Successfully`,
+          });
+          this.addressDialog = false;
+          this.addressForm.reset();
+        });
+    }
   }
 
-  get total() {
-    return this.subTotal + this.shippingCost - this.voucherDiscount;
-  }
-
-  get totalPoints() {
-    return this.cartItems.reduce((sum, item) => sum + item.points, 0);
-  }
-
-  addNewAddress() {
-    const newAddr = `${this.newAddress.mobile} - ${this.newAddress.city} - ${this.newAddress.address}`;
-    this.addresses.push(newAddr);
-    this.selectedAddress = newAddr;
-    this.newAddress = { mobile: '', city: '', address: '' };
+  deleteAddress(address: IAddress) {
+    this.addressService.deleteAddress(address._id).subscribe((res) => {
+      this.getAddresses();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: `Address removed Successfully`,
+      });
+    });
   }
 
   applyCoupon() {
-    // Logic for applying coupon
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: `This Feature Under Progress`,
+    });
   }
 }

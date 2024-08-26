@@ -14,7 +14,7 @@ export class AddressService {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.post(`${this.apiUrl}/addresses`, formData, {
+    return this.http.post(`${this.apiUrl}/address`, formData, {
       headers,
     });
   }
@@ -23,7 +23,7 @@ export class AddressService {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.delete(`${this.apiUrl}/addresses/${addressId}`, {
+    return this.http.delete(`${this.apiUrl}/address/${addressId}`, {
       headers,
     });
   }
@@ -33,16 +33,6 @@ export class AddressService {
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
 
-    return this.http.get(`${this.apiUrl}/addresses`, { headers });
-  }
-
-  updateAddress(addressId: string, formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-
-    return this.http.put(`${this.apiUrl}/addresses/${addressId}`, formData, {
-      headers,
-    });
+    return this.http.get(`${this.apiUrl}/address`, { headers });
   }
 }

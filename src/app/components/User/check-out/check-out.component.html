@@ -1,222 +1,46 @@
 <div class="container-xxl my-4" style="min-height: 80vh">
-  <div class="row">
-    <div class="col-md-6 my-5">
-      <div class="card mb-4">
-        <div class="card-header">
-          <i class="pi pi-user"></i> Select Your Address
-        </div>
-        <div class="card-body">
-          <div *ngFor="let address of addresses">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="selectedAddress"
-                [value]="address"
-                [(ngModel)]="selectedAddress"
-              />
-              <label class="form-check-label">
-                {{ address }}
-              </label>
-            </div>
-          </div>
+  <div class="row" *ngIf="cart">
+    <div class="card col-md-6 my-4">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <div><i class="pi pi-user"></i> Select Your Address</div>
+        <div>
+          <button class="btn btn-success" (click)="openNew()">+</button>
         </div>
       </div>
-
-      <!-- Add New Address Section -->
-      <div class="card">
-        <div class="m-3">
-          <h2>Billing address</h2>
-          <form [formGroup]="userForm" (submit)="onSubmit()">
-            <div class="name-fields">
-              <div class="form-group">
-                <label for="first-name">First name *</label>
-                <input
-                  formControlName="fname"
-                  type="text"
-                  class="input-form"
-                  placeholder="First Name"
-                  id="fname"
-                  [ngClass]="{
-                    'is-invalid': f['fname'].touched && f['fname'].invalid
-                  }"
-                  required
-                />
-                <div
-                  *ngIf="f['fname'].touched && f['fname'].invalid"
-                  class="invalid-feedback"
-                >
-                  <div *ngIf="f['fname'].errors?.['required']">
-                    First Name Required
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="last-name">Last name *</label>
-                <input
-                  formControlName="lname"
-                  type="text"
-                  class="input-form"
-                  placeholder="First Last Name"
-                  id="lname"
-                  [ngClass]="{
-                    'is-invalid': f['lname'].touched && f['lname'].invalid
-                  }"
-                  required
-                />
-                <div
-                  *ngIf="f['lname'].touched && f['lname'].invalid"
-                  class="invalid-feedback"
-                >
-                  <div *ngIf="f['lname'].errors?.['required']">
-                    Last Name Required
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="state">State *</label>
-              <input id="state" name="state" formControlName="state" required />
-              <div
-                *ngIf="f['state'].touched && f['state'].invalid"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f['state'].errors?.['required']">
-                  state Required
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="country">Country / Region *</label>
-              <input
-                type="text"
-                formControlName="country"
-                id="country"
-                name="country"
-                value="Egypt"
-                required
-              />
-              <div
-                *ngIf="f['country'].touched && f['country'].invalid"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f['country'].errors?.['required']">
-                  country Required
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="address">Address *</label>
-              <input
-                type="text"
-                formControlName="address"
-                id="address"
-                name="address"
-                required
-              />
-              <div
-                *ngIf="f['address'].touched && f['address'].invalid"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f['address'].errors?.['required']">
-                  Address Required
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="postcode">Postcode (optional)</label>
-              <input
-                type="text"
-                formControlName="postalCode"
-                id="postcode"
-                name="postcode"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="phone">Phone *</label>
-              <input
-                type="text"
-                formControlName="phone"
-                id="phone"
-                name="phone"
-                required
-              />
-              <div
-                *ngIf="f['phone'].touched && f['phone'].invalid"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f['phone'].errors?.['required']">
-                  Phone Required
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email address *</label>
-              <input
-                type="email"
-                formControlName="email"
-                id="email"
-                name="email"
-                required
-              />
-              <div
-                *ngIf="f['email'].touched && f['email'].invalid"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f['email'].errors?.['required']">
-                  Email Required
-                </div>
-                <div *ngIf="f['email'].errors?.['email']">It's Not Email</div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="city">city *</label>
-              <input
-                type="text"
-                formControlName="city"
-                id="city"
-                name="city"
-                required
-              />
-              <div
-                *ngIf="f['city'].touched && f['city'].invalid"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f['city'].errors?.['required']">City Required</div>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-center">
-              <button
-                [disabled]="userForm.invalid"
-                type="submit"
-                class="btn btn-success"
-              >
-                Add Address
-              </button>
-            </div>
-          </form>
+      <div class="card-body">
+        <div
+          *ngFor="let address of listOfAddresses"
+          class="form-check d-flex justify-content-between border-bottom mb-3"
+        >
+          <label class="form-check-label" [for]="address._id">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="address"
+              [id]="address._id"
+              [value]="address.address"
+            />
+            {{ address.address }}
+          </label>
+          <button class="btn btn-danger mx-2" (click)="deleteAddress(address)">
+            Delete
+          </button>
         </div>
+        <div *ngIf="listOfAddresses.length == 0">No Addresses...</div>
       </div>
     </div>
 
-    <div class="col-md-6 my-5">
+    <div class="col-md-6 my-4">
       <!-- Shipping Method Section -->
       <div class="card mb-4">
         <div class="card-header">
           <i class="pi pi-truck"></i> Shipping Method
         </div>
         <div class="card-body">
-          <p>{{ selectedAddress }}</p>
-          <p>{{ shippingCost }} LE</p>
+          <!-- <p>{{ address.address }}</p> -->
+          <p>{{ 50 }} LE</p>
         </div>
       </div>
 
@@ -226,15 +50,30 @@
           <i class="pi pi-credit-card"></i> Payment Method
         </div>
         <div class="card-body">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="paymentMethod"
-              value="cod"
-              [(ngModel)]="paymentMethod"
-            />
-            <label class="form-check-label"> Cash On Delivery </label>
+          <div class="form-check d-flex flex-column">
+            <label for="cash">
+              <!-- [(ngModel)]="paymentMethod" -->
+              <input
+                class="form-check-input"
+                name="paymentMethod"
+                type="radio"
+                value="cash"
+                id="cash"
+              />
+              <!-- [(ngModel)]="paymentMethod" -->
+              Cash On Delivery
+            </label>
+            <label for="credit">
+              <input
+                class="form-check-input"
+                name="paymentMethod"
+                value="credit"
+                type="radio"
+                id="credit"
+              />
+              <!-- [(ngModel)]="paymentMethod" -->
+              Credit Card
+            </label>
           </div>
         </div>
       </div>
@@ -248,68 +87,258 @@
           <input
             type="text"
             class="form-control mb-2"
-            [(ngModel)]="couponCode"
             placeholder="Enter voucher code"
           />
+          <!-- [(ngModel)]="couponCode" -->
           <button class="btn btn-primary w-100" (click)="applyCoupon()">
             Apply Voucher
           </button>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Shopping Cart Section -->
-      <div class="card mb-4">
-        <div class="card-header">
-          <i class="pi pi-shopping-cart"></i> Shopping Cart
-        </div>
-        <div class="card-body">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Point</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of cartItems">
-                <td>
-                  <img
-                    src="../../../../assets/laptops2.png"
-                    alt="{{ item.name }}"
-                    class="img-thumbnail"
-                    style="width: 50px"
-                  />
-                </td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.unitPrice }} LE</td>
-                <td>{{ item.points }}</td>
-                <td>{{ item.total }} LE</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="text-end">
-            <p>Sub-Total: {{ subTotal }} LE</p>
-            <p>Flat Shipping Rate: {{ shippingCost }} LE</p>
-            <p>Voucher: {{ voucherDiscount }} LE</p>
-            <h5>Total: {{ total }} LE</h5>
-            <p>Total points: {{ totalPoints }}</p>
-          </div>
+  <div class="row" *ngIf="cart">
+    <!-- Shopping Cart Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="pi pi-shopping-cart"></i> Shopping Cart
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartItems">
+              <td>
+                <img
+                  [src]="item.product.images[0]"
+                  alt="{{ item.product.title }}"
+                  class="img-thumbnail"
+                  style="width: 50px"
+                />
+              </td>
+              <td>{{ item.product.title }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.product.priceAfterDiscount }} LE</td>
+              <td>{{ item.product.priceAfterDiscount * item.quantity }} LE</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="col-md-6 card p-2">
+          <p class="d-flex justify-content-between">
+            <strong>Sub-Total:</strong> {{ cart.totalCartPrice }} LE
+          </p>
+          <p class="d-flex justify-content-between">
+            <strong>Flat Shipping Rate:</strong> 50 LE
+          </p>
+          <p class="d-flex justify-content-between">
+            <strong>Voucher:</strong> 0 LE
+          </p>
+          <p class="d-flex justify-content-between">
+            <strong>Total:</strong> {{ cart.totalCartPrice + 50 }} LE
+          </p>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal" [class.show]="showModal">
-  <div class="modal-content">
-    <span class="close" (click)="closeModal()">&times;</span>
-    <h2>Address Created Successfully</h2>
-    <div class="modal-buttons">
-      <button (click)="closeModal()" class="btn btn-success">Ok</button>
-    </div>
+
+  <div class="row d-flex justify-content-center" *ngIf="cart">
+    <button class="btn btn-success w-25">Place Order</button>
   </div>
 </div>
+
+<p-dialog
+  [(visible)]="addressDialog"
+  [style]="{ width: '850px' }"
+  header="Address Details"
+  [modal]="true"
+>
+  <ng-template pTemplate="content">
+    <form class="form-inputs admin-height" [formGroup]="addressForm">
+      <div class="form-group my-2 d-flex">
+        <div class="w-100 mr-1">
+          <input
+            [ngClass]="{
+              'is-invalid': f['fname'].touched && f['fname'].invalid
+            }"
+            placeholder="First Name"
+            formControlName="fname"
+            class="input"
+            type="text"
+            id="fname"
+          />
+          <div
+            *ngIf="f['fname'].touched && f['fname'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['fname'].errors?.['required']">
+              First Name Required
+            </div>
+          </div>
+        </div>
+        <div class="w-100 ml-1">
+          <input
+            [ngClass]="{
+              'is-invalid': f['lname'].touched && f['lname'].invalid
+            }"
+            placeholder="Last Name"
+            formControlName="lname"
+            class="input"
+            type="text"
+            id="lname"
+          />
+          <div
+            *ngIf="f['lname'].touched && f['lname'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['lname'].errors?.['required']">
+              Last Name Required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group my-2">
+        <input
+          [ngClass]="{
+            'is-invalid': f['phone'].touched && f['phone'].invalid
+          }"
+          placeholder="Phone"
+          formControlName="phone"
+          class="input"
+          type="text"
+          id="phone"
+        />
+        <div
+          *ngIf="f['phone'].touched && f['phone'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="f['phone'].errors?.['required']">Phone Required</div>
+        </div>
+      </div>
+
+      <div class="form-group my-2">
+        <textarea
+          id="address"
+          placeholder="Address With Details"
+          formControlName="address"
+          class="w-100 p-1 rounded"
+          [ngClass]="{
+            'is-invalid': f['address'].touched && f['address'].invalid
+          }"
+          rows="4"
+        ></textarea>
+        <div
+          *ngIf="f['address'].touched && f['address'].invalid"
+          class="invalid-feedback m-0"
+        >
+          <div *ngIf="f['address'].errors?.['required']">Address Required</div>
+        </div>
+      </div>
+
+      <div class="form-group my-2 d-flex">
+        <div class="w-100 mr-1">
+          <input
+            [ngClass]="{
+              'is-invalid': f['city'].touched && f['city'].invalid
+            }"
+            placeholder="City"
+            formControlName="city"
+            class="input"
+            type="text"
+            id="city"
+          />
+          <div
+            *ngIf="f['city'].touched && f['city'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['city'].errors?.['required']">City Required</div>
+          </div>
+        </div>
+        <div class="w-100 ml-1">
+          <input
+            [ngClass]="{
+              'is-invalid': f['country'].touched && f['country'].invalid
+            }"
+            placeholder="Country"
+            formControlName="country"
+            class="input"
+            type="text"
+            id="country"
+          />
+          <div
+            *ngIf="f['country'].touched && f['country'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['country'].errors?.['required']">
+              Country Required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group my-2 d-flex">
+        <div class="w-100 mr-1">
+          <input
+            [ngClass]="{
+              'is-invalid': f['state'].touched && f['state'].invalid
+            }"
+            placeholder="State"
+            formControlName="state"
+            class="input"
+            type="text"
+            id="state"
+          />
+          <div
+            *ngIf="f['state'].touched && f['state'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['state'].errors?.['required']">State Required</div>
+          </div>
+        </div>
+        <div class="w-100 ml-1">
+          <input
+            [ngClass]="{
+              'is-invalid': f['postalCode'].touched && f['postalCode'].invalid
+            }"
+            placeholder="Postal Code"
+            formControlName="postalCode"
+            class="input"
+            type="text"
+            id="postalCode"
+          />
+          <div
+            *ngIf="f['postalCode'].touched && f['postalCode'].invalid"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['postalCode'].errors?.['required']">
+              Postal Code Required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-2">
+        <button
+          (click)="addAddress()"
+          [disabled]="addressForm.invalid"
+          class="btn btn-success mt-2"
+          type="submit"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

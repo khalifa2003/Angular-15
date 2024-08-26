@@ -21,7 +21,7 @@ export class BrandManagementComponent {
     private brandService: BrandService,
     private messageService: MessageService
   ) {
-    this.getbrands();
+    this.getBrands();
 
     this.brandForm = this.fb.group({
       name: ['', Validators.required],
@@ -51,17 +51,16 @@ export class BrandManagementComponent {
     return this.brandForm.controls;
   }
 
-  getbrands() {
+  getBrands() {
     this.brandService.getAllBrands().subscribe((res) => {
       this.brands = res;
-      console.log(res);
     });
   }
 
   submitAddBrand() {
     if (this.brandForm.valid) {
       this.brandService.createBrand(this.brandForm.value).subscribe((res) => {
-        this.getbrands();
+        this.getBrands();
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -78,7 +77,7 @@ export class BrandManagementComponent {
       this.brandService
         .editBrand(this.brand._id, this.brandForm.value)
         .subscribe((res) => {
-          this.getbrands();
+          this.getBrands();
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -93,7 +92,7 @@ export class BrandManagementComponent {
 
   deleteBrand(brand: IBrand) {
     this.brandService.deleteBrand(brand._id).subscribe((res) => {
-      this.getbrands();
+      this.getBrands();
       this.messageService.add({
         severity: 'success',
         summary: 'Success',

@@ -15,7 +15,6 @@ import { AdminGuard } from './Guards/admin.guard';
 import { AboutUsComponent } from './components/utils/about-us/about-us.component';
 import { ContactComponent } from './components/utils/contact/contact.component';
 import { ProfileComponent } from './components/User/profile/profile.component';
-import { AddressComponent } from './components/User/address/address.component';
 import { CartComponent } from './components/User/cart/cart.component';
 import { WishlistComponent } from './components/User/wishlist/wishlist.component';
 import { OrdersComponent } from './components/User/orders/orders.component';
@@ -42,7 +41,6 @@ const routes: Routes = [
 
   // User
   { path: 'profile', component: ProfileComponent },
-  { path: 'address', component: AddressComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'cart', component: CartComponent },
