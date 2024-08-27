@@ -20,7 +20,7 @@
           <input type="text" [value]="item.quantity" />
           <button
             class="quantity-button"
-            (click)="addOne(item._id, +item.quantity)"
+            (click)="addOne(item, +item.quantity)"
           >
             +
           </button>
@@ -40,9 +40,9 @@
       <p>
         Subtotal: <span>{{ cart.totalCartPrice }} EGP</span>
       </p>
-      <p>Shipping: <span>120.00 EGP</span></p>
+      <p>Shipping: <span>0.00 EGP</span></p>
       <p>
-        Total: <span>{{ cart.totalCartPrice + 120 }} EGP</span>
+        Total: <span>{{ cart.totalCartPrice }} EGP</span>
       </p>
       <button class="checkout-button" routerLink="/checkout">
         PROCEED TO CHECKOUT
@@ -55,7 +55,7 @@
           <input type="checkbox" checked />
           <i></i>
           <h2>When Do I Receive My Order?</h2>
-          <p>We ship with Mylerz And delivery time 2 – 4 days</p>
+          <p>We ship with AS-Shipping And delivery time 2 – 4 days</p>
         </li>
         <li>
           <input type="checkbox" checked />

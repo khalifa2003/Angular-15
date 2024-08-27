@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private messageService: MessageService,
     private authService: AuthService
   ) {
     this.loginForm = this.formBuilder.group({
@@ -33,9 +35,17 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe((response) => {
         if (response) {
-          console.log('Login successful');
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `Welcome Back`,
+          });
         } else {
-          console.error('Login failed');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'error',
+            detail: `Incorrect Email or Password`,
+          });
         }
       });
     }

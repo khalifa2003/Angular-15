@@ -1,78 +1,63 @@
 .footer {
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .footer-section {
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    ul li a:hover {
+      text-decoration: underline;
+    }
+    flex: 1;
+    padding: 20px;
+  }
+  .logo-text {
+    span {
+      color: #4db8ff;
+    }
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+  }
+  .footer-bottom {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  .socials {
+    a {
+      margin: 0 10px;
+    }
+
+    background-color: red;
+  }
+  .newsletter p {
+    margin: 10px 0;
+  }
   background-color: #111;
   color: #fff;
   padding: 40px 0;
   position: relative;
-}
-
-.footer .footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.footer .footer-section {
-  flex: 1;
-  padding: 20px;
-}
-
-.footer .logo-text {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #fff;
-}
-
-.footer .logo-text span {
-  color: #4db8ff;
-}
-
-.footer .footer-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.footer .footer-section ul li {
-  margin-bottom: 10px;
-}
-
-.footer .footer-section ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.footer .footer-section ul li a:hover {
-  text-decoration: underline;
-}
-
-.footer .footer-bottom {
-  text-align: center;
-  padding: 20px;
-  background-color: #000;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
-.footer .socials {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.footer .socials a {
-  margin: 0 10px;
-}
-
-.footer .socials a img {
-  width: 30px;
-  height: 30px;
-}
-
-.footer .newsletter p {
-  margin: 10px 0;
 }

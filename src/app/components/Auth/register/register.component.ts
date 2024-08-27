@@ -1,5 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -14,6 +15,7 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private messageService: MessageService,
     private authService: AuthService
   ) {
     this.registerForm = this.formBuilder.group({
@@ -46,9 +48,17 @@ export class RegisterComponent {
         .register(this.registerForm.value)
         .subscribe((response) => {
           if (response) {
-            console.log('Registration successful');
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: `Welcome to Programming Area Shop`,
+            });
           } else {
-            console.error('Registration failed');
+            this.messageService.add({
+              severity: 'error',
+              summary: 'error',
+              detail: `Something Wrong happened, please ensure your data and try again.`,
+            });
           }
         });
     }

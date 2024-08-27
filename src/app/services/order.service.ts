@@ -37,11 +37,17 @@ export class OrderService {
     return this.http.get<IOrder[]>(this.apiUrl, { headers });
   }
 
-  deleteOrder(id: string): Observable<void> {
+  updateToDelivered(orderId: string) {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.put<void>(
+      `${this.apiUrl}/delivered/${orderId}`,
+      {},
+      {
+        headers,
+      }
+    );
   }
 
   updateOrder(id: string, order: Partial<IOrder>): Observable<IOrder> {
@@ -49,5 +55,12 @@ export class OrderService {
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
     return this.http.put<IOrder>(`${this.apiUrl}/${id}`, order, { headers });
+  }
+
+  deleteOrder(id: string): Observable<void> {
+    const headers = new HttpHeaders({
+      authorization: `Bearer ${this.authService.currentUserValue.token}`,
+    });
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
   }
 }

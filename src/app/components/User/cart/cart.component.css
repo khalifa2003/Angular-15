@@ -45,7 +45,7 @@
   border: 1px solid #000;
   border-radius: 5px;
   color: blue;
-  margin-bottom: 16px;
+  margin: 16px 0;
 }
 .cart-summary p {
   display: flex;

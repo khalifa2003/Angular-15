@@ -1,19 +1,21 @@
 <div
-  class="row justify-content-center align-items-start mx-0"
+  class="row justify-content-center align-items-start mx-0 gap-2"
   style="min-height: 80vh"
 >
   <ng-container *ngIf="orders.length > 0">
     <div
-      class="card col-12 col-md-11 col-lg-10 my-5"
+      class="card col-12 col-md-11 col-lg-10 mt-4"
       *ngFor="let order of orders"
     >
       <div
         class="card-header d-flex justify-content-between align-items-center"
       >
-        <h2>Sales Order</h2>
-        <span class="order-status text-warning">{{
-          order.isDelivered ? "Delivered" : "Pending"
-        }}</span>
+        <h4>Order Id: {{ order._id }}</h4>
+        <span
+          class="order-status"
+          [ngClass]="order.isDelivered ? 'text-success' : 'text-warning'"
+          >{{ order.isDelivered ? "Delivered" : "Pending" }}</span
+        >
       </div>
 
       <div class="card-body">

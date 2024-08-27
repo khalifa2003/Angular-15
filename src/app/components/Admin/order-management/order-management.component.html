@@ -1,0 +1,197 @@
+<div class="card">
+  <p-toolbar class="gap-2">
+    <app-sidebar></app-sidebar>
+    <ng-template pTemplate="left"></ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="orders"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'category.name']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="orders"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="m-0">Manage Orders</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search..."
+            (input)="onSearch($event)"
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="ID">ID <p-sortIcon field="ID"></p-sortIcon></th>
+        <th pSortableColumn="user.fname">
+          User Name <p-sortIcon field="user.fname"></p-sortIcon>
+        </th>
+        <th pSortableColumn="cartItems.length">
+          Order Items <p-sortIcon field="order.cartItems.length"></p-sortIcon>
+        </th>
+        <th pSortableColumn="totalOrderPrice">
+          Total Price <p-sortIcon field="totalOrderPrice"></p-sortIcon>
+        </th>
+        <th pSortableColumn="paymentMethodType">
+          Payment Method <p-sortIcon field="paymentMethodType"></p-sortIcon>
+        </th>
+        <th pSortableColumn="isDelivered">
+          Delivered<p-sortIcon field="isDelivered"></p-sortIcon>
+        </th>
+        <th pSortableColumn="deliveredAt">
+          deliveredAt<p-sortIcon field="deliveredAt"></p-sortIcon>
+        </th>
+        <th pSortableColumn="updatedAt">
+          Ordered At<p-sortIcon field="updatedAt"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>
+          {{ order._id }}
+        </td>
+        <td>{{ order.user.fname + " " + order.user.lname }}</td>
+        <td>{{ order.cartItems.length }}</td>
+        <td>{{ order.totalOrderPrice }} EGP</td>
+        <td>
+          {{ order.paymentMethodType }}
+        </td>
+        <td ngClass="{{ order.isDelivered ? 'text-success' : 'text-danger' }}">
+          {{ order.isDelivered }}
+        </td>
+        <td>
+          <p
+            ngClass="{{ order.deliveredAt ? 'text-success' : 'text-warning' }}"
+          >
+            {{ order.deliveredAt ? (order.deliveredAt | date) : "Pending" }}
+          </p>
+        </td>
+        <td>
+          <p>{{ order.updatedAt | date }}</p>
+        </td>
+        <td>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success me-2"
+            (click)="openOrder(order)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-warning"
+            (click)="deleteOrder(order)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="d-flex align-items-center justify-content-between">
+        In total, there are {{ orders ? orders.length : 0 }} orders.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  [(visible)]="orderDialog"
+  header="Order Details"
+  [modal]="true"
+  class="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="d-flex justify-content-around">
+          <button
+            class="btn btn-success mt-2"
+            [disabled]="order.isDelivered"
+            (click)="updateToDelivered()"
+          >
+            Update To Delivered
+          </button>
+          <button class="btn btn-danger mt-2" [disabled]="order.isDelivered">
+            Cancel Order
+          </button>
+        </div>
+        <div class="col-12 col-md-6">
+          <h4 class="mb-3">User Information</h4>
+          <p>
+            <strong>User:</strong>
+            {{ order.user.fname + " " + order.user.lname }}
+          </p>
+          <p><strong>Mobile:</strong>{{ order.user.phone }}</p>
+          <p><strong>City:</strong> {{ order.shippingAddress.city }}</p>
+          <p><strong>Address:</strong>{{ order.shippingAddress.address }}</p>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <h4 class="mb-3">Order Information</h4>
+          <p><strong>Order ID:</strong> {{ order._id }}</p>
+          <p><strong>Order Date:</strong> {{ order.updatedAt | date }}</p>
+        </div>
+      </div>
+
+      <table class="table table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Device Name</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.cartItems; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price * item.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="row mt-4 justify-content-end">
+        <div class="col-12 col-md-6">
+          <div class="summary-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <span>Total</span>
+                <span>{{ order.totalOrderPrice }}</span>
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <span>Shipping Rate</span>
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <span>Payment Method</span>
+                <span>{{ order.paymentMethodType }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

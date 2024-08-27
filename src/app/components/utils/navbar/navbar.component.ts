@@ -112,11 +112,6 @@ export class NavbarComponent implements OnDestroy {
             command: () => this.router.navigate(['/profile']),
           },
           {
-            label: 'Address',
-            icon: 'pi pi-map-marker',
-            command: () => this.router.navigate(['/address']),
-          },
-          {
             label: 'Orders',
             command: () => this.router.navigate(['/orders']),
             icon: 'pi pi-shopping-cart',
@@ -172,7 +167,6 @@ export class NavbarComponent implements OnDestroy {
       this.productService
         .searchProducts({ title: this.searchTerm })
         .subscribe((products) => {
-          console.log(this.searchResults);
           this.searchResults = products;
         });
     } else {

@@ -146,8 +146,6 @@ export class ProductPageComponent {
         .subscribe((res) => {
           this.reviewForm.reset();
           this.getReviews();
-          console.log('Post req from addReview');
-          console.log(res);
         });
     } else {
       this.messageService.add({
@@ -161,14 +159,9 @@ export class ProductPageComponent {
   getReviews() {
     this.reviewService.getReviews(this.product._id).subscribe((res) => {
       this.reviewsList = res;
-      console.log('reviewlist');
-
-      console.log(res);
     });
     this.userService.getMe().subscribe((res) => {
       this.user = res;
-      console.log('user');
-      console.log(res);
     });
   }
 
@@ -212,5 +205,4 @@ export class ProductPageComponent {
   prev() {
     this.activeIndex--;
   }
-  // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }

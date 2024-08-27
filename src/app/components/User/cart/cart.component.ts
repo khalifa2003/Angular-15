@@ -17,8 +17,6 @@ export class CartComponent {
 
   constructor(
     private cartService: CartService,
-    private authService: AuthService,
-    private wishlistService: WishlistService,
     private messageService: MessageService
   ) {}
 
@@ -35,17 +33,25 @@ export class CartComponent {
     });
   }
 
-  addOne(id: string, quantity: number) {
-    this.cartService
-      .updateCartItemQuantity(id, quantity + 1)
-      .subscribe((res) => {
-        this.getCart();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'success',
-          detail: `Quantity Updated`,
+  addOne(item: any, quantity: number) {
+    if (item.quantity < item.product.quantity) {
+      this.cartService
+        .updateCartItemQuantity(item._id, quantity + 1)
+        .subscribe((res) => {
+          this.getCart();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'success',
+            detail: `Quantity Updated`,
+          });
         });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'error',
+        detail: `The quantity limit is ${item.product.quantity}`,
       });
+    }
   }
 
   removeOne(id: string, quantity: number) {

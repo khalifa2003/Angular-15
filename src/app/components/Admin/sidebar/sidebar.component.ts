@@ -54,8 +54,7 @@ export class SidebarComponent {
         {
           label: 'Management',
           icon: 'pi pi-fw pi-cog',
-          command: () =>
-            this.router.navigate(['admin/subcategory/management']),
+          command: () => this.router.navigate(['admin/subcategory/management']),
         },
         {
           label: 'Accessibility',
@@ -81,8 +80,19 @@ export class SidebarComponent {
       ],
     },
     {
+      label: 'Orders',
+      icon: 'pi pi-shopping-cart',
+      items: [
+        {
+          label: 'Management',
+          icon: 'pi pi-cart ',
+          command: () => this.router.navigate(['admin/orders/management']),
+        },
+      ],
+    },
+    {
       label: 'Users',
-      icon: 'pi pi-fw pi-book',
+      icon: 'pi pi-user',
       items: [
         {
           label: 'Management',
@@ -109,10 +119,5 @@ export class SidebarComponent {
   private updateSidebarWidth() {
     const width = window.innerWidth;
     this.sidebarWidth = width > 991 ? '400px' : '100%';
-  }
-
-  searchQuery: string = '';
-  performSearch() {
-    console.log('Search for:', this.searchQuery);
   }
 }

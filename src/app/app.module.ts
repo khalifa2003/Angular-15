@@ -68,6 +68,7 @@ import { HomeCategoryCardComponent } from './components/Home/home-category-card/
 import { HomeProductCardComponent } from './components/Home/home-product-card/home-product-card.component';
 import { HomeBrandCardComponent } from './components/Home/home-brand-card/home-brand-card.component';
 import { CheckOutComponent } from './components/User/check-out/check-out.component';
+import { OrderManagementComponent } from './components/Admin/order-management/order-management.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { CheckOutComponent } from './components/User/check-out/check-out.compone
     HomeProductCardComponent,
     HomeBrandCardComponent,
     CheckOutComponent,
+    OrderManagementComponent,
   ],
   imports: [
     BrowserModule,

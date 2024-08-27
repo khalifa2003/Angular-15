@@ -22,6 +22,7 @@
         styleClass="p-button-success p-button-rounded"
         icon="pi pi-cart-plus"
         (onClick)="addToCart()"
+        [disabled]="product.quantity == 0"
       ></p-button>
       <i
         [ngStyle]="{ position: 'fixed', top: '0' }"

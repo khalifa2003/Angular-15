@@ -19,6 +19,7 @@ import { CartComponent } from './components/User/cart/cart.component';
 import { WishlistComponent } from './components/User/wishlist/wishlist.component';
 import { OrdersComponent } from './components/User/orders/orders.component';
 import { CheckOutComponent } from './components/User/check-out/check-out.component';
+import { OrderManagementComponent } from './components/Admin/order-management/order-management.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,11 @@ const routes: Routes = [
   {
     path: 'admin/subcategory/management',
     component: SubcategoryMangementComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/orders/management',
+    component: OrderManagementComponent,
     canActivate: [AdminGuard],
   },
 
