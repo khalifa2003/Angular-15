@@ -2,53 +2,58 @@
 <div class="container-fluid">
   <div class="row">
     <!-- Top Stats Cards -->
-    <div class="col-12 col-md-3 mb-4">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="ordersStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-cart4 fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Orders</h6>
-            <h3>152</h3>
-            <span class="badge bg-info text-dark">24 new since last visit</span>
+            <h3>{{ ordersStats.ordersCount }}</h3>
+            <span class="badge bg-info text-dark">
+              {{ ordersStats.newOrdersCount }} new since last visit
+            </span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-md-3 mb-4">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="revenueStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-currency-dollar fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Revenue</h6>
-            <h3>$2,100</h3>
-            <span class="badge bg-success">$62 since last week</span>
+            <h3>{{ revenueStats }} EGP</h3>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-md-3 mb-4">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="customersStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-people fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Customers</h6>
-            <h3>28,441</h3>
-            <span class="badge bg-info text-dark">520 newly registered</span>
+            <h3>{{ customersStats.customersCount }}</h3>
+            <span class="badge bg-info text-dark">
+              {{ customersStats.newCustomersCount }} newly registered
+            </span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-md-3 mb-4">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="commentsStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-chat-dots fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Comments</h6>
-            <h3>152 Unread</h3>
-            <span class="badge bg-success">85 responded</span>
+            <h3>{{ commentsStats.unreadCommentsCount }} Unread</h3>
+            <span class="badge bg-success">
+              {{ commentsStats.respondedCommentsCount }} responded
+            </span>
           </div>
         </div>
       </div>
@@ -57,34 +62,77 @@
 
   <div class="row">
     <!-- Recent Sales Table -->
-    <div class="col-12 col-md-8 mb-4">
+    <div class="col-12 col-xl-8 mb-4">
       <div class="card">
         <div class="card-header">Recent Sales</div>
-        <div class="card-body">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Image</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">View</th>
+        <table
+          class="card-body table table-hover"
+          style="overflow-x: scroll; width: 100%; display: block"
+        >
+          <thead>
+            <tr>
+              <th scope="col">Image</th>
+              <th scope="col">Title</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Total Price</th>
+              <th scope="col">User Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Order Date</th>
+              <th scope="col">Order Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let order of recentSales">
+              <tr *ngFor="let item of order.cartItems">
+                <td>
+                  <img
+                    [src]="item.product?.images[0]"
+                    [alt]="item.product?.title"
+                    width="50"
+                  />
+                </td>
+                <td>
+                  <p
+                    [ngStyle]="{
+                      'text-overflow': 'ellipsis',
+                      'white-space': 'wrap',
+                      'max-width': '200px',
+                      height: '50px',
+                      overflow: 'hidden',
+                      'font-size': '16px'
+                    }"
+                  >
+                    {{ item.product?.title }}
+                  </p>
+                </td>
+                <td>
+                  {{ item.quantity }}
+                </td>
+                <td>{{ item.price }} EGP</td>
+                <td>{{ order.totalOrderPrice }} EGP</td>
+                <td>{{ order.user?.fname }} {{ order.user?.lname }}</td>
+                <td>
+                  {{ order.shippingAddress?.address }}
+                </td>
+                <td>{{ order.createdAt | date : "short" }}</td>
+                <td
+                  [ngClass]="{
+                    'text-success': order.isDelivered,
+                    'text-warning': !order.isDelivered
+                  }"
+                >
+                  {{ order.isDelivered ? "Delivered" : "Pending" }}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let sale of salesData">
-                <td><img src="{{ sale.image }}" alt="Product" width="50" /></td>
-                <td>{{ sale.name }}</td>
-                <td>{{ sale.price }}</td>
-                <td><i class="bi bi-search"></i></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <!-- Sales Overview Chart -->
-    <div class="col-12 col-md-4 mb-4">
+    <div class="col-12 col-xl-4 mb-4">
       <div class="card">
         <div class="card-header">Sales Overview</div>
         <div class="card-body">
@@ -105,9 +153,8 @@
               class="list-group-item"
               *ngFor="let product of bestSellingProducts"
             >
-              {{ product.name }} - {{ product.category }} ({{
-                product.percentage
-              }}%)
+              {{ product.title }} - {{ product._id }} -
+              {{ product.totalSales }}
             </li>
           </ul>
         </div>
@@ -124,7 +171,19 @@
               class="list-group-item"
               *ngFor="let notification of notifications"
             >
-              {{ notification.message }}
+              {{
+                "Comment: '" +
+                  notification.title +
+                  "' With Rate: '" +
+                  notification.ratings +
+                  "' From: '" +
+                  notification.user.fname +
+                  " " +
+                  notification.user.lname +
+                  "' At ProductId: '" +
+                  notification.product +
+                  "'"
+              }}
             </li>
           </ul>
         </div>

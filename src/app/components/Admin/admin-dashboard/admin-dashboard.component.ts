@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/services/user.service';
 import { Component } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 
@@ -7,58 +8,43 @@ import { Chart } from 'chart.js/auto';
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent {
-  salesData = [
-    { image: '../../../../assets/laptops2.png', name: 'Bamboo Watch', price: '$65.00' },
-    { image: '../../../../assets/laptops2.png', name: 'Black Watch', price: '$72.00' },
-    { image: '../../../../assets/laptops2.png', name: 'Blue Band', price: '$79.00' },
-    { image: '../../../../assets/laptops2.png', name: 'Blue T-Shirt', price: '$29.00' },
-    { image: '../../../../assets/laptops2.png', name: 'Bracelet', price: '$15.00' },
-  ];
+  ordersStats: any;
+  revenueStats: any;
+  customersStats: any;
+  commentsStats: any;
+  recentSales: any[] = [];
+  bestSellingProducts: any[] = [];
+  notifications: any[] = [];
+  salesOverview: any[] = [];
 
-  bestSellingProducts = [
-    { name: 'Space T-Shirt', category: 'Clothing', percentage: 50 },
-    { name: 'Portal Sticker', category: 'Accessories', percentage: 16 },
-    { name: 'Supernova Sticker', category: 'Accessories', percentage: 17 },
-    { name: 'Wonders Notebook', category: 'Office', percentage: 25 },
-    { name: 'Mat Black Case', category: 'Accessories', percentage: 75 },
-    { name: 'Robots T-Shirt', category: 'Clothing', percentage: 40 },
-  ];
-
-  notifications = [
-    { message: 'Richard Jones has purchased a blue t-shirt for $79' },
-    { message: 'Your request for withdrawal of $2500 has been initiated' },
-    { message: 'Keyser Wick has purchased a black jacket for $95' },
-    { message: 'Jane Davis has posted a new question about your product.' },
-  ];
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.renderSalesOverviewChart();
+    this.userService.getDashboardData().subscribe((data: any) => {
+      this.ordersStats = data.ordersStats;
+      this.revenueStats = data.revenueStats;
+      this.customersStats = data.customersStats;
+      this.commentsStats = data.commentsStats;
+      this.recentSales = data.recentSales;
+      this.bestSellingProducts = data.bestSellingProducts;
+      this.notifications = data.notifications;
+      this.salesOverview = data.salesOverview;
+      console.log(this.salesOverview);
+
+      this.renderSalesOverviewChart();
+    });
   }
 
   renderSalesOverviewChart() {
     new Chart('salesOverviewChart', {
       type: 'line',
       data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-        ],
+        labels: this.salesOverview.map((data) => `${data._id}`),
         datasets: [
           {
-            label: 'First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Total Sales',
+            data: this.salesOverview.map((data) => data.totalSales),
             borderColor: '#42A5F5',
-            fill: false,
-          },
-          {
-            label: 'Second Dataset',
-            data: [28, 48, 40, 19, 86, 27, 90],
-            borderColor: '#66BB6A',
             fill: false,
           },
         ],

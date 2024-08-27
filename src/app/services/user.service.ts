@@ -35,4 +35,11 @@ export class UserService {
       headers,
     });
   }
+
+  getDashboardData(): Observable<any> {
+    const headers = new HttpHeaders({
+      authorization: `Bearer ${this.authService.currentUserValue.token}`,
+    });
+    return this.http.get<any>(`${this.apiUrl}/dashboard`, { headers });
+  }
 }
