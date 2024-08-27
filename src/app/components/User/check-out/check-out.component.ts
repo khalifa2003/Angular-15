@@ -120,7 +120,7 @@ export class CheckOutComponent {
   }
   checkout(): void {
     if (this.checkoutForm.valid) {
-      const order: Partial<IOrder> = {
+      const order = {
         cartItems: this.cartItems.map((item) => ({
           product: item.product._id,
           quantity: item.quantity,
@@ -131,11 +131,8 @@ export class CheckOutComponent {
         paymentMethodType: this.checkoutForm.value.paymentMethodType,
       };
 
-      console.log(order);
-
-      this.orderService.createOrder(order).subscribe((res) => {
-        console.log(res);
-        this.router.navigate(['order']);
+      this.orderService.createOrder(order, this.cart._id).subscribe((res) => {
+        this.router.navigate(['orders']);
       });
     }
   }

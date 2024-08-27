@@ -1,4 +1,6 @@
+import { OrderService } from './../../../services/order.service';
 import { Component } from '@angular/core';
+import { IOrder } from 'src/app/Models/iorder';
 
 @Component({
   selector: 'app-orders',
@@ -6,6 +8,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./orders.component.css'],
 })
 export class OrdersComponent {
+  orders: IOrder[] = [];
+
+  constructor(private orderService: OrderService) {}
+
+  ngOnInit(): void {
+    this.orderService.getLoggedUserOrders().subscribe((res) => {
+      this.orders = res;
+    });
+  }
+
   orderDetails = [
     {
       orderNumber: 262387,

@@ -1,3 +1,4 @@
+import { IAddress } from './iaddress';
 import { IProduct } from './iproduct';
 import { IUser } from './iuser';
 
@@ -10,14 +11,7 @@ export interface IOrder {
     price: number;
   }[];
   taxPrice: number;
-  shippingAddress: {
-    address: string;
-    phone: string;
-    city: string;
-    postalCode: string;
-    state: string;
-    country: string;
-  };
+  shippingAddress: IAddress;
   shippingPrice: number;
   totalOrderPrice: number;
   paymentMethodType: string;
@@ -25,4 +19,5 @@ export interface IOrder {
   paidAt?: Date;
   isDelivered: boolean;
   deliveredAt?: Date;
+  updatedAt?: Date;
 }

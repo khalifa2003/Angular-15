@@ -12,29 +12,29 @@ export class OrderService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  createOrder(order: Partial<IOrder>): Observable<IOrder> {
-    return this.http.post<IOrder>(this.apiUrl, order);
+  // User
+  createOrder(order: any, cartId: string): Observable<IOrder> {
+    const headers = new HttpHeaders({
+      authorization: `Bearer ${this.authService.currentUserValue.token}`,
+    });
+    return this.http.post<IOrder>(`${this.apiUrl}/${cartId}`, order, {
+      headers,
+    });
   }
 
+  getLoggedUserOrders(): Observable<any> {
+    const headers = new HttpHeaders({
+      authorization: `Bearer ${this.authService.currentUserValue.token}`,
+    });
+    return this.http.get<any>(`${this.apiUrl}/userOrders`, { headers });
+  }
+
+  // Admin
   getAllOrders(): Observable<IOrder[]> {
     const headers = new HttpHeaders({
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
-    return this.http.get<IOrder[]>(this.apiUrl);
-  }
-
-  getOrderById(id: string): Observable<IOrder> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.get<IOrder>(`${this.apiUrl}/${id}`, { headers });
-  }
-
-  updateOrder(id: string, order: Partial<IOrder>): Observable<IOrder> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put<IOrder>(`${this.apiUrl}/${id}`, order, { headers });
+    return this.http.get<IOrder[]>(this.apiUrl, { headers });
   }
 
   deleteOrder(id: string): Observable<void> {
@@ -42,5 +42,12 @@ export class OrderService {
       authorization: `Bearer ${this.authService.currentUserValue.token}`,
     });
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
+
+  updateOrder(id: string, order: Partial<IOrder>): Observable<IOrder> {
+    const headers = new HttpHeaders({
+      authorization: `Bearer ${this.authService.currentUserValue.token}`,
+    });
+    return this.http.put<IOrder>(`${this.apiUrl}/${id}`, order, { headers });
   }
 }
