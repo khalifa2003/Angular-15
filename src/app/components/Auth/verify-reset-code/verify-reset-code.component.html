@@ -1,0 +1,32 @@
+<div
+  class="d-flex align-items-center justify-content-center min-vh-100 bg-light"
+>
+  <div class="card p-4 shadow-sm" style="max-width: 400px">
+    <h5 class="mb-3">Verification Code</h5>
+    <p class="mb-4">Enter the code we sent in your mail!</p>
+
+    <div class="d-flex justify-content-center gap-2">
+      <input
+        [(ngModel)]="verificationCode"
+        placeholder="Verification Code"
+        type="text"
+        class="form-control"
+      />
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      <p-button
+        label="Verify"
+        type="submit"
+        (onClick)="verifyCode()"
+      ></p-button>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+      <div>
+        If you didn't get the mail?
+        <a (click)="resendCode()" class="text-warning pointer" >Send code again</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth';
   public currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
@@ -27,34 +27,6 @@ export class AuthService {
     return !!token;
   }
 
-  login(data: any) {
-    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
-      tap((user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.router.navigate(['/home']);
-      }),
-      catchError((error) => {
-        console.error('Login error', error);
-        return of(null);
-      })
-    );
-  }
-
-  register(formData: FormData) {
-    return this.http.post<any>(`${this.apiUrl}/signup`, formData).pipe(
-      tap((user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.router.navigate(['/home']);
-      }),
-      catchError((error) => {
-        console.error('Registration error', error);
-        return of(null);
-      })
-    );
-  }
-
   logout() {
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
@@ -66,7 +38,78 @@ export class AuthService {
     return roles.includes('admin') || roles.includes('manager');
   }
 
-  get isUserLogged(): boolean {
-    return this.currentUserValue.user ? true : false;
+  login(data: any) {
+    return this.http.post<any>(`${environment.apiUrl}/auth/login`, data).pipe(
+      tap((data) => {
+        localStorage.setItem('user', JSON.stringify(data));
+        this.currentUserSubject.next(data);
+        this.router.navigate(['/home']);
+      }),
+      catchError((error) => {
+        console.error('Login error', error);
+        return of(null);
+      })
+    );
+  }
+
+  register(formData: FormData) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/auth/signup`, formData)
+      .pipe(
+        tap((user) => {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          this.router.navigate(['/home']);
+        }),
+        catchError((error) => {
+          console.error('Registration error', error);
+          return of(null);
+        })
+      );
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http
+      .post(`${environment.apiUrl}/auth/forgotPassword`, {
+        email,
+      })
+      .pipe(
+        tap(() => {
+          localStorage.setItem('email', JSON.stringify(email));
+          this.router.navigate(['login/verify']);
+        }),
+        catchError((error) => {
+          console.error('Login error', error);
+          return of(null);
+        })
+      );
+  }
+
+  verifyResetCode(resetCode: string): Observable<any> {
+    return this.http
+      .post(`${environment.apiUrl}/auth/verifyResetCode`, {
+        resetCode,
+      })
+      .pipe(
+        tap(() => {
+          this.router.navigate(['login/reset-password']);
+        })
+      );
+  }
+
+  resetPassword(newPassword: string) {
+    const email = localStorage.getItem('email')?.slice(1, -1);
+
+    this.http
+      .post(`${environment.apiUrl}/auth/resetPassword`, { newPassword, email })
+      .subscribe((data) => {
+        console.log(data);
+
+        localStorage.setItem('user', JSON.stringify(data));
+        this.currentUserSubject.next(data);
+        this.router.navigate(['/home']);
+
+        localStorage.removeItem('email');
+      });
   }
 }

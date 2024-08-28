@@ -27,7 +27,6 @@ export class HomeProductCardComponent {
     private wishlistService: WishlistService,
     private messageService: MessageService,
     private authService: AuthService,
-    private cartService: CartService,
     private renderer: Renderer2,
     private el: ElementRef
   ) {}
@@ -40,7 +39,7 @@ export class HomeProductCardComponent {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
         audio.play();
         this.wishlist = res.data.map((product: { _id: any }) => {
@@ -59,7 +58,7 @@ export class HomeProductCardComponent {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       this.wishlistService
         .removeFromWishlist(product._id)
         .subscribe((res: any) => {
@@ -77,7 +76,7 @@ export class HomeProductCardComponent {
   }
 
   getWishlist() {
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       this.wishlistService.getWishlist().subscribe((res) => {
         this.wishlist = res.data.map((product: { _id: any }) => {
           return product._id;

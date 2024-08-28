@@ -1,38 +1,23 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddressService {
-  private apiUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   addAddress(formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.post(`${this.apiUrl}/address`, formData, {
-      headers,
-    });
+    return this.http.post(`${environment.apiUrl}/address`, formData);
   }
 
   deleteAddress(addressId: string): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete(`${this.apiUrl}/address/${addressId}`, {
-      headers,
-    });
+    return this.http.delete(`${environment.apiUrl}/address/${addressId}`);
   }
 
   getAddresses(): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-
-    return this.http.get(`${this.apiUrl}/address`, { headers });
+    return this.http.get(`${environment.apiUrl}/address`);
   }
 }

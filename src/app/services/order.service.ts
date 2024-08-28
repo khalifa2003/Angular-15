@@ -1,66 +1,44 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IOrder } from '../Models/iorder';
-import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:3000/orders'; // Adjust the URL if needed
-
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   // User
   createOrder(order: any, cartId: string): Observable<IOrder> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.post<IOrder>(`${this.apiUrl}/${cartId}`, order, {
-      headers,
-    });
+    return this.http.post<IOrder>(
+      `${environment.apiUrl}/orders/${cartId}`,
+      order
+    );
   }
 
   getLoggedUserOrders(): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.get<any>(`${this.apiUrl}/userOrders`, { headers });
+    return this.http.get<any>(`${environment.apiUrl}/orders/userOrders`);
   }
 
   // Admin
   getAllOrders(): Observable<IOrder[]> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.get<IOrder[]>(this.apiUrl, { headers });
+    return this.http.get<IOrder[]>(`${environment.apiUrl}/orders`);
   }
 
   updateToDelivered(orderId: string) {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
     return this.http.put<void>(
-      `${this.apiUrl}/delivered/${orderId}`,
-      {},
-      {
-        headers,
-      }
+      `${environment.apiUrl}/orders/delivered/${orderId}`,
+      {}
     );
   }
 
   updateOrder(id: string, order: Partial<IOrder>): Observable<IOrder> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put<IOrder>(`${this.apiUrl}/${id}`, order, { headers });
+    return this.http.put<IOrder>(`${environment.apiUrl}/orders/${id}`, order);
   }
 
   deleteOrder(id: string): Observable<void> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.delete<void>(`${environment.apiUrl}/orders/${id}`);
   }
 }

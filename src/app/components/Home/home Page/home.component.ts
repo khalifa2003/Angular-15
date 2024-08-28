@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
   }
 
   addToCart(selectedProduct: IProduct) {
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       const audio = this.renderer.createElement('audio');
       this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
       this.renderer.appendChild(this.el.nativeElement, audio);

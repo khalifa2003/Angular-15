@@ -31,7 +31,7 @@ export class SearchListCardComponent {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
         audio.play();
         this.wishlist = res.data.map((product: { _id: any }) => {
@@ -50,7 +50,7 @@ export class SearchListCardComponent {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       this.wishlistService
         .removeFromWishlist(product._id)
         .subscribe((res: any) => {
@@ -68,7 +68,7 @@ export class SearchListCardComponent {
   }
 
   getWishlist() {
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       this.wishlistService.getWishlist().subscribe((res) => {
         this.wishlist = res.data.map((product: { _id: any }) => {
           return product._id;
@@ -82,11 +82,11 @@ export class SearchListCardComponent {
   }
 
   addToCart(selectedProduct: IProduct) {
-    if (this.authService.isUserLogged) {
+    if (this.authService.isAuthenticated()) {
       const audio = this.renderer.createElement('audio');
       this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
       this.renderer.appendChild(this.el.nativeElement, audio);
-      if (this.authService.isUserLogged) {
+      if (this.authService.isAuthenticated()) {
         this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
           this.product = selectedProduct;
           this.showModal = true;

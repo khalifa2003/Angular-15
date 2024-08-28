@@ -1,59 +1,91 @@
-<body>
-  <div class="background">
-    <div class="shape"></div>
-    <div class="shape"></div>
+<div
+  class="d-flex justify-content-center align-items-center"
+  style="min-height: 90vh"
+>
+  <div class="card p-4" style="max-width: 400px">
+    <h3 class="text-center mb-3">Login</h3>
+    <p class="text-center mb-4">
+      Welcome to the Verona Community, where the magic happens, sign in to
+      continue.
+    </p>
+    <form [formGroup]="loginForm" (submit)="submit()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          pInputText
+          id="email"
+          class="form-control"
+          formControlName="email"
+          [ngClass]="{
+            'is-invalid': control['email'].touched && control['email'].invalid
+          }"
+        />
+        <div
+          *ngIf="control['email'].touched && control['email'].invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="control['email'].errors?.['required']">
+            Email Required
+          </div>
+          <div *ngIf="control['email'].errors?.['email']">Incorrect Email</div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input
+          pInputText
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          [ngClass]="{
+            'is-invalid':
+              control['password'].touched && control['password'].invalid
+          }"
+        />
+        <div
+          *ngIf="control['password'].touched && control['password'].invalid"
+          class="invalid-feedback"
+        >
+          Password Required
+        </div>
+      </div>
+
+      <div class="text-center mb-3">
+        <a [routerLink]="['forgot-password']">
+          <strong class="text-primary">Forgot Password?</strong>
+        </a>
+      </div>
+
+      <div class="d-flex gap-2 mb-4 justify-content-center">
+        <p-button
+          label="Sign In"
+          [loading]="loading"
+          type="submit"
+          class="p-button-primary"
+          [disabled]="loginForm.invalid"
+        ></p-button>
+      </div>
+
+      <div class="text-center">
+        Don't have an account?
+
+        <a [routerLink]="['/register']"
+          ><strong class="text-primary">Register</strong></a
+        >
+      </div>
+
+      <div class="text-center">
+        <p>or sign in with below</p>
+        <div class="d-flex justify-content-center gap-3">
+          <i class="pi pi-facebook" style="font-size: 1.5rem"></i>
+          <i class="pi pi-twitter" style="font-size: 1.5rem"></i>
+          <i class="pi pi-google" style="font-size: 1.5rem"></i>
+          <i class="pi pi-github" style="font-size: 1.5rem"></i>
+        </div>
+      </div>
+    </form>
   </div>
-  <form [formGroup]="loginForm" (submit)="submit()">
-    <h3>Login Here</h3>
-    <div class="d-flex flex-column gap-1 mt-2">
-      <label htmlFor="email">Email*</label>
-      <input
-        pInputText
-        id="email"
-        placeholder="test@email.co"
-        formControlName="email"
-        [ngClass]="{
-          'is-invalid': control['email'].touched && control['email'].invalid
-        }"
-      />
-      <div
-        *ngIf="control['email'].touched && control['email'].invalid"
-        class="invalid-feedback"
-      >
-        <div *ngIf="control['email'].errors?.['required']">Email Required</div>
-        <div *ngIf="control['email'].errors?.['email']">Incorect Email</div>
-      </div>
-    </div>
-    <div class="d-flex flex-column gap-1 mt-2">
-      <label>Password*</label>
-      <input
-        formControlName="password"
-        placeholder="********"
-        type="password"
-        [ngClass]="{
-          'is-invalid':
-            control['password'].touched && control['password'].invalid
-        }"
-      />
-      <div
-        *ngIf="control['password'].touched && control['password'].invalid"
-        class="invalid-feedback"
-      >
-        Password Required
-      </div>
-    </div>
-    <div class="d-flex justify-content-center mt-4">
-      <p-button
-        label="Login"
-        [loading]="loading"
-        type="submit"
-        [disabled]="loginForm.invalid"
-      ></p-button>
-    </div>
-    <div class="d-flex justify-content-between">
-      <a routerLink="verify">Forgot Password?</a>
-      <a routerLink="/register">Register</a>
-    </div>
-  </form>
-</body>
+</div>
 <p-toast></p-toast>

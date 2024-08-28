@@ -1,61 +1,31 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   addToCart(productId: string): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.post(
-      `${this.apiUrl}/cart`,
-      { productId },
-      {
-        headers,
-      }
-    );
+    return this.http.post(`${environment.apiUrl}/cart`, { productId });
   }
 
   getCart(): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.get(`${this.apiUrl}/cart`, { headers });
+    return this.http.get(`${environment.apiUrl}/cart`);
   }
 
   updateCartItemQuantity(productId: string, quantity: number): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put(
-      `${this.apiUrl}/cart/${productId}`,
-      { quantity },
-      {
-        headers,
-      }
-    );
+    return this.http.put(`${environment.apiUrl}/cart/${productId}`, { quantity });
   }
 
   deleteCart() {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete(`${this.apiUrl}/cart`, { headers });
+    return this.http.delete(`${environment.apiUrl}/cart`);
   }
 
   deleteCartItem(itemId: string): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete(`${this.apiUrl}/cart/${itemId}`, {
-      headers,
-    });
+    return this.http.delete(`${environment.apiUrl}/cart/${itemId}`);
   }
 }

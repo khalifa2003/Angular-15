@@ -1,45 +1,29 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  private apiUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   // public
   getAllCategories(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/category`);
+    return this.http.get(`${environment.apiUrl}/category`);
   }
 
   // private only admin/manager
   createCategory(formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.post(`${this.apiUrl}/category`, formData, {
-      headers,
-    });
+    return this.http.post(`${environment.apiUrl}/category`, formData, {});
   }
 
   editCategory(id: string, formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put(`${this.apiUrl}/category/${id}`, formData, {
-      headers,
-    });
+    return this.http.put(`${environment.apiUrl}/category/${id}`, formData, {});
   }
 
   deleteCategory(id: string): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete(`${this.apiUrl}/category/${id}`, {
-      headers,
-    });
+    return this.http.delete(`${environment.apiUrl}/category/${id}`, {});
   }
 }

@@ -1,0 +1,37 @@
+<div class="container-xxl">
+  <div class="row border-warning">
+    <div class="card col-xl-3 col-sm-6 col-12" *ngFor="let user of users">
+      <img
+        class="card-img-top"
+        [src]="user.image || '../../../../assets/person.jpg'"
+        alt="Card image cap"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ user.fname + " " + user.lname }}</h5>
+        <p class="card-text"><strong>Email: </strong>{{ user.email }}</p>
+        <p class="card-text"><strong>Phone: </strong>{{ user.phone }}</p>
+        <p><strong>Role: </strong>{{ user.roles[0] }}</p>
+        <div class="d-flex justify-content-between">
+          <button
+            href="#"
+            class="btn btn-primary"
+            [disabled]="user.roles[0] == 'admin' || user.roles[0] == 'manager'"
+            (click)="updateRole(user._id)"
+          >
+            Add New manager
+          </button>
+          <button
+            href="#"
+            class="btn btn-danger"
+            [disabled]="user.roles[0] == 'admin'"
+            (click)="deleteUser(user._id)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>

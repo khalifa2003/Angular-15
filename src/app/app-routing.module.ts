@@ -20,6 +20,10 @@ import { WishlistComponent } from './components/User/wishlist/wishlist.component
 import { OrdersComponent } from './components/User/orders/orders.component';
 import { CheckOutComponent } from './components/User/check-out/check-out.component';
 import { OrderManagementComponent } from './components/Admin/order-management/order-management.component';
+import { UsersManagementComponent } from './components/Admin/users-management/users-management.component';
+import { ForgetPasswordComponent } from './components/Auth/forget-password/forget-password.component';
+import { VerifyResetCodeComponent } from './components/Auth/verify-reset-code/verify-reset-code.component';
+import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -38,7 +42,9 @@ const routes: Routes = [
   // Auth
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  // { path: 'login/verify', component: ForgetPasswordComponent },
+  { path: 'login/forgot-password', component: ForgetPasswordComponent },
+  { path: 'login/verify', component: VerifyResetCodeComponent },
+  { path: 'login/reset-password', component: ResetPasswordComponent },
 
   // User
   { path: 'profile', component: ProfileComponent },
@@ -76,6 +82,11 @@ const routes: Routes = [
   {
     path: 'admin/orders/management',
     component: OrderManagementComponent,
+    canActivate: [AdminGuard],
+  },
+  {
+    path: 'admin/user/management',
+    component: UsersManagementComponent,
     canActivate: [AdminGuard],
   },
 

@@ -29,9 +29,8 @@ export class LandingComponent {
       '../../assets/swipper/swipper2.jpg',
       '../../assets/swipper/swipper3.jpg',
       '../../assets/swipper/swipper4.jpg',
-      '../../assets/swipper/swipper5.jpg',
+      '../../assets/swipper/swipper5.webp',
       '../../assets/swipper/swipper6.jpg',
-      '../../assets/swipper/swipper7.webp',
       '../../assets/swipper/swipper8.avif',
     ];
   }

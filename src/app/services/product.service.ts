@@ -1,21 +1,20 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   getAllProducts(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/product`);
+    return this.http.get(`${environment.apiUrl}/product`);
   }
 
   getProductById(id: String | null): Observable<any> {
-    return this.http.get(`${this.apiUrl}/product/${id}`);
+    return this.http.get(`${environment.apiUrl}/product/${id}`);
   }
 
   searchProducts(params: any): Observable<any> {
@@ -25,36 +24,21 @@ export class ProductService {
         queryParams = queryParams.set(key, params[key]);
       });
     }
-    return this.http.get(`${this.apiUrl}/product`, {
+    return this.http.get(`${environment.apiUrl}/product`, {
       params: queryParams,
     });
   }
 
   // private only admin/manager
   createProduct(formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.post(`${this.apiUrl}/product`, formData, {
-      headers,
-    });
+    return this.http.post(`${environment.apiUrl}/product`, formData);
   }
 
   updateProduct(id: string, formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put(`${this.apiUrl}/product/${id}`, formData, {
-      headers,
-    });
+    return this.http.put(`${environment.apiUrl}/product/${id}`, formData);
   }
 
   deleteProduct(id: String) {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete(`${this.apiUrl}/product/${id}`, {
-      headers,
-    });
+    return this.http.delete(`${environment.apiUrl}/product/${id}`);
   }
 }

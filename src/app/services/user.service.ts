@@ -1,45 +1,38 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   getMe(): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-
-    return this.http.get(`${this.apiUrl}/user/me`, { headers });
+    return this.http.get(`${environment.apiUrl}/user/me`);
+  }
+  getAllUsers(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/user`);
   }
 
   updateLoggedUserData(formData: any): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put(`${this.apiUrl}/user/me`, formData, {
-      headers,
-    });
+    return this.http.put(`${environment.apiUrl}/user/me`, formData);
   }
 
   updateLoggedUserPassword(passwords: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.put(`${this.apiUrl}/user/me/password`, passwords, {
-      headers,
-    });
+    return this.http.put(`${environment.apiUrl}/user/me/password`, passwords);
+  }
+
+  makeManager(id: string): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/user/${id}/role`, {});
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${environment.apiUrl}/user/${id}`);
   }
 
   getDashboardData(): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.get<any>(`${this.apiUrl}/dashboard`, { headers });
+    return this.http.get<any>(`${environment.apiUrl}/dashboard`);
   }
 }

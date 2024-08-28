@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -37,6 +37,7 @@ import { PanelModule } from 'primeng/panel';
 import { ListboxModule } from 'primeng/listbox';
 import { DividerModule } from 'primeng/divider';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { InputMaskModule } from 'primeng/inputmask';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -69,6 +70,11 @@ import { HomeProductCardComponent } from './components/Home/home-product-card/ho
 import { HomeBrandCardComponent } from './components/Home/home-brand-card/home-brand-card.component';
 import { CheckOutComponent } from './components/User/check-out/check-out.component';
 import { OrderManagementComponent } from './components/Admin/order-management/order-management.component';
+import { UsersManagementComponent } from './components/Admin/users-management/users-management.component';
+import { JwtInterceptor } from './Interceptors/jwt.interceptor';
+import { ForgetPasswordComponent } from './components/Auth/forget-password/forget-password.component';
+import { VerifyResetCodeComponent } from './components/Auth/verify-reset-code/verify-reset-code.component';
+import { ResetPasswordComponent } from './components/Auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +107,10 @@ import { OrderManagementComponent } from './components/Admin/order-management/or
     HomeBrandCardComponent,
     CheckOutComponent,
     OrderManagementComponent,
+    UsersManagementComponent,
+    ForgetPasswordComponent,
+    VerifyResetCodeComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -141,8 +151,16 @@ import { OrderManagementComponent } from './components/Admin/order-management/or
     ListboxModule,
     DividerModule,
     BreadcrumbModule,
+    InputMaskModule,
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

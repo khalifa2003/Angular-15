@@ -1,46 +1,23 @@
-import { UserService } from 'src/app/services/user.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { IProduct } from '../Models/iproduct';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WishlistService {
-  private apiUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   getWishlist(): Observable<any> {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.get(`${this.apiUrl}/wishlist`, {
-      headers,
-    });
+    return this.http.get(`${environment.apiUrl}/wishlist`);
   }
 
   addToWishlist(productId: string) {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-
-    return this.http.post(
-      `${this.apiUrl}/wishlist`,
-      { productId },
-      {
-        headers,
-      }
-    );
+    return this.http.post(`${environment.apiUrl}/wishlist`, { productId });
   }
 
   removeFromWishlist(productId: string) {
-    const headers = new HttpHeaders({
-      authorization: `Bearer ${this.authService.currentUserValue.token}`,
-    });
-    return this.http.delete(`${this.apiUrl}/wishlist/${productId}`, {
-      headers,
-    });
+    return this.http.delete(`${environment.apiUrl}/wishlist/${productId}`);
   }
 }
