@@ -125,8 +125,6 @@
   </p-carousel>
 </div>
 
-<p-toast></p-toast>
-
 <div class="my-modal" *ngIf="showModal">
   <div class="my-modal-header">
     <span class="my-modal-title">Product added to Cart</span>
@@ -134,6 +132,6 @@
   </div>
   <div class="my-modal-body">
     <img [src]="product.images[0]" alt="" />
-    <a routerLink="/cart" style="text-decoration: none">{{ product.title }}</a>
+    <a routerLink="/user/cart" style="text-decoration: none">{{ product.title }}</a>
   </div>
 </div>

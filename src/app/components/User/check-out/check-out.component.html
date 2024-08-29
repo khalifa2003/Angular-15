@@ -155,7 +155,11 @@
   </div>
 
   <div class="row d-flex justify-content-center" *ngIf="cart">
-    <button class="btn btn-success w-25" (click)="checkout()">
+    <button
+      class="btn btn-success w-25"
+      (click)="checkout()"
+      [disabled]="checkoutForm.invalid"
+    >
       Place Order
     </button>
   </div>
@@ -345,5 +349,3 @@
     </form>
   </ng-template>
 </p-dialog>
-
-<p-toast></p-toast>

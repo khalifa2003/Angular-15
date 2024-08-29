@@ -132,7 +132,7 @@ export class CheckOutComponent {
       };
 
       this.orderService.createOrder(order, this.cart._id).subscribe((res) => {
-        this.router.navigate(['orders']);
+        this.router.navigate(['user/orders']);
       });
     }
   }

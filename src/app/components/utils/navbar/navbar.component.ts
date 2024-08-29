@@ -109,21 +109,21 @@ export class NavbarComponent implements OnDestroy {
           {
             label: 'Profile',
             icon: 'pi pi-user',
-            command: () => this.router.navigate(['/profile']),
+            command: () => this.router.navigate(['/user/profile']),
           },
           {
             label: 'Orders',
-            command: () => this.router.navigate(['/orders']),
+            command: () => this.router.navigate(['/user/orders']),
             icon: 'pi pi-shopping-cart',
           },
           {
             label: 'Wishlist',
-            command: () => this.router.navigate(['/wishlist']),
+            command: () => this.router.navigate(['/user/wishlist']),
             icon: 'pi pi-heart',
           },
           {
             label: 'Cart',
-            command: () => this.router.navigate(['/cart']),
+            command: () => this.router.navigate(['/user/cart']),
             icon: 'pi pi-shopping-cart',
           },
           {

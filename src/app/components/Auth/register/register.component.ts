@@ -1,13 +1,22 @@
-import { Component, HostBinding } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { tap } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ButtonModule],
 })
 export class RegisterComponent {
   loading: boolean = false;

@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule],
 })
 export class ContactComponent {
   contactForm: FormGroup;
@@ -20,7 +27,7 @@ export class ContactComponent {
   onSubmit() {
     if (this.contactForm.valid) {
       console.log('Form Submitted', this.contactForm.value);
-      // Handle form submission (e.g., send the data to your backend)
+      // Handle form submission ( send the data to your backend)
     }
   }
 }

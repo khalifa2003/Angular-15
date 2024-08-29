@@ -4,6 +4,7 @@ import { IProduct } from 'src/app/Models/iproduct';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-wishlist',
@@ -12,13 +13,15 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class WishlistComponent {
   products: IProduct[] = [];
+  showModal: boolean = false;
   product: IProduct = {} as IProduct;
+  wishlist: any[] = [];
+  loading: boolean = false;
+  error: string | null = null;
 
   ngOnInit(): void {
     this.getWishlist();
   }
-
-  wishlist: any[] = [];
 
   constructor(
     private wishlistService: WishlistService,
@@ -29,55 +32,72 @@ export class WishlistComponent {
     private el: ElementRef
   ) {}
 
-  addToWishlist(product: IProduct) {
+  addToWishlist(product: IProduct): void {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
+
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
-        audio.play();
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
-        });
-        this.messageService.add({
-          severity: 'success',
-          summary: 'success',
-          detail: res.message,
-        });
-      });
+      this.wishlistService
+        .addToWishlist(product._id)
+        .pipe(
+          tap((res: any) => {
+            audio.play();
+            this.wishlist = res.data.map(
+              (product: { _id: string }) => product._id
+            );
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: res.message,
+            });
+          })
+        )
+        .subscribe();
     }
   }
 
-  RemoveFromWishlist(product: IProduct) {
+  removeFromWishlist(product: IProduct): void {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
+
     if (this.authService.isAuthenticated()) {
       this.wishlistService
         .removeFromWishlist(product._id)
-        .subscribe((res: any) => {
-          audio.play();
-          this.products = res.data;
-          this.wishlist = res.data.map((product: { _id: any }) => {
-            return product._id;
-          });
-          this.messageService.add({
-            severity: 'success',
-            summary: 'success',
-            detail: res.message,
-          });
-        });
+        .pipe(
+          tap((res: any) => {
+            audio.play();
+            this.products = res.data;
+            this.wishlist = res.data.map(
+              (product: { _id: string }) => product._id
+            );
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: res.message,
+            });
+          })
+        )
+        .subscribe();
     }
   }
 
-  getWishlist() {
+  getWishlist(): void {
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.products = res.data;
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
-        });
-      });
+      this.loading = true;
+      this.wishlistService
+        .getWishlist()
+        .pipe(
+          tap((res) => {
+            this.products = res.data;
+            this.wishlist = res.data.map(
+              (product: { _id: string }) => product._id
+            );
+          }),
+          tap(() => (this.loading = false))
+        )
+        .subscribe();
     }
   }
 
@@ -85,25 +105,26 @@ export class WishlistComponent {
     return this.wishlist.includes(id);
   }
 
-  addToCart(selectedProduct: IProduct) {
-    if (this.authService.isAuthenticated()) {
-      const audio = this.renderer.createElement('audio');
-      this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
-      this.renderer.appendChild(this.el.nativeElement, audio);
-      if (this.authService.isAuthenticated()) {
-        this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
+  addToCart(selectedProduct: IProduct): void {
+    const audio = this.renderer.createElement('audio');
+    this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
+    this.renderer.appendChild(this.el.nativeElement, audio);
+
+    this.cartService
+      .addToCart(selectedProduct._id)
+      .pipe(
+        tap(() => {
           this.product = selectedProduct;
           this.showModal = true;
           setTimeout(() => {
             this.showModal = false;
           }, 7000);
           audio.play();
-        });
-      }
-    }
+        })
+      )
+      .subscribe();
   }
 
-  showModal: boolean = false;
   closeModal() {
     this.showModal = false;
   }

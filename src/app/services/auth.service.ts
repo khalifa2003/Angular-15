@@ -97,19 +97,21 @@ export class AuthService {
       );
   }
 
-  resetPassword(newPassword: string) {
+  resetPassword(newPassword: string): Observable<any> {
     const email = localStorage.getItem('email')?.slice(1, -1);
 
-    this.http
+    return this.http
       .post(`${environment.apiUrl}/auth/resetPassword`, { newPassword, email })
-      .subscribe((data) => {
-        console.log(data);
+      .pipe(
+        tap((data) => {
+          console.log(data);
 
-        localStorage.setItem('user', JSON.stringify(data));
-        this.currentUserSubject.next(data);
-        this.router.navigate(['/home']);
+          localStorage.setItem('user', JSON.stringify(data));
+          this.currentUserSubject.next(data);
+          this.router.navigate(['/home']);
 
-        localStorage.removeItem('email');
-      });
+          localStorage.removeItem('email');
+        })
+      );
   }
 }

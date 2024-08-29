@@ -1,38 +1,50 @@
 <div class="shopping-cart row" style="min-height: 80vh">
   <div class="cart-items col-lg-8 col-md-12">
-    <button class="btn btn-danger my-2 mx-auto d-block" (click)="deleteCart()">
+    <button
+      class="btn btn-danger my-2 mx-auto d-block"
+      (click)="deleteCart()"
+      [disabled]="!cart.cartItems"
+    >
       Clear Cart
     </button>
-    <div class="cart-item" *ngFor="let item of cart.cartItems; index as index">
-      <img [src]="item.product.images[0]" width="100px" class="mx-5" />
-      <div class="item-details w-100">
-        <p class="product-name w-50">{{ item.product.title }}</p>
-        <p class="price w-25">
-          Price: {{ item.product.priceAfterDiscount }} EGP
-        </p>
-        <div class="quantity w-25">
-          <button
-            class="quantity-button"
-            (click)="removeOne(item._id, +item.quantity)"
-          >
-            -
-          </button>
-          <input type="text" [value]="item.quantity" />
-          <button
-            class="quantity-button"
-            (click)="addOne(item, +item.quantity)"
-          >
-            +
+
+    <h4 *ngIf="!cart.cartItems">Your cart is empty</h4>
+
+    <ng-container *ngIf="cart.cartItems">
+      <div
+        class="cart-item"
+        *ngFor="let item of cart.cartItems; index as index"
+      >
+        <img [src]="item.product.images[0]" width="100px" class="mx-5" />
+        <div class="item-details w-100">
+          <p class="product-name w-50">{{ item.product.title }}</p>
+          <p class="price w-25">
+            Price: {{ item.product.priceAfterDiscount }} EGP
+          </p>
+          <div class="quantity w-25">
+            <button
+              class="quantity-button"
+              (click)="removeOne(item._id, +item.quantity)"
+            >
+              -
+            </button>
+            <input type="text" [value]="item.quantity" />
+            <button
+              class="quantity-button"
+              (click)="addOne(item, +item.quantity)"
+            >
+              +
+            </button>
+          </div>
+          <p class="subtotal w-25">
+            Total: {{ item.product.priceAfterDiscount * item.quantity }} EGP
+          </p>
+          <button class="btn btn-danger" (click)="deleteItem(item._id)">
+            Delete
           </button>
         </div>
-        <p class="subtotal w-25">
-          Total: {{ item.product.priceAfterDiscount * item.quantity }} EGP
-        </p>
-        <button class="btn btn-danger w-" (click)="deleteItem(item._id)">
-          Delete
-        </button>
       </div>
-    </div>
+    </ng-container>
   </div>
   <div class="col-lg-4 col-md-12">
     <div class="cart-summary">
@@ -44,7 +56,11 @@
       <p>
         Total: <span>{{ cart.totalCartPrice }} EGP</span>
       </p>
-      <button class="checkout-button" routerLink="/checkout">
+      <button
+        class="btn btn-primary w-100"
+        [disabled]="!cart.cartItems"
+        routerLink="/user/checkout"
+      >
         PROCEED TO CHECKOUT
       </button>
     </div>
@@ -82,5 +98,3 @@
     </div>
   </div>
 </div>
-
-<p-toast></p-toast>

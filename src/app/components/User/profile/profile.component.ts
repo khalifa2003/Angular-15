@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { switchMap, tap } from 'rxjs';
 import { IUser } from 'src/app/Models/iuser';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -17,7 +18,6 @@ export class ProfileComponent {
 
   constructor(
     private userService: UserService,
-    private authService: AuthService,
     private messageService: MessageService,
     private fb: FormBuilder
   ) {
@@ -37,39 +37,73 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
-    this.getMe();
+    this.loadUserData();
   }
 
-  getMe() {
-    this.userService.getMe().subscribe((res) => {
-      this.user = res;
-      this.changeProfileForm = this.fb.group({
-        fname: [this.user.fname, Validators.required],
-        lname: [this.user.lname, Validators.required],
-        email: [this.user.email, Validators.required],
-        phone: [this.user.phone, Validators.required],
-        image: [this.user.image],
-      });
-    });
+  loadUserData() {
+    this.userService
+      .getMe()
+      .pipe(
+        tap((user) => {
+          this.user = user;
+          this.changeProfileForm.patchValue({
+            fname: user.fname,
+            lname: user.lname,
+            email: user.email,
+            phone: user.phone,
+            image: user.image,
+          });
+        })
+      )
+      .subscribe();
   }
 
   saveProfile(): void {
+    if (this.changeProfileForm.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please fill in all required fields',
+      });
+      return;
+    }
+
     this.userService
       .updateLoggedUserData(this.changeProfileForm.value)
-      .subscribe((res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Profile Updated',
+      .pipe(
+        tap(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Profile Updated',
+          });
+          this.changePasswordForm.reset();
+        }),
+        switchMap(() => this.userService.getMe()) // Reload user data
+      )
+      .subscribe((user) => {
+        this.user = user;
+        this.changeProfileForm.patchValue({
+          fname: user.fname,
+          lname: user.lname,
+          email: user.email,
+          phone: user.phone,
+          image: user.image,
         });
-        this.changePasswordForm.reset();
-        this.getMe();
       });
   }
 
   changePassword(): void {
+    if (this.changePasswordForm.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please fill in all required fields',
+      });
+      return;
+    }
     if (
-      this.changePasswordForm.value.newPassword !==
-      this.changePasswordForm.value.confirmNewPassword
+      this.changePasswordForm.value.password !==
+      this.changePasswordForm.value.passwordConfirm
     ) {
       this.messageService.add({
         severity: 'error',
@@ -82,13 +116,25 @@ export class ProfileComponent {
 
     this.userService
       .updateLoggedUserPassword(this.changePasswordForm.value)
-      .subscribe((res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Password Changed',
+      .pipe(
+        tap(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Password Changed',
+          });
+          this.changePasswordForm.reset();
+        }),
+        switchMap(() => this.userService.getMe())
+      )
+      .subscribe((user) => {
+        this.user = user;
+        this.changeProfileForm.patchValue({
+          fname: user.fname,
+          lname: user.lname,
+          email: user.email,
+          phone: user.phone,
+          image: user.image,
         });
-        this.changePasswordForm.reset();
-        this.getMe();
       });
   }
 }

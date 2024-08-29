@@ -1,6 +1,9 @@
+import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user.service';
 import { Component } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { IProduct } from 'src/app/Models/iproduct';
+import { catchError, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -16,26 +19,50 @@ export class AdminDashboardComponent {
   bestSellingProducts: any[] = [];
   notifications: any[] = [];
   salesOverview: any[] = [];
+  loading: boolean = false;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
-    this.userService.getDashboardData().subscribe((data: any) => {
-      this.ordersStats = data.ordersStats;
-      this.revenueStats = data.revenueStats;
-      this.customersStats = data.customersStats;
-      this.commentsStats = data.commentsStats;
-      this.recentSales = data.recentSales;
-      this.bestSellingProducts = data.bestSellingProducts;
-      this.notifications = data.notifications;
-      this.salesOverview = data.salesOverview;
-      console.log(this.salesOverview);
-
-      this.renderSalesOverviewChart();
-    });
+    this.loadDashboardData();
   }
 
-  renderSalesOverviewChart() {
+  loadDashboardData(): void {
+    this.loading = true;
+    this.userService
+      .getDashboardData()
+      .pipe(
+        tap((data: any) => {
+          this.ordersStats = data.ordersStats;
+          this.revenueStats = data.revenueStats;
+          this.customersStats = data.customersStats;
+          this.commentsStats = data.commentsStats;
+          this.recentSales = data.recentSales;
+          this.bestSellingProducts = data.bestSellingProducts;
+          this.notifications = data.notifications;
+          this.salesOverview = data.salesOverview;
+
+          this.renderSalesOverviewChart();
+        }),
+        catchError((error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to load dashboard data. Please try again later.',
+          });
+          return of(null);
+        }),
+        tap(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe();
+  }
+
+  renderSalesOverviewChart(): void {
     new Chart('salesOverviewChart', {
       type: 'line',
       data: {

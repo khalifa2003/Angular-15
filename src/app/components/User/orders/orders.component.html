@@ -1,83 +1,69 @@
-<div
-  class="row justify-content-center align-items-start mx-0 gap-2"
-  style="min-height: 80vh"
->
-  <ng-container *ngIf="orders.length > 0">
-    <div
-      class="card col-12 col-md-11 col-lg-10 mt-4"
-      *ngFor="let order of orders"
-    >
-      <div
-        class="card-header d-flex justify-content-between align-items-center"
-      >
-        <h4>Order Id: {{ order._id }}</h4>
-        <span
-          class="order-status"
-          [ngClass]="order.isDelivered ? 'text-success' : 'text-warning'"
-          >{{ order.isDelivered ? "Delivered" : "Pending" }}</span
-        >
-      </div>
-
-      <div class="card-body">
-        <div class="row mb-4">
-          <div class="col-12 col-md-6">
-            <h4 class="mb-3">User Information</h4>
-            <p>
-              <strong>User:</strong>
-              {{ order.user.fname + " " + order.user.lname }}
-            </p>
-            <p><strong>Mobile:</strong>{{ order.user.phone }}</p>
-            <p><strong>City:</strong> {{ order.shippingAddress.city }}</p>
-            <p><strong>Address:</strong>{{ order.shippingAddress.address }}</p>
+<div class="container-xxl min-vh-100 bg-body-secondary">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <h2 class="text-center card-header shadow-lg">My Orders</h2>
+      <div *ngIf="loading">Loading...</div>
+      <h4 class="text-center text-danger" *ngIf="!orders">
+        You don't have any orders yet
+      </h4>
+      <!-- Order Card -->
+      <ng-container *ngIf="orders">
+        <div *ngFor="let order of orders" class="card my-2 shadow">
+          <div
+            class="card-header d-flex justify-content-between bg-body-secondary"
+          >
+            <div>
+              <strong>Order ID</strong>: {{ order._id }}<br />
+              <strong>Order Date</strong>: {{ order.updatedAt | date }}<br />
+            </div>
+            <div>
+              <strong>Status</strong>:
+              <span
+                class="order-status"
+                [ngClass]="order.isDelivered ? 'text-success' : 'text-warning'"
+                >{{ order.isDelivered ? "Delivered" : "Pending" }}</span
+              >
+            </div>
+            <div>
+              <h5>Total Amount: {{ order.totalOrderPrice }} EGP</h5>
+            </div>
           </div>
-          <div class="col-12 col-md-6">
-            <h4 class="mb-3">Order Information</h4>
-            <p><strong>Order ID:</strong> {{ order._id }}</p>
-            <p><strong>Order Date:</strong> {{ order.updatedAt | date }}</p>
-          </div>
-        </div>
 
-        <table class="table table-bordered mt-4">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Device Name</th>
-              <th>Price</th>
-              <th>Qty</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of order.cartItems; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>{{ item.product.title }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.price * item.quantity }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="row mt-4 justify-content-end">
-          <div class="col-12 col-md-6">
-            <div class="summary-card">
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <span>Total</span>
-                  <span>{{ order.totalOrderPrice }}</span>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                  <span>Shipping Rate</span>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                  <span>Payment Method</span>
-                  <span>{{ order.paymentMethodType }}</span>
-                </div>
+          <div class="card-body bg-body-tertiary">
+            <div *ngFor="let item of order.cartItems" class="row border-bottom">
+              <div class="col-md-2">
+                <img
+                  [src]="item.product.images[0]"
+                  alt="{{ item.product.title }}"
+                  class="w-100"
+                />
+              </div>
+              <div class="col-md-6 pt-3">
+                <h6>{{ item.product.title }}</h6>
+                <p>{{ item.price }} EGP</p>
+              </div>
+              <div class="col-md-2 pt-3">
+                <button
+                  pButton
+                  type="button"
+                  label="Buy Again {{ item.price }} EGP"
+                  icon="pi pi-shopping-cart"
+                  class="p-button-rounded p-button-success me-2"
+                  style="font-size: 12px"
+                  [routerLink]="['/product', item.product._id]"
+                ></button>
+              </div>
+              <div class="col-md-2 text-start pt-3">
+                <strong>Quantity: </strong>
+                <span class="text-muted">x{{ item.quantity }}</span>
+                <br />
+                <strong>Total: </strong>
+                <span>{{ item.price * item.quantity }} EGP</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </div>
-  </ng-container>
+  </div>
 </div>

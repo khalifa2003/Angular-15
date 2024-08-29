@@ -13,11 +13,11 @@ export class WishlistService {
     return this.http.get(`${environment.apiUrl}/wishlist`);
   }
 
-  addToWishlist(productId: string) {
+  addToWishlist(productId: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/wishlist`, { productId });
   }
 
-  removeFromWishlist(productId: string) {
+  removeFromWishlist(productId: string): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/wishlist/${productId}`);
   }
 }

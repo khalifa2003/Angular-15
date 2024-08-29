@@ -8,11 +8,11 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
 import { CategoryService } from '../../../services/category.service';
 
 @Component({
-  selector: 'app-subcategory-mangement',
-  templateUrl: './subcategory-mangement.component.html',
-  styleUrls: ['./subcategory-mangement.component.css'],
+  selector: 'app-subcategory-management',
+  templateUrl: './subcategory-management.component.html',
+  styleUrls: ['./subcategory-management.component.css'],
 })
-export class SubcategoryMangementComponent {
+export class SubcategoryManagementComponent {
   subcategoryDialog: boolean = false;
   subcategories: ISubcategory[] = [];
   subcategory: ISubcategory = {} as ISubcategory;
