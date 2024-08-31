@@ -9,9 +9,18 @@ import { VerifyResetCodeComponent } from './verify-reset-code/verify-reset-code.
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'login/forgot-password', component: ForgetPasswordComponent },
-  { path: 'login/verify', component: VerifyResetCodeComponent },
-  { path: 'login/reset-password', component: ResetPasswordComponent },
+  {
+    path: 'login/forgot-password',
+    component: ForgetPasswordComponent,
+  },
+  {
+    path: 'login/verify',
+    component: VerifyResetCodeComponent,
+  },
+  {
+    path: 'login/reset-password',
+    component: ResetPasswordComponent,
+  },
 ];
 
 @NgModule({
