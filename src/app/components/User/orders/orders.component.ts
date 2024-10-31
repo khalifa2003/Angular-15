@@ -17,6 +17,7 @@ export class OrdersComponent {
   ngOnInit(): void {
     this.loadOrders();
   }
+
   loadOrders(): void {
     this.loading = true;
     this.orderService

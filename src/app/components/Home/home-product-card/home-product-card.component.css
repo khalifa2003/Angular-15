@@ -19,3 +19,10 @@
   position: fixed;
   top: 0;
 }
+i {
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+i:hover {
+  color: red;
+}

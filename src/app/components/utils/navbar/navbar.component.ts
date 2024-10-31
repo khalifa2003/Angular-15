@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { ICategory } from 'src/app/Models/icategory';
@@ -29,6 +29,7 @@ export class NavbarComponent implements OnDestroy {
     private authService: AuthService,
     private categoryService: CategoryService,
     private productService: ProductService,
+    private messageService: MessageService,
     private subcategoryService: SubcategoryService
   ) {
     this.authSubscription = this.authService.currentUser.subscribe(() => {
@@ -90,7 +91,17 @@ export class NavbarComponent implements OnDestroy {
           }))
         ),
       },
-      { label: 'Special Offers', icon: 'pi pi-gift' },
+      {
+        label: 'Special Offers',
+        icon: 'pi pi-gift',
+        command: () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'No Special Offers Right Now',
+            detail: 'Coming Soon...',
+          });
+        },
+      },
       {
         label: 'About Us',
         icon: 'pi pi-info-circle',

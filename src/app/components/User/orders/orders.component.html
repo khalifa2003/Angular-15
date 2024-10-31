@@ -3,6 +3,7 @@
     <div class="col-12 col-lg-10">
       <h2 class="text-center card-header shadow-lg">My Orders</h2>
       <div *ngIf="loading">Loading...</div>
+      <div *ngIf="orders.length === 0" class="no-orders">No Orders Found</div>
       <h4 class="text-center text-danger" *ngIf="!orders">
         You don't have any orders yet
       </h4>
