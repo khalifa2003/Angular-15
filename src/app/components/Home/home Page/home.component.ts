@@ -1,14 +1,11 @@
 import { AuthService } from 'src/app/services/auth.service';
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
-import { CategoryService } from 'src/app/services/category.service';
-import { BrandService } from 'src/app/services/brand.service';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
 import { CartService } from 'src/app/services/cart.service';
 import { MessageService } from 'primeng/api';
-import { combineLatest, forkJoin, map, mergeMap, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

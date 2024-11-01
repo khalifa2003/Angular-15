@@ -9,7 +9,6 @@ import {
 import { MessageService } from 'primeng/api';
 import { IProduct } from 'src/app/Models/iproduct';
 import { AuthService } from 'src/app/services/auth.service';
-import { CartService } from 'src/app/services/cart.service';
 import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({

@@ -1,28 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { AuthService } from 'src/app/services/auth.service';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { AppRoutingModule } from 'src/app/app-routing.module';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    ButtonModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ButtonModule],
 })
 export class LoginComponent {
   loading: boolean = false;
