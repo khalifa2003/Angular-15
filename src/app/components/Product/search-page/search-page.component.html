@@ -242,13 +242,19 @@
 
         <ng-template let-product pTemplate="listItem">
           <div class="col-12">
-            <app-search-list-card [product]="product"></app-search-list-card>
+            <app-search-list-card
+              [product]="product"
+              [wishlist]="wishlist"
+            ></app-search-list-card>
           </div>
         </ng-template>
 
         <ng-template let-product pTemplate="gridItem">
           <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
-            <app-search-grid-card [product]="product"></app-search-grid-card>
+            <app-search-grid-card
+              [product]="product"
+              [wishlist]="wishlist"
+            ></app-search-grid-card>
           </div>
         </ng-template>
       </p-dataView>

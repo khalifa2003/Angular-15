@@ -8,6 +8,8 @@ import { BrandService } from 'src/app/services/brand.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({
   selector: 'app-search-page',
@@ -16,6 +18,7 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
 })
 export class SearchPageComponent implements OnInit {
   visibleSidebar: boolean = false;
+  wishlist: string[] = [];
 
   originalProducts: IProduct[] = [];
   subcategories: ISubcategory[] = [];
@@ -36,20 +39,32 @@ export class SearchPageComponent implements OnInit {
 
   constructor(
     private subcategoryService: SubcategoryService,
+    private wishlistService: WishlistService,
     private categoryService: CategoryService,
     private productService: ProductService,
     private brandService: BrandService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.loadInitialData();
+    this.getWishlist();
     this.route.queryParams.subscribe((params) => {
       this.applyQueryParams(params);
       this.applyFilters();
     });
   }
 
+  getWishlist() {
+    if (this.authService.isAuthenticated()) {
+      this.wishlistService.getWishlist().subscribe((res) => {
+        this.wishlist = res.data.map((product: { _id: any }) => {
+          return product._id;
+        });
+      });
+    }
+  }
   loadInitialData() {
     this.brandService.getAllBrands().subscribe((data) => (this.brands = data));
     this.categoryService

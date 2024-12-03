@@ -7,6 +7,7 @@ import { IProduct } from 'src/app/Models/iproduct';
 import { CartService } from 'src/app/services/cart.service';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
+import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({
   selector: 'app-home',
@@ -50,11 +51,13 @@ export class HomeComponent implements OnInit {
   specialOffers: IProduct[] = [];
   product: IProduct = {} as IProduct;
   showModal: boolean = false;
+  wishlist: string[] = [];
 
   constructor(
     private productService: ProductService,
     private authService: AuthService,
     private cartService: CartService,
+    private wishlistService: WishlistService,
     private renderer: Renderer2,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -72,6 +75,8 @@ export class HomeComponent implements OnInit {
       );
       this.getProducts();
     });
+
+    this.getWishlist();
   }
 
   getProducts() {
@@ -107,6 +112,16 @@ export class HomeComponent implements OnInit {
         severity: 'error',
         summary: 'Error',
         detail: 'You must login first before adding to cart.',
+      });
+    }
+  }
+
+  getWishlist() {
+    if (this.authService.isAuthenticated()) {
+      this.wishlistService.getWishlist().subscribe((res) => {
+        this.wishlist = res.data.map((product: { _id: any }) => {
+          return product._id;
+        });
       });
     }
   }

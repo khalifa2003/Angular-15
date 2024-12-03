@@ -12,7 +12,7 @@ import { WishlistService } from 'src/app/services/wishlist.service';
 })
 export class SearchListCardComponent {
   @Input() product: IProduct = {} as IProduct;
-  wishlist: any[] = [];
+  @Input() wishlist: string[] = [];
 
   constructor(
     private wishlistService: WishlistService,
@@ -22,10 +22,6 @@ export class SearchListCardComponent {
     private renderer: Renderer2,
     private el: ElementRef
   ) {}
-
-  ngOnInit() {
-    this.getWishlist();
-  }
 
   addToWishlist(product: IProduct) {
     const audio = this.renderer.createElement('audio');
@@ -70,16 +66,6 @@ export class SearchListCardComponent {
             detail: res.message,
           });
         });
-    }
-  }
-
-  getWishlist() {
-    if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
-        });
-      });
     }
   }
 

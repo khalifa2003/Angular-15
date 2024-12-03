@@ -13,7 +13,7 @@ import { WishlistService } from 'src/app/services/wishlist.service';
 })
 export class SearchGridCardComponent {
   @Input() product: IProduct = {} as IProduct;
-  wishlist: any[] = [];
+  @Input() wishlist: string[] = [];
 
   constructor(
     private wishlistService: WishlistService,
@@ -23,10 +23,6 @@ export class SearchGridCardComponent {
     private renderer: Renderer2,
     private el: ElementRef
   ) {}
-
-  ngOnInit() {
-    this.getWishlist();
-  }
 
   addToWishlist(product: IProduct) {
     const audio = this.renderer.createElement('audio');
@@ -71,21 +67,6 @@ export class SearchGridCardComponent {
             severity: 'success',
             summary: 'success',
             detail: res.message,
-          });
-        });
-    }
-  }
-
-  getWishlist() {
-    if (this.authService.isAuthenticated()) {
-      this.wishlistService
-        .getWishlist()
-
-        .subscribe((res) => {
-          console.log(res);
-
-          this.wishlist = res.data.map((product: { _id: any }) => {
-            return product._id;
           });
         });
     }

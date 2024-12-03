@@ -20,8 +20,7 @@ import { WishlistService } from 'src/app/services/wishlist.service';
 export class HomeProductCardComponent {
   @Output() notifyParent: EventEmitter<IProduct> = new EventEmitter();
   @Input() product: IProduct = {} as IProduct;
-
-  wishlist: any[] = [];
+  @Input() wishlist: string[] = [];
 
   constructor(
     private wishlistService: WishlistService,
@@ -30,10 +29,6 @@ export class HomeProductCardComponent {
     private renderer: Renderer2,
     private el: ElementRef
   ) {}
-
-  ngOnInit() {
-    this.getWishlist();
-  }
 
   addToWishlist(product: IProduct) {
     const audio = this.renderer.createElement('audio');
@@ -56,7 +51,7 @@ export class HomeProductCardComponent {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'You must login first before adding to cart.',
+        detail: 'You must login first before adding to wishlist.',
       });
     }
   }
@@ -79,14 +74,6 @@ export class HomeProductCardComponent {
             detail: res.message,
           });
         });
-    }
-  }
-
-  getWishlist() {
-    if (this.authService.isAuthenticated()) {
-      this.authService.currentUserValue.user.wishlist.map((product: string) => {
-        return product;
-      });
     }
   }
 
