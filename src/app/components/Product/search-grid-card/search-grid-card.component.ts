@@ -46,6 +46,12 @@ export class SearchGridCardComponent {
           detail: res.message,
         });
       });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'You must login first before adding to wishlist.',
+      });
     }
   }
 
@@ -94,16 +100,20 @@ export class SearchGridCardComponent {
       const audio = this.renderer.createElement('audio');
       this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
       this.renderer.appendChild(this.el.nativeElement, audio);
-      if (this.authService.isAuthenticated()) {
-        this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
-          this.product = selectedProduct;
-          this.showModal = true;
-          setTimeout(() => {
-            this.showModal = false;
-          }, 7000);
-          audio.play();
-        });
-      }
+      this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
+        this.product = selectedProduct;
+        this.showModal = true;
+        setTimeout(() => {
+          this.showModal = false;
+        }, 7000);
+        audio.play();
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'You must login first before adding to wishlist.',
+      });
     }
   }
 

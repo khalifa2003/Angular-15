@@ -43,6 +43,12 @@ export class SearchListCardComponent {
           detail: res.message,
         });
       });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'You must login first before adding to wishlist.',
+      });
     }
   }
 

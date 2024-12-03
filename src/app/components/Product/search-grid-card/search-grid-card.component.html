@@ -55,7 +55,12 @@
     ></p-button>
   </div>
   <i
-    [ngStyle]="{ position: 'absolute', top: '10%', right: '5%' }"
+    [ngStyle]="{
+      position: 'absolute',
+      top: '10%',
+      right: '5%',
+      cursor: 'pointer'
+    }"
     (click)="addToWishlist(product)"
     *ngIf="!isInWishlist(product._id)"
     class="pi pi-heart"
