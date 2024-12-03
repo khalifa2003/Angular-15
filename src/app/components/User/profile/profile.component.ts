@@ -19,6 +19,8 @@ export class ProfileComponent {
   constructor(
     private userService: UserService,
     private messageService: MessageService,
+    private authService: AuthService,
+
     private fb: FormBuilder
   ) {
     this.changePasswordForm = this.fb.group({
@@ -120,9 +122,10 @@ export class ProfileComponent {
         tap(() => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Password Changed',
+            summary: 'Password Changed, please login again',
           });
           this.changePasswordForm.reset();
+          this.authService.logout();
         }),
         switchMap(() => this.userService.getMe())
       )

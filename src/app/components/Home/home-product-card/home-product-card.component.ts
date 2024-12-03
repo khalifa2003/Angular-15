@@ -7,6 +7,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { catchError } from 'rxjs';
 import { IProduct } from 'src/app/Models/iproduct';
 import { AuthService } from 'src/app/services/auth.service';
 import { WishlistService } from 'src/app/services/wishlist.service';
@@ -38,6 +39,7 @@ export class HomeProductCardComponent {
     const audio = this.renderer.createElement('audio');
     this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
+
     if (this.authService.isAuthenticated()) {
       this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
         audio.play();
@@ -76,10 +78,8 @@ export class HomeProductCardComponent {
 
   getWishlist() {
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
-        });
+      this.authService.currentUserValue.user.wishlist.map((product: string) => {
+        return product;
       });
     }
   }

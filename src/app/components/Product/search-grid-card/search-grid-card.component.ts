@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { catchError } from 'rxjs';
 import { IProduct } from 'src/app/Models/iproduct';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
@@ -71,11 +72,16 @@ export class SearchGridCardComponent {
 
   getWishlist() {
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
+      this.wishlistService
+        .getWishlist()
+
+        .subscribe((res) => {
+          console.log(res);
+
+          this.wishlist = res.data.map((product: { _id: any }) => {
+            return product._id;
+          });
         });
-      });
     }
   }
 

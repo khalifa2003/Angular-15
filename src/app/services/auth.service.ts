@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IUser } from '../Models/iuser';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): any {
+  public get currentUserValue(): { user: IUser; token: string } {
     return this.currentUserSubject.value;
   }
 
@@ -28,7 +29,9 @@ export class AuthService {
   }
 
   logout() {
+    // Retrieve the token from local storage
     localStorage.removeItem('user');
+    // Return true if the token exists, otherwise false
     this.currentUserSubject.next(null);
     this.router.navigate(['/home']);
   }

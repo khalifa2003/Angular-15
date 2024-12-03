@@ -219,24 +219,22 @@
           <div
             class="flex flex-row flex-column flex-sm-row justify-content-between"
           >
+            <span class="p-input-icon-left mb-2 md:mb-0">
+              <i class="pi pi-search"></i>
+              <input
+                type="search"
+                pInputText
+                placeholder="Search by Name"
+                (input)="onFilter($event)"
+              />
+            </span>
             <button
               class="p-button p-button-primary p-m-2"
               (click)="visibleSidebar = true"
             >
-              <span class="p-input-icon-left mb-2 md:mb-0">
-                <i class="pi pi-search"></i>
-                <input
-                  type="search"
-                  pInputText
-                  placeholder="Search by Name"
-                  (input)="onFilter($event)"
-                />
-              </span>
+              <i class="pi pi-filter"></i> Filters
             </button>
             <div class="d-flex align-items-center justify-content-between mt-2">
-              <span class="btn btn-primary mx-3 d-flex">
-                <i class="pi pi-filter"></i> Filters
-              </span>
               <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
             </div>
           </div>
