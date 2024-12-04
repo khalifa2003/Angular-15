@@ -1,5 +1,18 @@
+.my-card {
+  height: 350px;
+}
+.img-container {
+  height: 50%;
+}
+.img-container img {
+  height: 100%;
+  object-fit: cover;
+}
+.details {
+  height: 50%;
+}
 .product-title {
-  height: 100px;
+  height: 70px;
   overflow: hidden;
   cursor: pointer;
 }
@@ -26,3 +39,4 @@ i {
 i:hover {
   color: red;
 }
+

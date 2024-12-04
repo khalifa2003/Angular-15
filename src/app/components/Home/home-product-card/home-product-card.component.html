@@ -1,16 +1,16 @@
-<div class="border-round text-center" [style]="{ padding: '20px' }">
-  <div>
+<div class="border-round text-center my-card" [style]="{ padding: '20px' }">
+  <div class="img-container">
     <img [src]="product.images[0]" [alt]="product.title" width="100%" />
   </div>
-  <div>
+  <div class="details">
     <h6 class="product-title" routerLink="/product/{{ product._id }}">
       {{ product.title }}
     </h6>
-    <h6 class="mb-3 d-flex justify-content-evenly">
+    <h6 class="mb-1 d-flex justify-content-evenly">
       <del *ngIf="product.discount > 0">{{ product.price }}EGP</del>
       <p>{{ product.priceAfterDiscount }}EGP</p>
     </h6>
-    <div class="car-buttons">
+    <div class="card-buttons">
       <p-button
         type="button"
         styleClass="p-button p-button-rounded"
