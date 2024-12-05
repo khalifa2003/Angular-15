@@ -1,5 +1,5 @@
 header {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   color: #555;
   text-transform: uppercase;
   padding: 0 0 8px 0;
@@ -7,6 +7,7 @@ header {
   position: relative;
   transition: 0.5s;
   margin: 0.5vh 0 0;
+  overflow: hidden;
 }
 header:hover {
   color: #000;
