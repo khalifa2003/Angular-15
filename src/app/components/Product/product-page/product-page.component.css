@@ -1,6 +1,10 @@
 /* Start Product Details */
+div {
+  margin: 0;
+}
 .product-details {
   flex: 1;
+  width: 100%;
 }
 .product-title {
   font-size: 20px;
@@ -27,9 +31,9 @@
   color: var(--yellow-color);
   font-size: 16px;
   margin-bottom: 20px;
+  overflow-y: hidden;
 }
 /* Start Product Details */
-
 
 /* Start Review */
 .review {
@@ -148,3 +152,32 @@
   height: 70px;
 }
 /* End Modal */
+.gallery-image {
+  width: 100%;
+  object-fit: cover;
+}
+@media (max-width: 991px) {
+  .gallery-image {
+    height: 400px;
+  }
+  .product-price {
+    font-size: 16px;
+  }
+}
+@media (max-width: 641px) {
+  .gallery-image {
+    height: 300px;
+  }
+}
+@media (max-width: 400px) {
+  .gallery-image {
+    height: 200px;
+  }
+}
+i {
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+i:hover {
+  color: red;
+}

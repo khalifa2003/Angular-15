@@ -1,5 +1,5 @@
-<div class="row" style="max-height: 450px; overflow: hidden">
-  <div class="col-md-0 col-lg-8" style="overflow: hidden">
+<div class="row landing-container">
+  <div class="col-md-0 col-lg-8 overflow-hidden">
     <p-galleria
       [autoPlay]="true"
       [value]="images"
@@ -10,10 +10,7 @@
       [responsiveOptions]="responsiveOptions"
     >
       <ng-template pTemplate="item" let-item>
-        <img
-          [src]="item"
-          style="width: 100%; height: 450px; object-fit: cover"
-        />
+        <img [src]="item" class="gallery-image" />
       </ng-template>
     </p-galleria>
   </div>

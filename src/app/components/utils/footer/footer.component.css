@@ -1,8 +1,12 @@
+div {
+  margin: 0;
+}
 .footer {
   background-color: #111;
   color: #fff;
-  padding: 40px 0;
+  padding: 0 0;
   position: relative;
+  overflow: hidden;
 }
 .footer-content {
   display: flex;
@@ -16,6 +20,7 @@
 .footer-section {
   flex: 1;
   padding: 20px;
+  width: 100%;
 }
 ul {
   list-style-type: none;

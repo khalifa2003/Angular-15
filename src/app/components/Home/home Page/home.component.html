@@ -1,5 +1,5 @@
 <app-landing class="row my-container"></app-landing>
-<div class="row my-container mt-4">
+<div class="row my-container">
   <header>Shop by Categories</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!categories[0]" />
   <p-carousel
@@ -18,7 +18,7 @@
 </div>
 
 <!-- Special Offers -->
-<div class="row my-container mt-4">
+<div class="row my-container">
   <header>Special Offers</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!specialOffers[0]" />
   <p-carousel
@@ -28,7 +28,7 @@
     [circular]="true"
     [responsiveOptions]="responsiveOptions"
     [showIndicators]="false"
-    [style]="{ padding: '10px 0 0' }"
+    [ngStyle]="{ padding: '1vh 0 0' }"
     *ngIf="specialOffers[0]"
   >
     <ng-template let-product pTemplate="item">
@@ -42,7 +42,7 @@
 </div>
 
 <!-- New Arrival -->
-<div class="row my-container mt-4">
+<div class="row my-container">
   <header>New Arrival</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!newArrival[0]" />
   <p-carousel
@@ -64,7 +64,7 @@
   </p-carousel>
 </div>
 
-<div class="row my-container mt-4">
+<div class="row my-container">
   <div class="col-xl-10 col-lg-12">
     <div class="d-flex flex-wrap justify-content-evenly">
       <img src="../../../assets/sec1.1.jpg" class="sec p-1 w-100" />
@@ -97,18 +97,28 @@
     </div>
   </div>
   <div
-    class="col-xl-2 col-lg-12 d-flex flex-xl-column flex-row flex-wrap align-items-center"
+    class="col-xl-2 col-lg-12 d-flex flex-xl-column flex-row flex-wrap align-items-center justify-content-around"
   >
-    <img src="../../../assets/side/side1.jpg" width="200px" />
-    <img src="../../../assets/side/side2.jpg" width="200px" class="mt-1" />
-    <img src="../../../assets/side/side3.jpg" width="200px" class="mt-1" />
-    <img src="../../../assets/side/side4.jpg" width="200px" class="mt-1" />
-    <img src="../../../assets/side/side5.jpg" width="200px" class="mt-1" />
+    <div>
+      <img src="../../../assets/side/side1.jpg" class="image-service" />
+    </div>
+    <div>
+      <img src="../../../assets/side/side3.jpg" class="image-service" />
+    </div>
+    <div>
+      <img src="../../../assets/side/side2.jpg" class="image-service" />
+    </div>
+    <div>
+      <img src="../../../assets/side/side4.jpg" class="image-service" />
+    </div>
+    <div>
+      <img src="../../../assets/side/side5.jpg" class="image-service" />
+    </div>
   </div>
 </div>
 
 <!-- Brands -->
-<div class="row my-container mt-4">
+<div class="row my-container">
   <header>Shop by Brands</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!brands[0]" />
   <p-carousel
@@ -133,6 +143,8 @@
   </div>
   <div class="my-modal-body">
     <img [src]="product.images[0]" alt="" />
-    <a routerLink="/user/cart" style="text-decoration: none">{{ product.title }}</a>
+    <a routerLink="/user/cart" style="text-decoration: none">{{
+      product.title
+    }}</a>
   </div>
 </div>
