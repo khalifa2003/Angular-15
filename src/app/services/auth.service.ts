@@ -13,6 +13,7 @@ export class AuthService {
   public currentUser: Observable<any>;
 
   constructor(private http: HttpClient, private router: Router) {
+    // BehaviorSubject is used to store the current user
     this.currentUserSubject = new BehaviorSubject<any>(
       JSON.parse(localStorage.getItem('user') || '{}')
     );
@@ -33,7 +34,7 @@ export class AuthService {
     localStorage.removeItem('user');
     // Return true if the token exists, otherwise false
     this.currentUserSubject.next(null);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
 
   isAdmin(): boolean {
@@ -59,6 +60,7 @@ export class AuthService {
     return this.http
       .post<any>(`${environment.apiUrl}/auth/signup`, formData)
       .pipe(
+        // tap method to make some methods before subscribe the data
         tap((user) => {
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSubject.next(user);

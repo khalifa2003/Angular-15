@@ -4,52 +4,6 @@
     <ng-template pTemplate="left"></ng-template>
   </p-toolbar>
 
-  <!--e
-    <ng-template pTemplate="body" let-order>
-      <tr>
-        <td>
-          {{ order._id }}
-        </td>
-        <td>{{ order.user.fname + " " + order.user.lname }}</td>
-        <td>{{ order.cartItems.length }}</td>
-        <td>{{ order.totalOrderPrice }} EGP</td>
-        <td>
-          {{ order.paymentMethodType }}
-        </td>
-        <td ngClass="{{ order.isDelivered ? 'text-success' : 'text-danger' }}">
-          {{ order.isDelivered }}
-        </td>
-        <td>
-          <p
-            ngClass="{{ order.deliveredAt ? 'text-success' : 'text-warning' }}"
-          >
-            {{ order.deliveredAt ? (order.deliveredAt | date) : "Pending" }}
-          </p>
-        </td>
-        <td>
-          <p>{{ order.updatedAt | date }}</p>
-        </td>
-        <td>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-pencil"
-            class="p-button-rounded p-button-success me-2"
-            (click)="openOrder(order)"
-          ></button>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-warning"
-            (click)="deleteOrder(order)"
-          ></button>
-        </td>
-      </tr>
-    </ng-template>
-
-
-  </p-table> -->
   <p-table
     [value]="orders"
     dataKey="_id"

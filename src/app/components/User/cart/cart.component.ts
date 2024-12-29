@@ -3,9 +3,7 @@ import { MessageService } from 'primeng/api';
 import { catchError, of, tap } from 'rxjs';
 import { ICart } from 'src/app/Models/icart';
 import { IProduct } from 'src/app/Models/iproduct';
-import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
-import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({
   selector: 'app-cart',

@@ -1,12 +1,12 @@
 export interface IAddress {
   _id: string;
-  fname: String;
-  lname: String;
-  email: String;
-  phone: String;
-  address: String;
-  city: String;
-  country: String;
-  state: String;
-  postalCode?: String;
+  fname: string;
+  lname: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  country: string;
+  state: string;
+  postalCode?: string;
 }

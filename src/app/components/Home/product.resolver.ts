@@ -4,7 +4,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
 import { IProduct } from 'src/app/Models/iproduct';
 
@@ -16,6 +16,11 @@ export class ProductResolver implements Resolve<IProduct[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<IProduct[]> {
-    return this.productService.getAllProducts();
+    return this.productService.getAllProducts().pipe(
+      catchError((error) => {
+        console.error('Error loading data', error);
+        return of();
+      })
+    );
   }
 }

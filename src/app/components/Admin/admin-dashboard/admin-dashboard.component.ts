@@ -2,7 +2,6 @@ import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user.service';
 import { Component } from '@angular/core';
 import { Chart } from 'chart.js/auto';
-import { IProduct } from 'src/app/Models/iproduct';
 import { catchError, of, tap } from 'rxjs';
 
 @Component({
@@ -35,7 +34,7 @@ export class AdminDashboardComponent {
     this.userService
       .getDashboardData()
       .pipe(
-        tap((data: any) => {
+        tap((data) => {
           this.ordersStats = data.ordersStats;
           this.revenueStats = data.revenueStats;
           this.customersStats = data.customersStats;
