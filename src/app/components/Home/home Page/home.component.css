@@ -59,9 +59,9 @@ div {
 }
 .my-modal {
   position: fixed;
+  width: 300px;
   top: 20px;
   right: 20px;
-  width: 300px;
   background-color: #eee;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
