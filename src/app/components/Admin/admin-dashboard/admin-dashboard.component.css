@@ -32,3 +32,9 @@
 .shadow-sm {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+.list-group-item p {
+  margin: 0;
+}
+list-group-item p a {
+  color: blue;
+}

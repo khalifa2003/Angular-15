@@ -155,8 +155,13 @@
               class="list-group-item"
               *ngFor="let product of bestSellingProducts"
             >
-              {{ product.title }} - {{ product._id }} -
-              {{ product.totalSales }}
+              <p>
+                Title:
+                <a routerLink="/product/{{ product._id }}">{{
+                  product.title
+                }}</a>
+              </p>
+              <p>Total Sales: {{ product.totalSales }}</p>
             </li>
           </ul>
         </div>
@@ -173,19 +178,18 @@
               class="list-group-item"
               *ngFor="let notification of notifications"
             >
-              {{
-                "Comment: '" +
-                  notification.title +
-                  "' With Rate: '" +
-                  notification.ratings +
-                  "' From: '" +
-                  notification.user.fname +
-                  " " +
-                  notification.user.lname +
-                  "' At ProductId: '" +
-                  notification.product +
-                  "'"
-              }}
+              <p>Comment: {{ notification.title }}</p>
+              <p>with rate: {{ notification.ratings }}</p>
+              <p>
+                From:
+                {{ notification.user.fname + " " + notification.user.lname }}
+              </p>
+              <p>
+                At ProductId:
+                <a routerLink="/product/{{ notification.product }}">{{
+                  notification.product
+                }}</a>
+              </p>
             </li>
           </ul>
         </div>
