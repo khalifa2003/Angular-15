@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 // Modules
 import { NavbarComponent } from './components/utils/navbar/navbar.component';
 import { FooterComponent } from './components/utils/footer/footer.component';
+import { ApiurlInterceptor } from './Interceptors/apiurl.interceptor';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, FooterComponent],
@@ -35,6 +36,11 @@ import { FooterComponent } from './components/utils/footer/footer.component';
   ],
   providers: [
     MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiurlInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

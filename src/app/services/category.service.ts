@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,19 +10,19 @@ export class CategoryService {
 
   // public
   getAllCategories(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/category`);
+    return this.http.get(`/category`);
   }
 
   // private only admin/manager
   createCategory(formData: FormData): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/category`, formData, {});
+    return this.http.post(`/category`, formData, {});
   }
 
   editCategory(id: string, formData: FormData): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/category/${id}`, formData, {});
+    return this.http.put(`/category/${id}`, formData, {});
   }
 
   deleteCategory(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/category/${id}`, {});
+    return this.http.delete(`/category/${id}`, {});
   }
 }

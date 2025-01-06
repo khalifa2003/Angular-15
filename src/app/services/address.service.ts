@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +9,14 @@ export class AddressService {
   constructor(private http: HttpClient) {}
 
   addAddress(formData: FormData): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/address`, formData);
+    return this.http.post(`/address`, formData);
   }
 
   deleteAddress(addressId: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/address/${addressId}`);
+    return this.http.delete(`/address/${addressId}`);
   }
 
   getAddresses(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/address`);
+    return this.http.get(`/address`);
   }
 }

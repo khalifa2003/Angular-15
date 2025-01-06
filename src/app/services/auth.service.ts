@@ -1,8 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { IUser } from '../Models/iuser';
 
 @Injectable({
@@ -43,7 +42,7 @@ export class AuthService {
   }
 
   login(data: any) {
-    return this.http.post<any>(`${environment.apiUrl}/auth/login`, data).pipe(
+    return this.http.post<any>(`/auth/login`, data).pipe(
       tap((data) => {
         localStorage.setItem('user', JSON.stringify(data));
         this.currentUserSubject.next(data);
@@ -57,25 +56,23 @@ export class AuthService {
   }
 
   register(formData: FormData) {
-    return this.http
-      .post<any>(`${environment.apiUrl}/auth/signup`, formData)
-      .pipe(
-        // tap method to make some methods before subscribe the data
-        tap((user) => {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          this.router.navigate(['/home']);
-        }),
-        catchError((error) => {
-          console.error('Registration error', error);
-          return of(null);
-        })
-      );
+    return this.http.post<any>(`/auth/signup`, formData).pipe(
+      // tap method to make some methods before subscribe the data
+      tap((user) => {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        this.router.navigate(['/home']);
+      }),
+      catchError((error) => {
+        console.error('Registration error', error);
+        return of(null);
+      })
+    );
   }
 
   forgotPassword(email: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/auth/forgotPassword`, {
+      .post(`/auth/forgotPassword`, {
         email,
       })
       .pipe(
@@ -92,7 +89,7 @@ export class AuthService {
 
   verifyResetCode(resetCode: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/auth/verifyResetCode`, {
+      .post(`/auth/verifyResetCode`, {
         resetCode,
       })
       .pipe(
@@ -105,18 +102,16 @@ export class AuthService {
   resetPassword(newPassword: string): Observable<any> {
     const email = localStorage.getItem('email')?.slice(1, -1);
 
-    return this.http
-      .post(`${environment.apiUrl}/auth/resetPassword`, { newPassword, email })
-      .pipe(
-        tap((data) => {
-          console.log(data);
+    return this.http.post(`/auth/resetPassword`, { newPassword, email }).pipe(
+      tap((data) => {
+        console.log(data);
 
-          localStorage.setItem('user', JSON.stringify(data));
-          this.currentUserSubject.next(data);
-          this.router.navigate(['/home']);
+        localStorage.setItem('user', JSON.stringify(data));
+        this.currentUserSubject.next(data);
+        this.router.navigate(['/home']);
 
-          localStorage.removeItem('email');
-        })
-      );
+        localStorage.removeItem('email');
+      })
+    );
   }
 }

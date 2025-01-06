@@ -4,57 +4,57 @@
 <div class="container-fluid">
   <div class="row">
     <!-- Top Stats Cards -->
-    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="ordersStats">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="Dashboard.ordersStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-cart4 fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Orders</h6>
-            <h3>{{ ordersStats.ordersCount }}</h3>
+            <h3>{{ Dashboard.ordersStats.ordersCount }}</h3>
             <span class="badge bg-info text-dark">
-              {{ ordersStats.newOrdersCount }} new since last visit
+              {{ Dashboard.ordersStats.newOrdersCount }} new since last visit
             </span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="revenueStats">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="Dashboard.revenueStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-currency-dollar fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Revenue</h6>
-            <h3>{{ revenueStats }} EGP</h3>
+            <h3>{{ Dashboard.revenueStats }} EGP</h3>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="customersStats">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="Dashboard.customersStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-people fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Customers</h6>
-            <h3>{{ customersStats.customersCount }}</h3>
+            <h3>{{ Dashboard.customersStats.customersCount }}</h3>
             <span class="badge bg-info text-dark">
-              {{ customersStats.newCustomersCount }} newly registered
+              {{ Dashboard.customersStats.newCustomersCount }} newly registered
             </span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="commentsStats">
+    <div class="col-12 col-xl-3 col-sm-6 mb-4" *ngIf="Dashboard.commentsStats">
       <div class="card">
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-chat-dots fs-2 me-3"></i>
           <div>
             <h6 class="card-title">Comments</h6>
-            <h3>{{ commentsStats.unreadCommentsCount }} Unread</h3>
+            <h3>{{ Dashboard.commentsStats.unreadCommentsCount }} Unread</h3>
             <span class="badge bg-success">
-              {{ commentsStats.respondedCommentsCount }} responded
+              {{ Dashboard.commentsStats.respondedCommentsCount }} responded
             </span>
           </div>
         </div>
@@ -85,12 +85,12 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let order of recentSales">
+            <ng-container *ngFor="let order of Dashboard.recentSales">
               <tr *ngFor="let item of order.cartItems">
                 <td>
                   <img
-                    [src]="item.product?.images[0]"
-                    [alt]="item.product?.title"
+                    [src]="item.product.images[0]"
+                    [alt]="item.product.title"
                     width="50"
                   />
                 </td>
@@ -105,7 +105,7 @@
                       'font-size': '16px'
                     }"
                   >
-                    {{ item.product?.title }}
+                    {{ item.product.title }}
                   </p>
                 </td>
                 <td>
@@ -113,9 +113,9 @@
                 </td>
                 <td>{{ item.price }} EGP</td>
                 <td>{{ order.totalOrderPrice }} EGP</td>
-                <td>{{ order.user?.fname }} {{ order.user?.lname }}</td>
+                <td>{{ order.user.fname }} {{ order.user.lname }}</td>
                 <td>
-                  {{ order.shippingAddress?.address }}
+                  {{ order.shippingAddress.address }}
                 </td>
                 <td>{{ order.createdAt | date : "short" }}</td>
                 <td
@@ -153,7 +153,7 @@
           <ul class="list-group list-group-flush">
             <li
               class="list-group-item"
-              *ngFor="let product of bestSellingProducts"
+              *ngFor="let product of Dashboard.bestSellingProducts"
             >
               <p>
                 Title:
@@ -176,7 +176,7 @@
           <ul class="list-group list-group-flush">
             <li
               class="list-group-item"
-              *ngFor="let notification of notifications"
+              *ngFor="let notification of Dashboard.notifications"
             >
               <p>Comment: {{ notification.title }}</p>
               <p>with rate: {{ notification.ratings }}</p>

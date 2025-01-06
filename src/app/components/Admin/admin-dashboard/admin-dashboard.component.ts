@@ -3,6 +3,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Component } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { catchError, of, tap } from 'rxjs';
+import { Dashboard } from 'src/app/Models/dashboard';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,15 +11,7 @@ import { catchError, of, tap } from 'rxjs';
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent {
-  ordersStats: any;
-  revenueStats: any;
-  customersStats: any;
-  commentsStats: any;
-  recentSales: any[] = [];
-  bestSellingProducts: any[] = [];
-  notifications: any[] = [];
-  salesOverview: any[] = [];
-  loading: boolean = false;
+  Dashboard: Dashboard = {} as Dashboard;
 
   constructor(
     private userService: UserService,
@@ -30,20 +23,11 @@ export class AdminDashboardComponent {
   }
 
   loadDashboardData(): void {
-    this.loading = true;
     this.userService
       .getDashboardData()
       .pipe(
-        tap((data) => {
-          this.ordersStats = data.ordersStats;
-          this.revenueStats = data.revenueStats;
-          this.customersStats = data.customersStats;
-          this.commentsStats = data.commentsStats;
-          this.recentSales = data.recentSales;
-          this.bestSellingProducts = data.bestSellingProducts;
-          this.notifications = data.notifications;
-          this.salesOverview = data.salesOverview;
-
+        tap((data: Dashboard) => {
+          this.Dashboard = data;
           this.renderSalesOverviewChart();
         }),
         catchError((error) => {
@@ -53,9 +37,6 @@ export class AdminDashboardComponent {
             detail: 'Failed to load dashboard data. Please try again later.',
           });
           return of(null);
-        }),
-        tap(() => {
-          this.loading = false;
         })
       )
       .subscribe();
@@ -65,11 +46,11 @@ export class AdminDashboardComponent {
     new Chart('salesOverviewChart', {
       type: 'line',
       data: {
-        labels: this.salesOverview.map((data) => `${data._id}`),
+        labels: this.Dashboard.salesOverview.map((data) => `${data._id}`),
         datasets: [
           {
             label: 'Total Sales',
-            data: this.salesOverview.map((data) => data.totalSales),
+            data: this.Dashboard.salesOverview.map((data) => data.totalSales),
             borderColor: '#42A5F5',
             fill: false,
           },
