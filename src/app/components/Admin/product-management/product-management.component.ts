@@ -204,8 +204,12 @@ export class ProductManagementComponent implements OnInit {
     return this.productForm.get('images') as FormArray;
   }
 
-  addImage(event: any) {
+  addImage(event: Event) {
     this.allImages.push(this.fb.control(''));
-    event.target?.classList.add('d-none');
+
+    const target = event.target as HTMLElement;
+    if (target) {
+      target.classList.add('d-none');
+    }
   }
 }

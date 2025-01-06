@@ -16,7 +16,7 @@ import { ToastModule } from 'primeng/toast';
   imports: [CommonModule, ButtonModule, FormsModule, ToastModule],
 })
 export class VerifyResetCodeComponent {
-  verificationCode: any;
+  verificationCode: string = '';
 
   constructor(
     private authService: AuthService,

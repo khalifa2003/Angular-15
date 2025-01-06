@@ -20,13 +20,16 @@ import { MessageService } from 'primeng/api';
 })
 export class ProductPageComponent {
   product: IProduct = {} as IProduct;
-  wishlist: any[] = [];
+  wishlist: string[] = [];
   reviewsList: IReview[] = [];
   user: IUser = {} as IUser;
   reviewForm: FormGroup;
   showModal: boolean = false;
   _activeIndex: number = 2;
-  responsiveOptions: any[] = [
+  responsiveOptions: {
+    breakpoint: string;
+    numVisible: number;
+  }[] = [
     { breakpoint: '1024px', numVisible: 5 },
     { breakpoint: '768px', numVisible: 3 },
     { breakpoint: '560px', numVisible: 1 },
@@ -96,7 +99,7 @@ export class ProductPageComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'success',
-            detail: res.message,
+            detail: 'Product added to wishlist',
           });
         },
         error: () => {
@@ -134,11 +137,11 @@ export class ProductPageComponent {
       this.wishlistService
         .removeFromWishlist(this.product._id)
         .subscribe((res) => {
-          this.wishlist = res.data.map((product: { _id: any }) => product._id);
+          this.wishlist = res.data.map((product: IProduct) => product._id);
           this.messageService.add({
             severity: 'success',
             summary: 'success',
-            detail: res.message,
+            detail:'Product removed from wishlist',
           });
         });
     }
@@ -147,7 +150,7 @@ export class ProductPageComponent {
   getWishlist() {
     if (this.authService.isAuthenticated()) {
       this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: string }) => {
+        this.wishlist = res.data.map((product: IProduct) => {
           return product._id;
         });
       });
@@ -230,7 +233,7 @@ export class ProductPageComponent {
       this.reviewService
         .addReview(newReview.title, newReview.ratings, newReview.product)
         .subscribe({
-          next: (res: any) => {
+          next: (res) => {
             this.getReviews();
             this.messageService.add({
               severity: 'success',
@@ -282,7 +285,6 @@ export class ProductPageComponent {
     });
   }
 
-  // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   get activeIndex(): number {
     return this._activeIndex;
   }

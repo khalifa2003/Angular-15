@@ -6,22 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./landing.component.css'],
 })
 export class LandingComponent {
-  images: any[];
+  images: string[];
 
-  responsiveOptions: any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 5,
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 3,
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-    },
-  ];
+  responsiveOptions: { breakpoint: string; numVisible: number }[];
 
   constructor() {
     this.images = [
@@ -32,6 +19,20 @@ export class LandingComponent {
       '../../assets/swipper/swipper5.webp',
       '../../assets/swipper/swipper6.jpg',
       '../../assets/swipper/swipper8.avif',
+    ];
+    this.responsiveOptions = [
+      {
+        breakpoint: '1024px',
+        numVisible: 5,
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 3,
+      },
+      {
+        breakpoint: '560px',
+        numVisible: 1,
+      },
     ];
   }
 }

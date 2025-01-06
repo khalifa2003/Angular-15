@@ -118,8 +118,8 @@ export class HomeComponent implements OnInit {
 
   getWishlist() {
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: any }) => {
+      this.wishlistService.getWishlist().subscribe((res: IProduct[]) => {
+        this.wishlist = res.map((product: IProduct) => {
           return product._id;
         });
       });

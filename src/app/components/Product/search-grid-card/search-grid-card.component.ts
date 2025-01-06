@@ -30,7 +30,7 @@ export class SearchGridCardComponent {
     this.renderer.appendChild(this.el.nativeElement, audio);
 
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
+      this.wishlistService.addToWishlist(product._id).subscribe((res) => {
         audio.play();
 
         this.wishlist = res.data.map((product: { _id: string }) => {
@@ -39,7 +39,7 @@ export class SearchGridCardComponent {
         this.messageService.add({
           severity: res.status,
           summary: 'success',
-          detail: res.message,
+          detail: 'Product added to wishlist',
         });
       });
     } else {
@@ -56,19 +56,17 @@ export class SearchGridCardComponent {
     this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
     this.renderer.appendChild(this.el.nativeElement, audio);
     if (this.authService.isAuthenticated()) {
-      this.wishlistService
-        .removeFromWishlist(product._id)
-        .subscribe((res: any) => {
-          audio.play();
-          this.wishlist = res.data.map((product: { _id: any }) => {
-            return product._id;
-          });
-          this.messageService.add({
-            severity: 'success',
-            summary: 'success',
-            detail: res.message,
-          });
+      this.wishlistService.removeFromWishlist(product._id).subscribe((res) => {
+        audio.play();
+        this.wishlist = res.data.map((product: IProduct) => {
+          return product._id;
         });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail: 'Product removed from wishlist',
+        });
+      });
     }
   }
 

@@ -59,7 +59,7 @@ export class SearchPageComponent implements OnInit {
   getWishlist() {
     if (this.authService.isAuthenticated()) {
       this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: { _id: any }) => {
+        this.wishlist = res.data.map((product: IProduct) => {
           return product._id;
         });
       });
@@ -131,7 +131,7 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
-  onModelChange(event: any, model: string) {
+  onModelChange(event: Event, model: string) {
     const inputElement = event.target as HTMLInputElement;
     if (model == 'stock') {
       if (inputElement.checked) {
@@ -241,7 +241,7 @@ export class SearchPageComponent implements OnInit {
     this.applyFilters();
   }
 
-  onFilter(event: any) {
+  onFilter(event: Event) {
     this.query = (event.target as HTMLInputElement).value.toLowerCase();
     this.applyFilters();
   }

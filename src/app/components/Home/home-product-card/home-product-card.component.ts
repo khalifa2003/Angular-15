@@ -7,7 +7,6 @@ import {
   Renderer2,
 } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { catchError } from 'rxjs';
 import { IProduct } from 'src/app/Models/iproduct';
 import { AuthService } from 'src/app/services/auth.service';
 import { WishlistService } from 'src/app/services/wishlist.service';
@@ -36,17 +35,17 @@ export class HomeProductCardComponent {
     this.renderer.appendChild(this.el.nativeElement, audio);
 
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.addToWishlist(product._id).subscribe((res: any) => {
-        audio.play();
-        this.wishlist = res.data.map((product: { _id: any }) => {
-          return product._id;
+      this.wishlistService
+        .addToWishlist(product._id)
+        .subscribe((res: IProduct[]) => {
+          audio.play();
+          this.wishlist = res.map((product) => product._id);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'success',
+            detail: 'Product added to wishlist',
+          });
         });
-        this.messageService.add({
-          severity: 'success',
-          summary: 'success',
-          detail: res.message,
-        });
-      });
     } else {
       this.messageService.add({
         severity: 'error',
@@ -63,15 +62,13 @@ export class HomeProductCardComponent {
     if (this.authService.isAuthenticated()) {
       this.wishlistService
         .removeFromWishlist(product._id)
-        .subscribe((res: any) => {
+        .subscribe((res: IProduct[]) => {
           audio.play();
-          this.wishlist = res.data.map((product: { _id: any }) => {
-            return product._id;
-          });
+          this.wishlist = res.map((product) => product._id);
           this.messageService.add({
             severity: 'success',
             summary: 'success',
-            detail: res.message,
+            detail: 'Product removed from wishlist',
           });
         });
     }

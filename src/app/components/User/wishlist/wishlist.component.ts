@@ -15,7 +15,7 @@ export class WishlistComponent {
   products: IProduct[] = [];
   showModal: boolean = false;
   product: IProduct = {} as IProduct;
-  wishlist: any[] = [];
+  wishlist: string[] = [];
   loading: boolean = false;
   error: string | null = null;
 
@@ -41,15 +41,13 @@ export class WishlistComponent {
       this.wishlistService
         .addToWishlist(product._id)
         .pipe(
-          tap((res: any) => {
+          tap((res) => {
             audio.play();
-            this.wishlist = res.data.map(
-              (product: { _id: string }) => product._id
-            );
+            this.wishlist = res.map((product: { _id: string }) => product._id);
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: res.message,
+              detail: 'Product added to wishlist',
             });
           })
         )
@@ -66,16 +64,14 @@ export class WishlistComponent {
       this.wishlistService
         .removeFromWishlist(product._id)
         .pipe(
-          tap((res: any) => {
+          tap((res) => {
             audio.play();
-            this.products = res.data;
-            this.wishlist = res.data.map(
-              (product: { _id: string }) => product._id
-            );
+            this.products = res;
+            this.wishlist = res.map((product: IProduct) => product._id);
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: res.message,
+              detail: 'Product removed from wishlist',
             });
           })
         )
@@ -90,10 +86,8 @@ export class WishlistComponent {
         .getWishlist()
         .pipe(
           tap((res) => {
-            this.products = res.data;
-            this.wishlist = res.data.map(
-              (product: { _id: string }) => product._id
-            );
+            this.products = res;
+            this.wishlist = res.map((product: IProduct) => product._id);
           }),
           tap(() => (this.loading = false))
         )
