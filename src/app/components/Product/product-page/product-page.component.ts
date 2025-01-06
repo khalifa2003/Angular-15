@@ -91,11 +91,9 @@ export class ProductPageComponent {
       });
 
       this.wishlistService.addToWishlist(this.product._id).subscribe({
-        next: (res) => {
+        next: (res: IProduct[]) => {
           audio.play();
-          this.wishlist = res.data.map(
-            (product: { _id: string }) => product._id
-          );
+          this.wishlist = res.map((product) => product._id);
           this.messageService.add({
             severity: 'success',
             summary: 'success',
@@ -136,12 +134,12 @@ export class ProductPageComponent {
 
       this.wishlistService
         .removeFromWishlist(this.product._id)
-        .subscribe((res) => {
-          this.wishlist = res.data.map((product: IProduct) => product._id);
+        .subscribe((res: IProduct[]) => {
+          this.wishlist = res.map((product: IProduct) => product._id);
           this.messageService.add({
             severity: 'success',
             summary: 'success',
-            detail:'Product removed from wishlist',
+            detail: 'Product removed from wishlist',
           });
         });
     }
@@ -149,10 +147,8 @@ export class ProductPageComponent {
 
   getWishlist() {
     if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: IProduct) => {
-          return product._id;
-        });
+      this.wishlistService.getWishlist().subscribe((res: IProduct[]) => {
+        this.wishlist = res.map((product) => product._id);
       });
     }
   }
@@ -163,24 +159,19 @@ export class ProductPageComponent {
 
   addToCart() {
     if (this.authService.isAuthenticated()) {
-      // Play the audio immediately to provide instant feedback
       const audio = this.renderer.createElement('audio');
       this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
       this.renderer.appendChild(this.el.nativeElement, audio);
       audio.play();
 
-      // Optimistically show the modal
       this.showModal = true;
       setTimeout(() => {
         this.showModal = false;
       }, 7000);
 
-      // Trigger the API call
       this.cartService.addToCart(this.product._id).subscribe({
         next: (res) => {
-          // Update the product or cart state if needed
-          this.product = this.product; // Assuming this line might have been intended to do something specific
-          // Show success feedback if needed (e.g., update UI state, show a success message)
+          this.product = this.product;
           this.messageService.add({
             severity: 'success',
             summary: 'Added to Cart',
@@ -188,7 +179,6 @@ export class ProductPageComponent {
           });
         },
         error: () => {
-          // Revert the modal and show error feedback if the request fails
           this.showModal = false;
           this.messageService.add({
             severity: 'error',
@@ -212,9 +202,8 @@ export class ProductPageComponent {
 
   addReview() {
     if (this.authService.isAuthenticated()) {
-      // Optimistically update the UI
       const newReview: IReview = {
-        _id: 'temp-id', // Temporary ID to identify the review until it comes back from the server
+        _id: 'temp-id',
         title: this.reviewForm.value.title,
         ratings: this.reviewForm.value.score,
         product: this.product._id,

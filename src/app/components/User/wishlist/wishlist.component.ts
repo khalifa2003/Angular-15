@@ -41,9 +41,9 @@ export class WishlistComponent {
       this.wishlistService
         .addToWishlist(product._id)
         .pipe(
-          tap((res) => {
+          tap((res: IProduct[]) => {
             audio.play();
-            this.wishlist = res.map((product: { _id: string }) => product._id);
+            this.wishlist = res.map((product) => product._id);
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
@@ -64,7 +64,7 @@ export class WishlistComponent {
       this.wishlistService
         .removeFromWishlist(product._id)
         .pipe(
-          tap((res) => {
+          tap((res: IProduct[]) => {
             audio.play();
             this.products = res;
             this.wishlist = res.map((product: IProduct) => product._id);
@@ -85,9 +85,9 @@ export class WishlistComponent {
       this.wishlistService
         .getWishlist()
         .pipe(
-          tap((res) => {
+          tap((res: IProduct[]) => {
             this.products = res;
-            this.wishlist = res.map((product: IProduct) => product._id);
+            this.wishlist = res.map((product) => product._id);
           }),
           tap(() => (this.loading = false))
         )
