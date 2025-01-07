@@ -1,6 +1,8 @@
+import { CartRes } from './../Models/icart';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ICart } from '../Models/icart';
 
 @Injectable({
   providedIn: 'root',
@@ -8,16 +10,19 @@ import { Observable } from 'rxjs';
 export class CartService {
   constructor(private http: HttpClient) {}
 
-  addToCart(productId: string): Observable<any> {
-    return this.http.post(`/cart`, { productId });
+  addToCart(productId: string): Observable<CartRes> {
+    return this.http.post<CartRes>(`/cart`, { productId });
   }
 
-  getCart(): Observable<any> {
-    return this.http.get(`/cart`);
+  getCart(): Observable<CartRes> {
+    return this.http.get<CartRes>(`/cart`);
   }
 
-  updateCartItemQuantity(productId: string, quantity: number): Observable<any> {
-    return this.http.put(`/cart/${productId}`, {
+  updateCartItemQuantity(
+    productId: string,
+    quantity: number
+  ): Observable<CartRes> {
+    return this.http.put<CartRes>(`/cart/${productId}`, {
       quantity,
     });
   }
@@ -26,7 +31,7 @@ export class CartService {
     return this.http.delete(`/cart`);
   }
 
-  deleteCartItem(itemId: string): Observable<any> {
-    return this.http.delete(`/cart/${itemId}`);
+  deleteCartItem(itemId: string): Observable<CartRes> {
+    return this.http.delete<CartRes>(`/cart/${itemId}`);
   }
 }

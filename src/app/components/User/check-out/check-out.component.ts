@@ -8,7 +8,6 @@ import { MessageService } from 'primeng/api';
 import { IAddress } from 'src/app/Models/iaddress';
 import { ICart } from 'src/app/Models/icart';
 import { CartService } from 'src/app/services/cart.service';
-import { IOrder } from 'src/app/Models/iorder';
 import { Router } from '@angular/router';
 
 @Component({
@@ -79,7 +78,7 @@ export class CheckOutComponent {
 
   getAddresses() {
     this.addressService.getAddresses().subscribe((res) => {
-      this.listOfAddresses = res.data;
+      this.listOfAddresses = res;
     });
   }
 
@@ -137,8 +136,9 @@ export class CheckOutComponent {
     }
   }
 
-  selectAddress(event: any, address: IAddress) {
-    if (event.target.checked) {
+  selectAddress(event: Event, address: IAddress) {
+    const target = event.target as HTMLInputElement;
+    if (target.checked) {
       this.address = address;
       this.checkoutForm = this.fb.group({
         shippingAddress: this.fb.group({
@@ -153,9 +153,10 @@ export class CheckOutComponent {
     }
   }
 
-  selectPaymentMethod(event: any) {
-    if (event.target.checked) {
-      this.checkoutForm.value.paymentMethodType = event.target.value;
+  selectPaymentMethod(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.checked) {
+      this.checkoutForm.value.paymentMethodType = target.value;
     }
   }
 }

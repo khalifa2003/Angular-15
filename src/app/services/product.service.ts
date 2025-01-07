@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IProduct } from '../Models/iproduct';
 
 @Injectable({
   providedIn: 'root',
@@ -8,33 +9,37 @@ import { Observable } from 'rxjs';
 export class ProductService {
   constructor(private http: HttpClient) {}
 
-  getAllProducts(): Observable<any> {
-    return this.http.get(`/product`);
+  getAllProducts(): Observable<IProduct[]> {
+    return this.http.get<IProduct[]>(`/product`);
   }
 
-  getProductById(id: String | null): Observable<any> {
-    return this.http.get(`/product/${id}`);
+  getHomeProducts(): Observable<any> {
+    return this.http.get(`/product/home-products`);
   }
 
-  searchProducts(params: any): Observable<any> {
+  getProductById(id: String | null): Observable<IProduct> {
+    return this.http.get<IProduct>(`/product/${id}`);
+  }
+
+  searchProducts(params: any): Observable<IProduct[]> {
     let queryParams = new HttpParams();
     if (params) {
       Object.keys(params).forEach((key) => {
         queryParams = queryParams.set(key, params[key]);
       });
     }
-    return this.http.get(`/product`, {
+    return this.http.get<IProduct[]>(`/product`, {
       params: queryParams,
     });
   }
 
   // private only admin/manager
-  createProduct(formData: FormData): Observable<any> {
-    return this.http.post(`/product`, formData);
+  createProduct(formData: FormData): Observable<IProduct> {
+    return this.http.post<IProduct>(`/product`, formData);
   }
 
-  updateProduct(id: string, formData: FormData): Observable<any> {
-    return this.http.put(`/product/${id}`, formData);
+  updateProduct(id: string, formData: FormData): Observable<IProduct> {
+    return this.http.put<IProduct>(`/product/${id}`, formData);
   }
 
   deleteProduct(id: String) {

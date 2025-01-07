@@ -59,7 +59,7 @@ export class SearchPageComponent implements OnInit {
   getWishlist() {
     if (this.authService.isAuthenticated()) {
       this.wishlistService.getWishlist().subscribe((res) => {
-        this.wishlist = res.data.map((product: IProduct) => {
+        this.wishlist = res.map((product) => {
           return product._id;
         });
       });

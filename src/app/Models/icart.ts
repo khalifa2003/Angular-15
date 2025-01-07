@@ -7,3 +7,9 @@ export interface ICart {
   totalCartPrice: number;
   user: string;
 }
+export interface CartRes {
+  status: string;
+  message: string;
+  numOfCartItems: number;
+  data: ICart;
+}

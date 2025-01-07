@@ -18,7 +18,6 @@ export class LandingComponent {
       '../../assets/swipper/swipper4.jpg',
       '../../assets/swipper/swipper5.webp',
       '../../assets/swipper/swipper6.jpg',
-      '../../assets/swipper/swipper8.avif',
     ];
     this.responsiveOptions = [
       {

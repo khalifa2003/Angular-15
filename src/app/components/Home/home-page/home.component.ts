@@ -1,13 +1,15 @@
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { IBrand } from 'src/app/Models/ibrand';
 import { ICategory } from 'src/app/Models/icategory';
 import { IProduct } from 'src/app/Models/iproduct';
 import { CartService } from 'src/app/services/cart.service';
 import { MessageService } from 'primeng/api';
-import { ActivatedRoute } from '@angular/router';
 import { WishlistService } from 'src/app/services/wishlist.service';
+import { AudioService } from 'src/app/services/audio.service';
+import { BrandService } from 'src/app/services/brand.service';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-home',
@@ -37,13 +39,7 @@ export class HomeComponent implements OnInit {
       numScroll: 1,
     },
   ];
-  ids: { id: string; name: string; products: IProduct[] }[] = [
-    { id: '665b9e7eee20a57f1c86a3df', name: 'NOTEBOOK', products: [] },
-    { id: '665b9e66ee20a57f1c86a3dd', name: 'DESKTOP', products: [] },
-    { id: '665b9e9cee20a57f1c86a3e1', name: 'STORAGE', products: [] },
-    { id: '665b9ebaee20a57f1c86a3e3', name: 'MONITOR', products: [] },
-    { id: '665b9ee3ee20a57f1c86a3e7', name: 'ACCESSORIES', products: [] },
-  ];
+  listOfProductsByCategory: { name: string; products: IProduct[] }[] = [];
 
   categories: ICategory[] = [];
   brands: IBrand[] = [];
@@ -55,38 +51,47 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private categoryService: CategoryService,
     private authService: AuthService,
+    private brandService: BrandService,
     private cartService: CartService,
     private wishlistService: WishlistService,
-    private renderer: Renderer2,
-    private messageService: MessageService,
-    private route: ActivatedRoute,
-    private el: ElementRef
+    private audioService: AudioService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.categories = data['categories'];
-      this.brands = data['brands'];
-      const products = data['products'];
-      this.newArrival = products.slice(-12);
-      this.specialOffers = products.filter(
+    this.getData();
+    this.getProducts();
+    this.getWishlist();
+  }
+  getData() {
+    this.brandService.getAllBrands().subscribe((res) => {
+      this.brands = res;
+    });
+    this.categoryService.getAllCategories().subscribe((res) => {
+      this.categories = res;
+    });
+    this.productService.getAllProducts().subscribe((res) => {
+      this.newArrival = res.slice(-12);
+      this.specialOffers = res.filter(
         (product: IProduct) => product.discount > 0
       );
-      this.getProducts();
     });
-
-    this.getWishlist();
   }
 
   getProducts() {
-    this.ids.forEach((id) => {
-      this.productService
-        .searchProducts({ category: id.id })
-        .subscribe((res) => {
-          id.products = res;
-        });
+    this.productService.getHomeProducts().subscribe((res) => {
+      this.listOfProductsByCategory = res;
     });
+  }
+
+  getWishlist() {
+    if (this.authService.isAuthenticated()) {
+      this.wishlistService.getWishlistProductsIds().subscribe((res) => {
+        this.wishlist = res;
+      });
+    }
   }
 
   closeModal() {
@@ -95,11 +100,7 @@ export class HomeComponent implements OnInit {
 
   addToCart(selectedProduct: IProduct) {
     if (this.authService.isAuthenticated()) {
-      const audio = this.renderer.createElement('audio');
-      this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
-      this.renderer.appendChild(this.el.nativeElement, audio);
-
-      audio.play();
+      this.audioService.playAudio('addToWishlist');
       this.product = selectedProduct;
       this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
         this.showModal = true;
@@ -112,16 +113,6 @@ export class HomeComponent implements OnInit {
         severity: 'error',
         summary: 'Error',
         detail: 'You must login first before adding to cart.',
-      });
-    }
-  }
-
-  getWishlist() {
-    if (this.authService.isAuthenticated()) {
-      this.wishlistService.getWishlist().subscribe((res: IProduct[]) => {
-        this.wishlist = res.map((product: IProduct) => {
-          return product._id;
-        });
       });
     }
   }

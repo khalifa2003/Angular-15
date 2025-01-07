@@ -33,11 +33,11 @@ export class SearchGridCardComponent {
       this.wishlistService.addToWishlist(product._id).subscribe((res) => {
         audio.play();
 
-        this.wishlist = res.data.map((product: { _id: string }) => {
+        this.wishlist = res.map((product) => {
           return product._id;
         });
         this.messageService.add({
-          severity: res.status,
+          severity: 'success',
           summary: 'success',
           detail: 'Product added to wishlist',
         });
@@ -58,7 +58,7 @@ export class SearchGridCardComponent {
     if (this.authService.isAuthenticated()) {
       this.wishlistService.removeFromWishlist(product._id).subscribe((res) => {
         audio.play();
-        this.wishlist = res.data.map((product: IProduct) => {
+        this.wishlist = res.map((product: IProduct) => {
           return product._id;
         });
         this.messageService.add({

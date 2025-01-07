@@ -30,7 +30,7 @@ export class SearchListCardComponent {
     if (this.authService.isAuthenticated()) {
       this.wishlistService.addToWishlist(product._id).subscribe((res) => {
         audio.play();
-        this.wishlist = res.data.map((product: IProduct) => {
+        this.wishlist = res.map((product) => {
           return product._id;
         });
         this.messageService.add({
@@ -55,7 +55,7 @@ export class SearchListCardComponent {
     if (this.authService.isAuthenticated()) {
       this.wishlistService.removeFromWishlist(product._id).subscribe((res) => {
         audio.play();
-        this.wishlist = res.data.map((product: IProduct) => {
+        this.wishlist = res.map((product) => {
           return product._id;
         });
         this.messageService.add({

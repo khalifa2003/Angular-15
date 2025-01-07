@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { IProduct } from 'src/app/Models/iproduct';
+import { AudioService } from 'src/app/services/audio.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { WishlistService } from 'src/app/services/wishlist.service';
 
@@ -24,28 +25,21 @@ export class HomeProductCardComponent {
   constructor(
     private wishlistService: WishlistService,
     private messageService: MessageService,
-    private authService: AuthService,
-    private renderer: Renderer2,
-    private el: ElementRef
+    private audioService: AudioService,
+    private authService: AuthService
   ) {}
 
   addToWishlist(product: IProduct) {
-    const audio = this.renderer.createElement('audio');
-    this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
-    this.renderer.appendChild(this.el.nativeElement, audio);
-
     if (this.authService.isAuthenticated()) {
-      this.wishlistService
-        .addToWishlist(product._id)
-        .subscribe((res: IProduct[]) => {
-          audio.play();
-          this.wishlist = res.map((product) => product._id);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'success',
-            detail: 'Product added to wishlist',
-          });
+      this.wishlistService.addToWishlist(product._id).subscribe((res) => {
+        this.audioService.playAudio('addToWishlist');
+        this.wishlist = res.map((product) => product._id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail: 'Product added to wishlist',
         });
+      });
     } else {
       this.messageService.add({
         severity: 'error',
@@ -56,21 +50,16 @@ export class HomeProductCardComponent {
   }
 
   RemoveFromWishlist(product: IProduct) {
-    const audio = this.renderer.createElement('audio');
-    this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
-    this.renderer.appendChild(this.el.nativeElement, audio);
     if (this.authService.isAuthenticated()) {
-      this.wishlistService
-        .removeFromWishlist(product._id)
-        .subscribe((res: IProduct[]) => {
-          audio.play();
-          this.wishlist = res.map((product) => product._id);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'success',
-            detail: 'Product removed from wishlist',
-          });
+      this.wishlistService.removeFromWishlist(product._id).subscribe((res) => {
+        this.audioService.playAudio('removeFromWishlist');
+        this.wishlist = res.map((product) => product._id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail: 'Product removed from wishlist',
         });
+      });
     }
   }
 

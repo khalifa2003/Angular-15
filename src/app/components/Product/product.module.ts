@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductRoutingModule } from './product-routing.module';
-import { HomeComponent } from '../Home/home Page/home.component';
+import { HomeComponent } from '../Home/home-page/home.component';
 import { HomeBrandCardComponent } from '../Home/home-brand-card/home-brand-card.component';
 import { HomeCategoryCardComponent } from '../Home/home-category-card/home-category-card.component';
 import { HomeProductCardComponent } from '../Home/home-product-card/home-product-card.component';
