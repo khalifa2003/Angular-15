@@ -1,3 +1,4 @@
+import { AudioService } from './../../../services/audio.service';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -25,6 +26,7 @@ export class ProductPageComponent {
   user: IUser = {} as IUser;
   reviewForm: FormGroup;
   showModal: boolean = false;
+
   _activeIndex: number = 2;
   responsiveOptions: {
     breakpoint: string;
@@ -40,6 +42,7 @@ export class ProductPageComponent {
     private productService: ProductService,
     private messageService: MessageService,
     private reviewService: ReviewService,
+    private audioService: AudioService,
     private userService: UserService,
     private cartService: CartService,
     private authService: AuthService,
@@ -78,37 +81,18 @@ export class ProductPageComponent {
   }
 
   addToWishlist() {
-    const audio = this.renderer.createElement('audio');
-    this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
-    this.renderer.appendChild(this.el.nativeElement, audio);
-
     if (this.authService.isAuthenticated()) {
-      this.wishlist.push(this.product._id);
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Adding to Wishlist',
-        detail: 'Please wait...',
-      });
-
-      this.wishlistService.addToWishlist(this.product._id).subscribe({
-        next: (res: IProduct[]) => {
-          audio.play();
+      this.wishlistService
+        .addToWishlist(this.product._id)
+        .subscribe((res: IProduct[]) => {
+          this.audioService.playAudio('add');
           this.wishlist = res.map((product) => product._id);
           this.messageService.add({
             severity: 'success',
             summary: 'success',
             detail: 'Product added to wishlist',
           });
-        },
-        error: () => {
-          this.wishlist = this.wishlist.filter((id) => id !== this.product._id);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Failed',
-            detail: 'Could not add to wishlist. Please try again.',
-          });
-        },
-      });
+        });
     } else {
       this.messageService.add({
         severity: 'error',
@@ -119,22 +103,12 @@ export class ProductPageComponent {
   }
 
   RemoveFromWishlist() {
-    const audio = this.renderer.createElement('audio');
-    this.renderer.setAttribute(audio, 'src', 'assets/audio/remove.mp3');
-    this.renderer.appendChild(this.el.nativeElement, audio);
-
     if (this.authService.isAuthenticated()) {
       this.wishlist = this.wishlist.filter((id) => id !== this.product._id);
-      audio.play();
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Removing from Wishlist',
-        detail: 'Please wait...',
-      });
-
       this.wishlistService
         .removeFromWishlist(this.product._id)
         .subscribe((res: IProduct[]) => {
+          this.audioService.playAudio('remove');
           this.wishlist = res.map((product: IProduct) => product._id);
           this.messageService.add({
             severity: 'success',
@@ -159,33 +133,12 @@ export class ProductPageComponent {
 
   addToCart() {
     if (this.authService.isAuthenticated()) {
-      const audio = this.renderer.createElement('audio');
-      this.renderer.setAttribute(audio, 'src', 'assets/audio/add.mp3');
-      this.renderer.appendChild(this.el.nativeElement, audio);
-      audio.play();
-
-      this.showModal = true;
-      setTimeout(() => {
-        this.showModal = false;
-      }, 7000);
-
-      this.cartService.addToCart(this.product._id).subscribe({
-        next: (res) => {
-          this.product = this.product;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Added to Cart',
-            detail: 'The product has been added to your cart successfully.',
-          });
-        },
-        error: () => {
+      this.cartService.addToCart(this.product._id).subscribe((res) => {
+        this.audioService.playAudio('add');
+        this.showModal = true;
+        setTimeout(() => {
           this.showModal = false;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Failed',
-            detail: 'Could not add the product to the cart. Please try again.',
-          });
-        },
+        }, 3000);
       });
     } else {
       this.messageService.add({
@@ -194,10 +147,6 @@ export class ProductPageComponent {
         detail: 'You must login first before adding to cart.',
       });
     }
-  }
-
-  closeModal() {
-    this.showModal = false;
   }
 
   addReview() {
@@ -209,15 +158,6 @@ export class ProductPageComponent {
         product: this.product._id,
         user: this.user,
       };
-
-      // Add the new review optimistically to the reviews list
-      this.reviewsList.push(newReview);
-
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Adding Review',
-        detail: 'Please wait...',
-      });
 
       this.reviewService
         .addReview(newReview.title, newReview.ratings, newReview.product)
@@ -235,7 +175,7 @@ export class ProductPageComponent {
             this.messageService.add({
               severity: 'error',
               summary: 'Failed',
-              detail: 'Could not add the review. Please try again.',
+              detail: 'Each customer have one review.',
             });
           },
           complete: () => {
@@ -246,7 +186,7 @@ export class ProductPageComponent {
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Authentication Required',
+        summary: 'Login Required',
         detail: 'You need to be logged in to add a review.',
       });
     }
@@ -264,14 +204,16 @@ export class ProductPageComponent {
   }
 
   deleteReview(id: string) {
-    this.reviewService.deleteReview(id).subscribe((res) => {
-      this.getReviews();
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Review Deleted',
-        detail: 'Your review has been deleted successfully.',
+    if (!this.authService.isAuthenticated()) {
+      this.reviewService.deleteReview(id).subscribe(() => {
+        this.getReviews();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Review Deleted',
+          detail: 'Your review has been deleted successfully.',
+        });
       });
-    });
+    }
   }
 
   get activeIndex(): number {

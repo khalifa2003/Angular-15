@@ -1,8 +1,15 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
-import { firstValueFrom, Subscription } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  firstValueFrom,
+  Subject,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { ICategory } from 'src/app/Models/icategory';
 import { CategoryService } from 'src/app/services/category.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
@@ -21,8 +28,10 @@ export class NavbarComponent implements OnDestroy {
 
   categories: ICategory[] = [];
   subcategories: ISubcategory[] = [];
+
+  searchTerm: string = '';
   searchResults: IProduct[] = [];
-  searchTerm: any = '';
+  private searchSubject = new Subject<string>();
 
   constructor(
     private router: Router,
@@ -36,24 +45,30 @@ export class NavbarComponent implements OnDestroy {
       this.updateMenuItems();
     });
     this.updateMenuItems();
+    this.searchSubject
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        switchMap((term) =>
+          term.trim() ? this.productService.searchProducts({ title: term }) : []
+        )
+      )
+      .subscribe((products) => {
+        this.searchResults = products;
+      });
   }
 
   async loadSubcategories(categoryId: string) {
-    try {
-      const subcategories = await firstValueFrom(
-        this.subcategoryService.getSubcategories(categoryId)
-      );
-      return subcategories.map((subcategory: { name: any; _id: any }) => ({
-        label: subcategory.name,
-        command: () =>
-          this.router.navigate(['/product'], {
-            queryParams: { subcategory: subcategory._id },
-          }),
-      }));
-    } catch (error) {
-      console.error('Failed to load subcategories', error);
-      return [];
-    }
+    const subcategories = await firstValueFrom(
+      this.subcategoryService.getSubcategories(categoryId)
+    );
+    return subcategories.map((subcategory: ISubcategory) => ({
+      label: subcategory.name,
+      command: () =>
+        this.router.navigate(['/product'], {
+          queryParams: { subcategory: subcategory._id },
+        }),
+    }));
   }
 
   ngOnDestroy() {
@@ -161,43 +176,40 @@ export class NavbarComponent implements OnDestroy {
     ];
   }
 
-  getProductByCategory(item: ICategory) {
-    this.router.navigate(['/products'], {
-      queryParams: { category: item._id },
-    });
-  }
-
-  getProductBySubCategory(item: ISubcategory) {
-    this.router.navigate(['/products'], {
-      queryParams: { subcategory: item._id },
-    });
-  }
-
   onSearch(): void {
+    this.searchSubject.next(this.searchTerm);
+  }
+
+  navigate(product: IProduct): void {
+    this.router.navigate(['/product', product._id]);
+    this.clearSearch();
+  }
+
+  reloadPage(): void {
     if (this.searchTerm.trim() !== '') {
-      this.productService
-        .searchProducts({ title: this.searchTerm })
-        .subscribe((products) => {
-          this.searchResults = products;
-        });
-    } else {
-      this.searchResults = [];
+      this.router.navigate(['/product'], {
+        queryParams: { title: this.searchTerm },
+      });
+      this.clearSearch();
     }
   }
 
-  navigate(product: IProduct) {
-    this.router.navigate(['/product', product._id]);
+  clearSearch(): void {
     this.searchTerm = '';
     this.searchResults = [];
   }
 
-  reloadPage() {
-    if (this.searchTerm != '') {
-      this.router.navigate(['/product'], {
-        queryParams: { title: this.searchTerm },
-      });
-      this.searchTerm = '';
-      this.searchResults = [];
+  // hid search search results
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const targetElement = event.target as HTMLElement;
+    if (
+      targetElement &&
+      !targetElement.closest('.search-input') &&
+      !targetElement.closest('.search-results')
+    ) {
+      this.clearSearch();
     }
   }
 }

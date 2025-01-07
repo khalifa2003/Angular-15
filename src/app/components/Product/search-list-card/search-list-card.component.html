@@ -1,8 +1,5 @@
-<div
-  class="d-flex align-items-center border-bottom py-3"
-  style="position: relative"
->
-  <div class="discount2" *ngIf="product.discount > 0">
+<div class="d-flex align-items-center border-bottom position-relative py-4">
+  <div class="discount" *ngIf="product.discount > 0">
     {{ product.discount }}%
   </div>
   <img [src]="product.images[0]" [alt]="product.title" width="20%" />
@@ -11,17 +8,15 @@
       <i class="pi pi-tag me-2"></i>
       {{ product.category.name }}
     </p>
-    <a class="h5 title" [routerLink]="product._id">{{ product.title }}</a>
+    <a class="title" [routerLink]="product._id">{{ product.title }}</a>
+    <br>
     <p-rating
       [ngModel]="product.ratingsAverage"
       [readonly]="true"
       [cancel]="false"
     ></p-rating>
   </div>
-  <div
-    class="text-end"
-    class="d-flex flex-row flex-md-column justify-content-between w-md-auto align-items-center mt-3 mt-md-0"
-  >
+  <div class="d-flex flex-column justify-content-between align-items-center">
     <div class="d-flex flex-column">
       <del class="mb-2" *ngIf="product.discount > 0"
         >{{ product.price }}EGP</del
@@ -51,36 +46,19 @@
     </span>
   </div>
   <i
-    [ngStyle]="{
-      position: 'absolute',
-      top: '10%',
-      right: '5%',
-      cursorL: 'pointer'
-    }"
     (click)="addToWishlist(product)"
     *ngIf="!isInWishlist(product._id)"
-    class="pi pi-heart"
+    class="pi pi-heart wishlist"
   ></i>
   <i
-    [ngStyle]="{
-      position: 'absolute',
-      top: '10%',
-      right: '5%',
-      cursor: 'pointer'
-    }"
     (click)="RemoveFromWishlist(product)"
     *ngIf="isInWishlist(product._id)"
-    class="pi pi-heart-fill"
+    class="pi pi-heart-fill wishlist"
   ></i>
 </div>
 
-<div class="my-modal" *ngIf="showModal">
-  <div class="my-modal-header">
-    <span class="my-modal-title">Product added to Cart</span>
-    <button class="close-btn" (click)="closeModal()">&times;</button>
-  </div>
-  <div class="my-modal-body">
-    <img [src]="product.images[0]" alt="" />
-    <a routerLink="/cart" style="text-decoration: none">{{ product.title }}</a>
-  </div>
-</div>
+<app-my-model
+  [showModal]="showModal"
+  [product]="product"
+  (closeModalEvent)="showModal = $event"
+></app-my-model>

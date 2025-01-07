@@ -1,7 +1,11 @@
-<div style="margin-top: 60px">
-  <app-navbar></app-navbar>
+<app-navbar></app-navbar>
+<div class="container-xxl min-vh-100">
+  <button class="dark-mode-toggle" (click)="toggleDarkMode()">
+    <span *ngIf="darkMode" class="pi pi-sun"></span>
+    <span *ngIf="!darkMode" class="pi pi-moon"></span>
+    <span class="toggle-text">{{ darkMode ? "Light Mode" : "Dark Mode" }}</span>
+  </button>
+  <router-outlet></router-outlet>
+  <p-toast></p-toast>
 </div>
-<router-outlet></router-outlet>
 <app-footer></app-footer>
-
-<p-toast></p-toast>

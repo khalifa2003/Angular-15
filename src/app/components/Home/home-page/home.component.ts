@@ -94,19 +94,15 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  closeModal() {
-    this.showModal = false;
-  }
-
   addToCart(selectedProduct: IProduct) {
     if (this.authService.isAuthenticated()) {
-      this.audioService.playAudio('addToWishlist');
       this.product = selectedProduct;
       this.cartService.addToCart(selectedProduct._id).subscribe((res) => {
+        this.audioService.playAudio('add');
         this.showModal = true;
         setTimeout(() => {
           this.showModal = false;
-        }, 7000);
+        }, 5000);
       });
     } else {
       this.messageService.add({

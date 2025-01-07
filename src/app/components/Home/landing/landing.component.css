@@ -1,3 +1,8 @@
+
+.landing-container {
+  overflow: hidden;
+  max-height: 450px;
+}
 div {
   margin: 0;
   padding: 0;
@@ -36,11 +41,6 @@ div {
 }
 .image-container .col-6 {
   display: inline;
-}
-
-.landing-container {
-  overflow: hidden;
-  max-height: 450px;
 }
 .gallery-image {
   width: 100%;

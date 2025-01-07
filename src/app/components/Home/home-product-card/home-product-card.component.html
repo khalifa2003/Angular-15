@@ -25,13 +25,11 @@
         [disabled]="product.quantity == 0"
       ></p-button>
       <i
-        [ngStyle]="{ position: 'fixed', top: '0' }"
         (click)="addToWishlist(product)"
         *ngIf="!isInWishlist(product._id)"
         class="pi pi-heart"
       ></i>
       <i
-        [ngStyle]="{ position: 'fixed', top: '0' }"
         (click)="RemoveFromWishlist(product)"
         *ngIf="isInWishlist(product._id)"
         class="pi pi-heart-fill"

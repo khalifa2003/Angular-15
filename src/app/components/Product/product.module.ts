@@ -23,6 +23,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RatingModule } from 'primeng/rating';
 import { SidebarModule } from 'primeng/sidebar';
 import { SliderModule } from 'primeng/slider';
+import { MyModelComponent } from '../utils/my-model/my-model.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SliderModule } from 'primeng/slider';
     SearchPageComponent,
     SearchGridCardComponent,
     SearchListCardComponent,
+    MyModelComponent,
   ],
   imports: [
     CommonModule,

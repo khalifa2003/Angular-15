@@ -1,39 +1,7 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-div {
-  margin: 0;
-}
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-*:focus {
-  outline: none;
-}
-html {
-  scroll-behavior: smooth;
-}
-body {
-  font-family: Arial, sans-serif;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+@import "~bootstrap/dist/css/bootstrap.min.css";
 ::-webkit-scrollbar {
   width: 15px;
 }
@@ -44,7 +12,44 @@ ul {
   background-color: blue;
 }
 
-html,
+:root {
+  --background-color: #fff;
+  --text-color: #000;
+  --link-color: #007bff;
+}
+
+body.dark-mode {
+  --background-color: #121212;
+  --text-color: #eaeaea;
+  --link-color: #3399ff;
+}
+
 body {
+  background-color: var(--background-color);
+  color: var(--text-color);
   height: 100%;
+  overflow-x: hidden;
+}
+
+*:focus {
+  outline: none;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link-color);
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+button,
+input,
+.product-title {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }

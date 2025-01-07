@@ -1,4 +1,4 @@
-<div class="row" [ngStyle]="{ margin: '0', 'min-height': '80vh' }">
+<div class="row">
   <p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000">
     <div class="d-flex justify-content-center my-4">
       <img src="../../../../assets/logo.ico" alt="" width="100px" />
@@ -205,59 +205,53 @@
     </div>
   </p-sidebar>
 
-  <div class="card" [ngStyle]="{ margin: '0 auto', width: '90%' }">
-    <div class="card-body">
-      <p-dataView
-        #dv
-        [value]="products"
-        [paginator]="true"
-        [rows]="16"
-        layout="grid"
-        *ngIf="products[0]"
-      >
-        <ng-template pTemplate="header">
-          <div
-            class="flex flex-row flex-column flex-sm-row justify-content-between"
-          >
-            <span class="p-input-icon-left mb-2 md:mb-0">
-              <i class="pi pi-search"></i>
-              <input
-                type="search"
-                pInputText
-                placeholder="Search by Name"
-                (input)="onFilter($event)"
-              />
-            </span>
-            <button
-              class="p-button p-button-primary p-m-2"
-              (click)="visibleSidebar = true"
-            >
-              <i class="pi pi-filter"></i> Filters
-            </button>
-            <div class="d-flex align-items-center justify-content-between mt-2">
-              <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
-            </div>
-          </div>
-        </ng-template>
+  <p-dataView
+    #dv
+    [value]="products"
+    [paginator]="true"
+    [rows]="12"
+    layout="grid"
+    *ngIf="products[0]"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex flex-lg-row flex-sm-column justify-content-between">
+        <span class="p-input-icon-left mb-2 md:mb-0">
+          <i class="pi pi-search"></i>
+          <input
+            type="search"
+            pInputText
+            placeholder="Search by Name"
+            (input)="onFilter($event)"
+          />
+        </span>
+        <button
+          class="p-button p-button-primary p-m-2"
+          (click)="visibleSidebar = true"
+        >
+          <i class="pi pi-filter"></i> Filters
+        </button>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        </div>
+      </div>
+    </ng-template>
 
-        <ng-template let-product pTemplate="listItem">
-          <div class="col-12">
-            <app-search-list-card
-              [product]="product"
-              [wishlist]="wishlist"
-            ></app-search-list-card>
-          </div>
-        </ng-template>
+    <ng-template let-product pTemplate="listItem">
+      <div class="col-12">
+        <app-search-list-card
+          [product]="product"
+          [wishlist]="wishlist"
+        ></app-search-list-card>
+      </div>
+    </ng-template>
 
-        <ng-template let-product pTemplate="gridItem">
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
-            <app-search-grid-card
-              [product]="product"
-              [wishlist]="wishlist"
-            ></app-search-grid-card>
-          </div>
-        </ng-template>
-      </p-dataView>
-    </div>
-  </div>
+    <ng-template let-product pTemplate="gridItem">
+      <div class="col-md-6 col-lg-4 col-xl-3 p-1">
+        <app-search-grid-card
+          [product]="product"
+          [wishlist]="wishlist"
+        ></app-search-grid-card>
+      </div>
+    </ng-template>
+  </p-dataView>
 </div>

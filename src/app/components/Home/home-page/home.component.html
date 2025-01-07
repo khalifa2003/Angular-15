@@ -1,5 +1,5 @@
-<app-landing class="row my-container"></app-landing>
-<div class="row my-container">
+<app-landing class="row"></app-landing>
+<div class="row">
   <header>Shop by Categories</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!categories[0]" />
   <p-carousel
@@ -18,7 +18,7 @@
 </div>
 
 <!-- Special Offers -->
-<div class="row my-container">
+<div class="row">
   <header>Special Offers</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!specialOffers[0]" />
   <p-carousel
@@ -42,7 +42,7 @@
 </div>
 
 <!-- New Arrival -->
-<div class="row my-container">
+<div class="row">
   <header>New Arrival</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!newArrival[0]" />
   <p-carousel
@@ -64,11 +64,11 @@
   </p-carousel>
 </div>
 
-<div class="row my-container">
+<div class="row">
   <div class="col-xl-10 col-lg-12">
     <div class="d-flex flex-wrap justify-content-evenly">
-      <img src="../../../assets/sec1.1.jpg" class="sec p-1 w-100" />
-      <img src="../../../assets/sec1.2.jpg" class="sec p-1 w-100" />
+      <img src="../../../assets/sec1.1.jpg" class="sec" />
+      <img src="../../../assets/sec1.1.jpg" class="sec" />
     </div>
     <div *ngFor="let item of listOfProductsByCategory">
       <header>{{ item.name }}</header>
@@ -118,7 +118,7 @@
 </div>
 
 <!-- Brands -->
-<div class="row my-container">
+<div class="row">
   <header>Shop by Brands</header>
   <p-progressSpinner ariaLabel="loading" *ngIf="!brands[0]" />
   <p-carousel
@@ -136,15 +136,8 @@
   </p-carousel>
 </div>
 
-<div class="my-modal" *ngIf="showModal">
-  <div class="my-modal-header">
-    <span class="my-modal-title">Product added to Cart</span>
-    <button class="close-btn" (click)="closeModal()">&times;</button>
-  </div>
-  <div class="my-modal-body">
-    <img [src]="product.images[0]" alt="" />
-    <a routerLink="/user/cart" style="text-decoration: none">{{
-      product.title
-    }}</a>
-  </div>
-</div>
+<app-my-model
+  [showModal]="showModal"
+  [product]="product"
+  (closeModalEvent)="showModal = $event"
+></app-my-model>

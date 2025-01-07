@@ -18,6 +18,7 @@ import { MessageService } from 'primeng/api';
 import { NavbarComponent } from './components/utils/navbar/navbar.component';
 import { FooterComponent } from './components/utils/footer/footer.component';
 import { ApiurlInterceptor } from './Interceptors/apiurl.interceptor';
+import { MyModelComponent } from './components/utils/my-model/my-model.component';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, FooterComponent],
